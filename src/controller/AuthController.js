@@ -8,7 +8,10 @@ const upload = multer();
 exports.login = catchAsync(async (req, res, next) => {
   upload.none()(req, res, async function (err) {
     if (err) {
-      return next(new AppError('Error parsing form data', 400));
+      return res.status(400).json({
+        status: false,
+        message: "Error parsing form data",
+      });
     }
     const { email, password } = req.body;
 
