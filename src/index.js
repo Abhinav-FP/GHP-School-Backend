@@ -17,7 +17,7 @@ const path = require('path');
 
 app.use("/user", require("./routes/userRoutes"));
 
-// app.use("/task", require("./routes/taskRoutes"));
+app.use("/about", require("./routes/aboutRoutes"));
 
 
 const PORT = process.env.REACT_APP_SERVER_DOMIN;
