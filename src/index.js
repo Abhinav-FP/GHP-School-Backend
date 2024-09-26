@@ -21,6 +21,7 @@ app.use(express.json({ limit: '50mb' }));
 app.use("/user", require("./routes/userRoutes"));
 app.use("/about", require("./routes/aboutRoutes"));
 app.use("/career", require("./routes/careerRoutes"));
+app.use("/home", require("./routes/homeRoutes"));
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
 const PORT = process.env.REACT_APP_SERVER_DOMIN;
