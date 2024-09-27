@@ -7,6 +7,7 @@ router.get("/banner/get", bannerGet);
 router.post("/banner/delete", bannerDelete);
 router.post("/banner/move", bannerMove);
 // Admission line
+router.post()
 
 
 module.exports= router;
