@@ -124,3 +124,50 @@ exports.bannerDelete = catchAsync(async (req, res, next) => {
     });
   }
 });
+
+exports.bannerMove = catchAsync(async (req, res, next) => {
+  try {
+    const {id, oldPosition, newPosition } = req.body;
+    if (!oldPosition || !newPosition) {
+      return res.status(400).json({
+        status: false,
+        message: "Both fields are required",
+      });
+    }
+
+    if (newPosition > oldPosition) { // Moved downwards
+      // Decrement srNo of all items between oldPosition+1 and newPosition
+      await Banner.updateMany(
+        { srNo: { $gt: oldPosition, $lte: newPosition } },
+        { $inc: { srNo: -1 } }
+      );
+      // Update the faculty member being moved to the new position
+      await Banner.updateOne(
+        { _id: id },
+        { $set: { srNo: newPosition } }
+      );
+    }
+    else if(newPosition < oldPosition){ // Moved upwards
+      // Increment srNo of all items between oldPosition-1 and newPosition
+      await Banner.updateMany(
+        { srNo: { $gte: newPosition, $lt: oldPosition } },
+        { $inc: { srNo: +1 } }
+      );
+       // Update the faculty member being moved to the new position
+       await Banner.updateOne(
+        { _id: id },
+        { $set: { srNo: newPosition } }
+      );
+    }
+
+    return res.status(200).json({
+      status: true,
+      message: "Faculty position updated successfully",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      status: false,
+      message: "An unknown error occurred. Please try again later.",
+    });
+  }
+});
