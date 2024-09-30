@@ -1,5 +1,5 @@
 const express = require("express");
-const multer = require("multer");  // Import multer
+const multer = require("multer"); 
 const app = express();
 const cors = require("cors");
 const path=require("path");
@@ -22,6 +22,7 @@ app.use("/user", require("./routes/userRoutes"));
 app.use("/about", require("./routes/aboutRoutes"));
 app.use("/career", require("./routes/careerRoutes"));
 app.use("/home", require("./routes/homeRoutes"));
+app.use("/result", require("./routes/resultRoutes"));
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
 const PORT = process.env.REACT_APP_SERVER_DOMIN;

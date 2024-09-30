@@ -14,5 +14,4 @@ router.post("/admission/text", AdmissionLineText);
 router.get("/admission/get", AdmissionGet);
 
 
-
 module.exports= router;
