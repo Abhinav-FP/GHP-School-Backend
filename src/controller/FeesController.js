@@ -4,6 +4,7 @@ const Fees = require("../db/Fees");
 
 exports.feesAdd = catchAsync(async (req, res, next) => {
   try {
+    console.log("req.body",req?.body);
     const { grade, first, second, third, fourth, total } = req.body;
     if (!grade || !first || !second || !third || !fourth || !total) {
       return res.status(400).json({
