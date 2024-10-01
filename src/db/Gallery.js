@@ -4,7 +4,7 @@ const gallerychema = mongoose.Schema({
     heading: {
     type: String,
   },
-  photos: {
+  images: {
     type: String, // Array of image file names
   },
 })

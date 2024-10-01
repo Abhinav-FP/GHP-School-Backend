@@ -1,7 +1,7 @@
 const router =  require("express").Router();
-const { galleryAdd } = require("../controller/GalleryController");
-// const upload = require("../utils/uploadConfig");
+const { galleryGet, galleryGetId } = require("../controller/GalleryController");
 
-// router.post("/gallery/add", upload.array('photos'), galleryAdd);
+router.get("/gallery/get", galleryGet);
+router.get("/gallery/get/:uuid", galleryGetId);
 
 module.exports= router;

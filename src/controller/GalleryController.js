@@ -7,19 +7,13 @@ const path = require("path"); // Make sure to import the path module
 exports.galleryAdd = catchAsync(async (req, res, next) => {
     try {
         const {heading}=req.body;
-        console.log("req.files",req.files);
       const imagePaths = req.files.map(file => file.filename);
-      console.log("imagePaths",imagePaths)
-
+      const imgsrc=JSON.stringify(imagePaths);
       const newGallery = new Gallery({
         heading: heading,
-        images: imagePaths 
+        images: imgsrc 
       });
-  
-      // Save the new document to MongoDB
       await newGallery.save();
-  
-      // Logic to store data in the database can go here
       res.status(201).json({
         status: true,
         message: "Gallery images added successfully!",
@@ -31,4 +25,51 @@ exports.galleryAdd = catchAsync(async (req, res, next) => {
         message: "An unknown error occurred. Please try again later."
       });
     }
+});
+
+exports.galleryGet = catchAsync(async (req, res, next) => {
+  try {
+    const data = await Gallery.find({});
+    console.log("data",data);
+    const parsedData = data.map(item => ({
+      ...item._doc, // Spread the existing document fields
+      images: JSON.parse(item.images).map(image => 
+        `${req.protocol}://${req.get("host")}/images/${image}` // Construct URL for each image
+      )
+    }));
+    res.status(200).json({
+      status: true,
+      message: "Data retrieved successfully!",
+      data: parsedData,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      status: false,
+      message: "An unknown error occurred. Please try again later.",
+    });
+  }
+});
+
+exports.galleryGetId = catchAsync(async (req, res, next) => {
+  try {
+    const { uuid } = req.params || null;
+    const data = await Gallery.find({_id:uuid});
+    console.log("data",data);
+    const parsedData = data.map(item => ({
+      ...item._doc, // Spread the existing document fields
+      images: JSON.parse(item.images).map(image => 
+        `${req.protocol}://${req.get("host")}/images/${image}` // Construct URL for each image
+      )
+    }));
+    res.status(200).json({
+      status: true,
+      message: "Data retrieved successfully!",
+      data: parsedData,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      status: false,
+      message: "An unknown error occurred. Please try again later.",
+    });
+  }
 });

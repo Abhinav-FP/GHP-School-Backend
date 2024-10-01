@@ -44,7 +44,7 @@ app.use("/career", require("./routes/careerRoutes"));
 app.use("/home", require("./routes/homeRoutes"));
 app.use("/result", require("./routes/resultRoutes"));
 app.use("/fees", require("./routes/feesRoutes"));
-// app.use("/facilities", require("./routes/facilitiesRoutes"));
+app.use("/facilities", require("./routes/facilitiesRoutes"));
 
 const PORT = process.env.REACT_APP_SERVER_DOMIN;
 
