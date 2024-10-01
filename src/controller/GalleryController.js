@@ -62,16 +62,27 @@ exports.galleryAdd = catchAsync(async (req, res, next) => {
 exports.galleryGet = catchAsync(async (req, res, next) => {
   try {
     const data = await Gallery.find({});
-    const parsedData = data.map(item => ({
-      ...item._doc, // Spread the existing document fields
-      images: JSON.parse(item.images).map(image => 
-        `${req.protocol}://${req.get("host")}/images/${image}` // Construct URL for each image
-      )
-    }));
+    const filteredData = Object.values(data.reduce((acc, item) => {
+      if (!acc[item.caption]) {
+        acc[item.caption] = item;
+      }
+      return acc;
+    }, {}));
+    console.log("filteredData",filteredData);
+    const updatedData = filteredData.map((item) => {
+      const Url = `${req.protocol}://${req.get("host")}/images/gallery/${
+        item.url
+      }`;
+      const plainObject = item.toObject(); // Convert to plain object
+      return {
+        ...plainObject,
+        url: Url,
+      };
+    });
     res.status(200).json({
       status: true,
       message: "Data retrieved successfully!",
-      data: parsedData,
+      data: updatedData,
     });
   } catch (err) {
     return res.status(500).json({
@@ -81,20 +92,24 @@ exports.galleryGet = catchAsync(async (req, res, next) => {
   }
 });
 
-exports.galleryGetId = catchAsync(async (req, res, next) => {
+exports.galleryGetCategory = catchAsync(async (req, res, next) => {
   try {
-    const { uuid } = req.params || null;
-    const data = await Gallery.find({_id:uuid});
-    const parsedData = data.map(item => ({
-      ...item._doc, // Spread the existing document fields
-      images: JSON.parse(item.images).map(image => 
-        `${req.protocol}://${req.get("host")}/images/${image}` // Construct URL for each image
-      )
-    }));
+    const { type } = req.params;
+    const data = await Gallery.find({caption:type});
+    const updatedData = data.map((item) => {
+      const Url = `${req.protocol}://${req.get("host")}/images/gallery/${
+        item.url
+      }`;
+      const plainObject = item.toObject(); // Convert to plain object
+      return {
+        ...plainObject,
+        url: Url,
+      };
+    });
     res.status(200).json({
       status: true,
       message: "Data retrieved successfully!",
-      data: parsedData,
+      data: updatedData,
     });
   } catch (err) {
     return res.status(500).json({
@@ -104,7 +119,7 @@ exports.galleryGetId = catchAsync(async (req, res, next) => {
   }
 });
 
-exports.galleryDelete = catchAsync(async (req, res, next) => {
+exports.galleryDeleteById = catchAsync(async (req, res, next) => {
   try {
     const { id } = req.body;
     if (!id) {
@@ -114,7 +129,6 @@ exports.galleryDelete = catchAsync(async (req, res, next) => {
       });
     }
 
-    // Find and delete the gallery by id
     const deletedResult = await Gallery.findOneAndDelete({ _id: id });
     if (!deletedResult) {
       return res.status(404).json({
@@ -122,27 +136,25 @@ exports.galleryDelete = catchAsync(async (req, res, next) => {
         message: `No gallery found with id: ${id}`,
       });
     }
-    
-    console.log("deletedResult", deletedResult);
 
-    // Parse the images array from the stringified JSON
-    const imagesArray = JSON.parse(deletedResult.images); // No need for a map here as we're parsing the string directly
-
-    if (imagesArray) {
-      imagesArray.forEach(image => {
-        const oldPhotoPath = path.join(__dirname, "../images", image); // Update the path for each image
-        if (fs.existsSync(oldPhotoPath)) {
-          fs.unlinkSync(oldPhotoPath); // Delete the file
-          console.log(`Deleted image: ${oldPhotoPath}`); // Optional log for success
-        } else {
-          console.log(`File does not exist: ${oldPhotoPath}, skipping deletion`); // Log if the file doesn't exist
+    if (deletedResult.url) {
+      const oldPhotoPath = path.join(__dirname, '../images/gallery', deletedResult.url);
+      if (fs.existsSync(oldPhotoPath)) {
+        try {
+          fs.unlinkSync(oldPhotoPath);  
+        } catch (unlinkError) {
+          console.error("Error deleting file:", unlinkError);
+          return res.status(500).json({
+            status: false,
+            message: "Error deleting the image file from the server",
+          });
         }
-      });
+      }
     }
 
     return res.status(200).json({
       status: true,
-      message: `Result deleted successfully`,
+      message: `Gallery entry and image deleted successfully`,
       deletedResult: deletedResult,
     });
   } catch (error) {
