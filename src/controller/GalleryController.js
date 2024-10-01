@@ -3,21 +3,53 @@ const AppError = require("../utils/AppError");
 const Gallery = require("../db/Gallery");
 const fs = require("fs");
 const path = require("path"); // Make sure to import the path module
+const sharp = require("sharp")
+
+// async function SizeReducer(inputFilePath, outputFilePath) {
+//   try {
+//     let image = sharp(inputFilePath);
+//     let metadata = await image.metadata();
+//     let { width, height } = metadata;
+
+//     let resizedImage = image;
+//     let fileSize = (await image.toBuffer()).length;
+//     const MAX_SIZE = 2048;
+//     while (fileSize > MAX_SIZE) {
+//       width = Math.floor(width * 0.9);
+//       height = Math.floor(height * 0.9);
+//       resizedImage = image.resize({ width, height });
+//       fileSize = (await resizedImage.toBuffer()).length;
+//       console.log(`Resizing to ${width}x${height}, new size: ${fileSize} bytes`);
+//     }
+//     return await resizedImage.toFile(outputFilePath);
+//   } catch (err) {
+//     console.error('Error resizing image:', err);
+//   }
+// }
+
 
 exports.galleryAdd = catchAsync(async (req, res, next) => {
     try {
-        const {heading}=req.body;
-      const imagePaths = req.files.map(file => file.filename);
-      const imgsrc=JSON.stringify(imagePaths);
-      const newGallery = new Gallery({
-        heading: heading,
-        images: imgsrc 
+      const { heading }=req.body;
+      const files = req.files;
+      console.log("files",files)
+      const uploadFile = async (g) => { 
+        const name = g.filename.replaceAll(" ", '-')
+        const newGallery = new Gallery({
+          caption: req.body.heading.replaceAll(" ", '-'),
+          fileSize: g.size, 
+          name: name,
+          url :  `${name}`,
+        });
+        await newGallery.save();
+      }
+      files.forEach((g, i)=>{
+        uploadFile(g)
       });
-      await newGallery.save();
+
       res.status(201).json({
         status: true,
         message: "Gallery images added successfully!",
-        data: newGallery
       });
     } catch (error) {
       res.status(500).json({
