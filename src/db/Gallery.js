@@ -5,7 +5,7 @@ const gallerychema = mongoose.Schema({
     type: String,
   },
   photos: {
-    type: [String], // Array of image file names
+    type: String, // Array of image file names
   },
 })
 module.exports = mongoose.model("Gallery",gallerychema)

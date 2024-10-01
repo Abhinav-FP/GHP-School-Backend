@@ -22,7 +22,10 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
+app.use(express.json({ limit: '2000mb' }));
+app.use(express.urlencoded({ extended: true }));
 
+app.use('/images', express.static(path.join(__dirname, 'images')));
 app.post("/about/principal/add", upload.single('photo'), principalAdd);
 app.post("/about/principal/edit",upload.single('photo'), principalEdit);
 app.post("/about/director/add", upload.single('photo'), directorAdd);
@@ -34,8 +37,6 @@ app.post("/facilities/gallery/add", upload.array('photos'), galleryAdd);
 
 upload = multer();
 app.use(upload.none()); 
-app.use(express.json({ limit: '50mb' }));
-app.use(express.urlencoded({ extended: true }));
 
 app.use("/user", require("./routes/userRoutes"));
 app.use("/about", require("./routes/aboutRoutes"));
@@ -43,9 +44,7 @@ app.use("/career", require("./routes/careerRoutes"));
 app.use("/home", require("./routes/homeRoutes"));
 app.use("/result", require("./routes/resultRoutes"));
 app.use("/fees", require("./routes/feesRoutes"));
-app.use("/facilities", require("./routes/facilitiesRoutes"));
-
-app.use('/about/images', express.static(path.join(__dirname, 'images')));
+// app.use("/facilities", require("./routes/facilitiesRoutes"));
 
 const PORT = process.env.REACT_APP_SERVER_DOMIN;
 

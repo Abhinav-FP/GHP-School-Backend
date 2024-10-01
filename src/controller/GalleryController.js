@@ -7,7 +7,9 @@ const path = require("path"); // Make sure to import the path module
 exports.galleryAdd = catchAsync(async (req, res, next) => {
     try {
         const {heading}=req.body;
+        console.log("req.files",req.files);
       const imagePaths = req.files.map(file => file.filename);
+      console.log("imagePaths",imagePaths)
 
       const newGallery = new Gallery({
         heading: heading,
