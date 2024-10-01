@@ -11,6 +11,8 @@ const { principalAdd, principalEdit } = require("./controller/PrincipalControlle
 let upload = require("./utils/uploadConfig");
 const { directorAdd, directorEdit } = require("./controller/DirectorController");
 const { bannerAdd } = require("./controller/BannerController");
+const { resultAdd } = require("./controller/ResultController");
+const { galleryAdd } = require("./controller/GalleryController");
 
 
 const corsOptions = {
@@ -26,6 +28,9 @@ app.post("/about/principal/edit",upload.single('photo'), principalEdit);
 app.post("/about/director/add", upload.single('photo'), directorAdd);
 app.post("/director/edit",upload.single('photo'), directorEdit);
 app.post("/home/banner/add", upload.single('photo'), bannerAdd);
+app.post("/result/add", upload.single('photo'), resultAdd);
+app.post("/facilities/gallery/add", upload.array('photos'), galleryAdd);
+
 
 upload = multer();
 app.use(upload.none()); 

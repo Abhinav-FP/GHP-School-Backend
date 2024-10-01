@@ -1,7 +1,7 @@
 const router =  require("express").Router();
 const { AdmissionLineAdd, AdmissionLineShow, AdmissionLineText, AdmissionGet } = require("../controller/AdmissionController");
 const { bannerAdd, bannerGet, bannerDelete, bannerMove } = require("../controller/BannerController");
-const upload = require("../utils/uploadConfig");
+// const upload = require("../utils/uploadConfig");
 
 
 

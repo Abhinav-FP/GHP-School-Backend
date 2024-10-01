@@ -3,7 +3,7 @@ const router =  require("express").Router();
 const { directorAdd, directorGet, directorEdit } = require("../controller/DirectorController");
 const {facultyAdd, facultyGet, facultyDelete, facultyMove} = require("../controller/FacultyController");
 const { principalGet, principalAdd, principalEdit } = require("../controller/PrincipalController");
-const upload = require("../utils/uploadConfig");
+// const upload = require("../utils/uploadConfig");
 
 
 router.post("/faculty/add", facultyAdd);
