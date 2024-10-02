@@ -98,7 +98,7 @@ exports.directorEdit = catchAsync(async (req, res, next) => {
       status: 'success',
       message: 'Data updated successfully!',
       data: {
-        principal: data,
+        director: data,
       },
     });
   } catch (error) {
