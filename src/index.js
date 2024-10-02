@@ -30,7 +30,7 @@ app.use('/images', express.static(path.join(__dirname, 'images')));
 app.post("/about/principal/add", upload.single('photo'), principalAdd);
 app.post("/about/principal/edit",upload.single('photo'), principalEdit);
 app.post("/about/director/add", upload.single('photo'), directorAdd);
-app.post("/director/edit",upload.single('photo'), directorEdit);
+app.post("/about/director/edit",upload.single('photo'), directorEdit);
 app.post("/home/banner/add", upload.single('photo'), bannerAdd);
 app.post("/result/add", upload.single('photo'), resultAdd);
 app.post("/facilities/gallery/add", uploadgallery.array('photos'), galleryAdd);
