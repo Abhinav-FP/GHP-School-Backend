@@ -100,3 +100,24 @@ exports.principalEdit = catchAsync(async (req, res, next) => {
     });
   }
 });
+
+
+exports.imageTest = catchAsync(async (req, res, next) => {
+  console.log("Hello");
+  try {
+    const image = req.file ? req.file.filename : null;
+    const data = `http://localhost:8000/files/${image}`;
+    res.status(200).json({
+      status: 'success',
+      message: 'Image saved successfully!',
+      data: {
+        url: data,
+      },
+    });
+  } catch (error) {
+    return res.status(500).json({
+      status: false,
+      message: "An unknown error occurred. Please try again later.",
+    });
+  }
+})

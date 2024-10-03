@@ -7,7 +7,7 @@ const multer = require("multer");
 const app = express();
 const cors = require("cors");
 const path=require("path");
-const { principalAdd, principalEdit } = require("./controller/PrincipalController");
+const { principalAdd, principalEdit, imageTest } = require("./controller/PrincipalController");
 let upload = require("./utils/uploadConfig");
 const { directorAdd, directorEdit } = require("./controller/DirectorController");
 const { bannerAdd } = require("./controller/BannerController");
@@ -28,6 +28,8 @@ app.use(express.json({ limit: '2000mb' }));
 app.use(express.urlencoded({ extended: true }));
 
 app.use('/file', express.static(path.join(__dirname, '..', 'tmps')));
+app.use('/files', express.static(path.join(__dirname, '..', 'tmp')));
+app.post("/image/test",upload.single('photo'), imageTest);
 app.post("/about/principal/add", upload.single('photo'), principalAdd);
 app.post("/about/principal/edit",upload.single('photo'), principalEdit);
 app.post("/about/director/add", upload.single('photo'), directorAdd);
