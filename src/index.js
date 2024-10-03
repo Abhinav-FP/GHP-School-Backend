@@ -14,6 +14,7 @@ const { bannerAdd } = require("./controller/BannerController");
 const { resultAdd } = require("./controller/ResultController");
 const { galleryAdd } = require("./controller/GalleryController");
 const uploadgallery = require("./utils/uploadGallery");
+const { donationAdd } = require("./controller/DonationController");
 
 
 const corsOptions = {
@@ -34,6 +35,7 @@ app.post("/about/director/edit",upload.single('photo'), directorEdit);
 app.post("/home/banner/add", upload.single('photo'), bannerAdd);
 app.post("/result/add", upload.single('photo'), resultAdd);
 app.post("/facilities/gallery/add", uploadgallery.array('photos'), galleryAdd);
+app.post("/donation/add", upload.single('photo'), donationAdd);
 
  
 upload = multer();
@@ -46,6 +48,7 @@ app.use("/home", require("./routes/homeRoutes"));
 app.use("/result", require("./routes/resultRoutes"));
 app.use("/fees", require("./routes/feesRoutes"));
 app.use("/facilities", require("./routes/facilitiesRoutes"));
+app.use("/donation", require("./routes/facilitiesRoutes"));
 
 const PORT = process.env.REACT_APP_SERVER_DOMIN;
 

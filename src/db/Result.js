@@ -10,6 +10,9 @@ const resultschema = mongoose.Schema({
   grade: {
     type: String,
   },
+  stream: {
+    type: String,
+  },
   photo: {
     type: String,
   },
