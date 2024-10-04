@@ -1,10 +1,7 @@
 const mongoose = require("mongoose")
 
-const donationschema = mongoose.Schema({
+const donateSchema = mongoose.Schema({
     srNo: {
-        type: Number,
-      },
-    amount: {
         type: Number,
       },
     name: {
@@ -13,8 +10,14 @@ const donationschema = mongoose.Schema({
   description: {
     type: String,
   },
+  price: {
+    type: Number,
+  },
   photo: {
     type: String,
   },
+  imagehash: {
+    type: String,
+  },
 })
-module.exports = mongoose.model("Donation",donationschema)
+module.exports = mongoose.model("Donate",donateSchema)

@@ -14,7 +14,6 @@ const { bannerAdd } = require("./controller/BannerController");
 const { resultAdd } = require("./controller/ResultController");
 const { galleryAdd } = require("./controller/GalleryController");
 const uploadgallery = require("./utils/uploadGallery");
-const { donationAdd } = require("./controller/DonationController");
 
 
 const corsOptions = {
@@ -27,9 +26,7 @@ app.use(cors(corsOptions));
 app.use(express.json({ limit: '2000mb' }));
 app.use(express.urlencoded({ extended: true }));
 
-app.use('/images', express.static(path.join(__dirname, '/', 'images')));
 app.post("/facilities/gallery/add", uploadgallery.array('photos'), galleryAdd);
-app.post("/donation/add", upload.single('photo'), donationAdd);
 
 upload = multer();
 app.use(upload.none()); 
@@ -47,11 +44,11 @@ app.post("/about/director/edit", directorEdit);
 app.use("/result", require("./routes/resultRoutes"));
 app.use("/fees", require("./routes/feesRoutes"));
 app.use("/facilities", require("./routes/facilitiesRoutes"));
+app.use("/donation", require("./routes/donationRoutes"));
 app.use("/inquiry", require("./routes/InquiryRoutes"));
 
 
 app.use('/images', express.static(path.join(__dirname, 'images')));
-app.use("/donation", require("./routes/facilitiesRoutes"));
 
 const PORT = process.env.REACT_APP_SERVER_DOMIN;
 
