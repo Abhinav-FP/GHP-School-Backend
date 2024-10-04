@@ -3,12 +3,13 @@ const AppError = require("../utils/AppError");
 const Result = require("../db/Result");
 const fs = require("fs");
 const path = require("path");
+const { imageTest } = require("./PrincipalController");
+const { default: axios } = require("axios");
 
 exports.resultAdd = catchAsync(async (req, res, next) => {
   try {
-    const { rollNo, name, grade, percentage, stream } = req.body;
-    const photo = req.file ? req.file.filename : null;
-    if (photo == null) {
+    const { rollNo, name, grade, percentage, stream, hash } = req.body;
+    if (!photo) {
       return res.status(400).json({
         status: false,
         message: "Image is required!",
@@ -33,6 +34,7 @@ exports.resultAdd = catchAsync(async (req, res, next) => {
       stream,
       photo,
       percentage,
+      imagehash:hash,
     });
     await data.save();
     res.status(201).json({
@@ -60,21 +62,10 @@ exports.resultGet = catchAsync(async (req, res, next) => {
             message: "No data found!",
           });
     }
-    const updatedData = data.map((item) => {
-      const imageUrl = `${process.env.DOMAIN}/tmp/${
-        item.photo
-      }`;
-      const plainObject = item.toObject();
-      return {
-        ...plainObject,
-        photo: imageUrl,
-      };
-    });
-
     res.status(200).json({
       status: true,
       message: "Data retrieved successfully!",
-      data: updatedData,
+      data: data,
     });
   } catch (err) {
     console.error(err); // Log the error for debugging
@@ -101,17 +92,23 @@ exports.resultDelete = catchAsync(async (req, res, next) => {
         message: `No banner found with srNo: ${srNo}`,
       });
     }
-    if (deletedResult.photo) {
-      const oldPhotoPath = path.join(
-        __dirname,
-        "../images",
-        deletedResult.photo
-      );
-      if (fs.existsSync(oldPhotoPath)) {
-        fs.unlinkSync(oldPhotoPath);
-      } else {
-        console.log("File does not exist, skipping deletion");
-      }
+    // Extract the imagehash and send delete request to Imgur
+    const imagehash = deletedResult.imagehash;
+    const imgurDeleteUrl = `https://api.imgur.com/3/image/${imagehash}`;
+
+    try {
+      await axios.delete(imgurDeleteUrl, {
+        headers: {
+          Authorization: `Client-ID fa9cff918a9554a`, 
+        }
+      });
+    } catch (imgurError) {
+      console.error("Error deleting image from Imgur:", imgurError.response?.data || imgurError.message);
+      return res.status(500).json({
+        status: false,
+        message: "Banner deleted but failed to delete image from Imgur",
+        error: imgurError.response?.data || imgurError.message,
+      });
     }
     return res.status(200).json({
       status: true,

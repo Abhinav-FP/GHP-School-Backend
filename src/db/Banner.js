@@ -13,5 +13,8 @@ const bannerschema = mongoose.Schema({
   photo: {
     type: String,
   },
+  imagehash: {
+    type: String,
+  },
 })
 module.exports = mongoose.model("Banner",bannerschema)

@@ -16,6 +16,9 @@ const resultschema = mongoose.Schema({
   photo: {
     type: String,
   },
+  imagehash: {
+    type: String,
+  },
   percentage: {
     type: Number,
   },

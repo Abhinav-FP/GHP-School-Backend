@@ -3,11 +3,13 @@ const AppError = require("../utils/AppError");
 const Banner = require("../db/Banner");
 const fs = require("fs");
 const path = require("path"); // Make sure to import the path module
+const { default: axios } = require("axios");
 
 exports.bannerAdd = catchAsync(async (req, res, next) => {
   try {
-    const { heading, text } = req.body;
-    const photo = req.file.filename;
+    console.log("req.body",req.body);
+    const { heading, text, photo, hash } = req.body;
+    // const photo = req.file.filename;
     if (!heading || !text || !photo) {
       return res.status(400).json({
         status: false,
@@ -21,6 +23,7 @@ exports.bannerAdd = catchAsync(async (req, res, next) => {
       heading,
       text,
       photo,
+      imagehash:hash,
     });
     await newBanner.save();
     res.status(201).json({
@@ -41,22 +44,10 @@ exports.bannerAdd = catchAsync(async (req, res, next) => {
 exports.bannerGet = catchAsync(async (req, res, next) => {
   try {
     const data = await Banner.find().sort({ srNo: 1 });
-
-    const updatedData = data.map((item) => {
-      const imageUrl = `${req.protocol}://${req.get("host")}/images/${
-        item.photo
-      }`;
-      const plainObject = item.toObject(); // Convert to plain object
-      return {
-        ...plainObject,
-        photo: imageUrl,
-      };
-    });
-
     res.status(200).json({
       status: true,
       message: "Data retrieved successfully!",
-      banners: updatedData,
+      banners: data,
     });
   } catch (err) {
     console.error(err); // Log the error for debugging
@@ -70,7 +61,6 @@ exports.bannerGet = catchAsync(async (req, res, next) => {
 exports.bannerDelete = catchAsync(async (req, res, next) => {
   try {
     const { srNo } = req.body;
-
     // Validate the input
     if (!srNo) {
       return res.status(400).json({
@@ -78,7 +68,7 @@ exports.bannerDelete = catchAsync(async (req, res, next) => {
         message: "Banner number (srNo) is required",
       });
     }
-
+    
     // Find and delete the banner
     const deletedBanner = await Banner.findOneAndDelete({ srNo });
     if (!deletedBanner) {
@@ -88,32 +78,35 @@ exports.bannerDelete = catchAsync(async (req, res, next) => {
       });
     }
 
+    // Extract the imagehash and send delete request to Imgur
+    const imagehash = deletedBanner.imagehash;
+    const imgurDeleteUrl = `https://api.imgur.com/3/image/${imagehash}`;
+
+    try {
+      await axios.delete(imgurDeleteUrl, {
+        headers: {
+          Authorization: `Client-ID fa9cff918a9554a`, 
+        }
+      });
+    } catch (imgurError) {
+      console.error("Error deleting image from Imgur:", imgurError.response?.data || imgurError.message);
+      return res.status(500).json({
+        status: false,
+        message: "Banner deleted but failed to delete image from Imgur",
+        error: imgurError.response?.data || imgurError.message,
+      });
+    }
+
     // Adjust the `srNo` for the other banners
     const BannersToUpdate = await Banner.find({ srNo: { $gt: srNo } });
     if (BannersToUpdate.length > 0) {
       await Banner.updateMany({ srNo: { $gt: srNo } }, { $inc: { srNo: -1 } });
     }
 
-    // Check and delete the associated photo file if it exists
-    if (deletedBanner.photo) {
-      const oldPhotoPath = path.join(
-        __dirname,
-        "../images",
-        deletedBanner.photo
-      );
-
-      // Ensure the file exists before deleting
-      if (fs.existsSync(oldPhotoPath)) {
-        fs.unlinkSync(oldPhotoPath); // Delete the old image file
-      } else {
-        console.log("File does not exist, skipping deletion");
-      }
-    }
-
     // Respond with success
     return res.status(200).json({
       status: true,
-      message: `Banner deleted successfully`,
+      message: `Banner and image deleted successfully`,
       deletedBanner: deletedBanner,
     });
   } catch (error) {

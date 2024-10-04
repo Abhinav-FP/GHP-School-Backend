@@ -29,16 +29,14 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use('/file', express.static(path.join(__dirname, '..', 'tmps')));
 app.use('/files', express.static(path.join(__dirname, '..', 'tmp')));
-app.post("/image/test",upload.single('photo'), imageTest);
 app.post("/about/principal/add", upload.single('photo'), principalAdd);
 app.post("/about/principal/edit",upload.single('photo'), principalEdit);
 app.post("/about/director/add", upload.single('photo'), directorAdd);
 app.post("/about/director/edit",upload.single('photo'), directorEdit);
-app.post("/home/banner/add", upload.single('photo'), bannerAdd);
-app.post("/result/add", upload.single('photo'), resultAdd);
+app.post("/image/test", imageTest);
 app.post("/facilities/gallery/add", uploadgallery.array('photos'), galleryAdd);
 app.post("/donation/add", upload.single('photo'), donationAdd);
- 
+
 upload = multer();
 app.use(upload.none()); 
 
@@ -46,6 +44,8 @@ app.use("/user", require("./routes/userRoutes"));
 app.use("/about", require("./routes/aboutRoutes"));
 app.use("/career", require("./routes/careerRoutes"));
 app.use("/home", require("./routes/homeRoutes"));
+app.post("/home/banner/add", bannerAdd);
+app.post("/result/add", resultAdd);
 app.use("/result", require("./routes/resultRoutes"));
 app.use("/fees", require("./routes/feesRoutes"));
 app.use("/facilities", require("./routes/facilitiesRoutes"));
