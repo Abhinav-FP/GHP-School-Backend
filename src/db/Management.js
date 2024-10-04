@@ -16,5 +16,8 @@ const managementschema = mongoose.Schema({
   text: {
     type: String,
   },
+  imagehash: {
+    type: String,
+  },
 })
 module.exports = mongoose.model("Management",managementschema)

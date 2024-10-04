@@ -8,7 +8,7 @@ const { default: axios } = require("axios");
 
 exports.resultAdd = catchAsync(async (req, res, next) => {
   try {
-    const { rollNo, name, grade, percentage, stream, hash } = req.body;
+    const { rollNo, name, grade, percentage, stream, hash, photo } = req.body;
     if (!photo) {
       return res.status(400).json({
         status: false,
@@ -54,8 +54,8 @@ exports.resultAdd = catchAsync(async (req, res, next) => {
 
 exports.resultGet = catchAsync(async (req, res, next) => {
   try {
-    const { grade } = req.params;
-    const data = await Result.find({ grade: grade }).sort({ percentage: -1 });
+    
+    const data = await Result.find({ }).sort({ percentage: -1 });
     if(data.length==0){
         res.status(200).json({
             status: false,

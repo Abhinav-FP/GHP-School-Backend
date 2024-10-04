@@ -3,7 +3,7 @@ const { resultAdd, resultGet, resultDelete } = require("../controller/ResultCont
 // const upload = require("../utils/uploadConfig");
 
 // router.post("/add", upload.single('photo'), resultAdd);
-router.get("/get/:grade", resultGet);
+router.get("/get", resultGet);
 router.post("/delete", resultDelete);
 
 module.exports= router;

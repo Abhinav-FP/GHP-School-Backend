@@ -6,9 +6,7 @@ const path = require('path');
 
 exports.principalAdd = catchAsync(async (req, res, next) => {
   try {
-    const { name, text } = req.body;
-    const photo = req.file.filename;
-
+    const { name, text, photo, hash } = req.body;
     if (!name || !text || !photo) {
       return res.status(400).json({
         status: false,
@@ -24,6 +22,7 @@ exports.principalAdd = catchAsync(async (req, res, next) => {
       type: "principal",
       name,
       photo,
+      imagehash:hash,
       text,
     });
 
@@ -46,10 +45,6 @@ exports.principalAdd = catchAsync(async (req, res, next) => {
 exports.principalGet = catchAsync(async (req, res, next) => {
   try {
     const data = await Management.findOne({ type: "principal" });
-    const imageUrl = `${req.protocol}://${req.get("host")}/images/${
-      data.photo
-    }`;
-    data.photo = imageUrl;
     res.status(200).json({
       status: true,
       message: "Data retrieved successfully!",
@@ -65,8 +60,7 @@ exports.principalGet = catchAsync(async (req, res, next) => {
 
 exports.principalEdit = catchAsync(async (req, res, next) => {
   try {
-    const { name, text } = req.body;
-    const photo = req.file ? req.file.filename : null; 
+    const { name, text, photo, hash } = req.body;
     const data = await Management.findOne({ type: "principal" });
     if (!data) {
       return res.status(404).json({
@@ -76,14 +70,11 @@ exports.principalEdit = catchAsync(async (req, res, next) => {
     }
     data.name = name;
     data.text = text;
-    if (photo) {
-      if (data.photo) {
-        const oldPhotoPath = path.join(__dirname, '../images', data.photo);
-        if (fs.existsSync(oldPhotoPath)) {
-          fs.unlinkSync(oldPhotoPath);  // Delete the old image file
-        }
-      }
+    if(photo){
       data.photo = photo;
+    }
+    if(hash){
+      data.hash = hash;
     }
     await data.save();
     res.status(200).json({
@@ -100,24 +91,3 @@ exports.principalEdit = catchAsync(async (req, res, next) => {
     });
   }
 });
-
-
-exports.imageTest = catchAsync(async (req, res, next) => {
-  console.log("Hello");
-  try {
-    const image = req.file ? req.file.filename : null;
-    const data = `http://localhost:8000/files/${image}`;
-    res.status(200).json({
-      status: 'success',
-      message: 'Image saved successfully!',
-      data: {
-        url: data,
-      },
-    });
-  } catch (error) {
-    return res.status(500).json({
-      status: false,
-      message: "An unknown error occurred. Please try again later.",
-    });
-  }
-})
