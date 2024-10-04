@@ -49,6 +49,10 @@ app.post("/result/add", resultAdd);
 app.use("/result", require("./routes/resultRoutes"));
 app.use("/fees", require("./routes/feesRoutes"));
 app.use("/facilities", require("./routes/facilitiesRoutes"));
+app.use("/inquiry", require("./routes/InquiryRoutes"));
+
+
+app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use("/donation", require("./routes/facilitiesRoutes"));
 
 const PORT = process.env.REACT_APP_SERVER_DOMIN;
