@@ -1,7 +1,8 @@
 const router =  require("express").Router();
-const { galleryAdd } = require("../controller/GalleryController");
-// const upload = require("../utils/uploadConfig");
+const { galleryGet, galleryGetCategory, galleryDeleteById, galleryDeleteByCategory } = require("../controller/GalleryController");
 
-// router.post("/gallery/add", upload.array('photos'), galleryAdd);
+router.get("/gallery/get", galleryGet);
+router.get("/gallery/get/:type", galleryGetCategory);
+router.post("/gallery/delete/:id", galleryDeleteById);
 
 module.exports= router;

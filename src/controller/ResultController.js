@@ -61,7 +61,7 @@ exports.resultGet = catchAsync(async (req, res, next) => {
           });
     }
     const updatedData = data.map((item) => {
-      const imageUrl = `${req.protocol}://${req.get("host")}/images/${
+      const imageUrl = `${process.env.DOMAIN}/tmp/${
         item.photo
       }`;
       const plainObject = item.toObject();

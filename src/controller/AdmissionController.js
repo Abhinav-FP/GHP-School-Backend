@@ -99,7 +99,7 @@ exports.AdmissionLineText = catchAsync(async (req, res, next) => {
 
 exports.AdmissionGet = catchAsync(async (req, res, next) => {
   try {
-    const data = await Admission.find({});
+    const data = await Admission.findOne({});
     res.status(200).json({
       status: true,
       message: "Data retrieved successfully!",

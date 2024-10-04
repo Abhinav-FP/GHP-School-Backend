@@ -65,3 +65,26 @@ exports.VacancyDelete = catchAsync(async (req, res, next) => {
       });
     }
   });
+
+  exports.VacancyGet = catchAsync(async (req, res, next) => {
+    try {
+      const data = await Vacancy.find();
+      if (!data || data.length === 0) {
+        return res.status(204).json({
+          status: false,
+          message: "No data found",
+          data: [],
+        });
+      }
+      res.status(200).json({
+        status: true,
+        message: "Vacancies retrieved successfully!",
+        data: data,
+      });
+    } catch (err) {
+      return res.status(500).json({
+        status: false,
+        message: "An unknown error occurred. Please try again later.",
+      });
+    }
+  });
