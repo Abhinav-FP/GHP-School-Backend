@@ -3,7 +3,7 @@ const { InquiryAdd, InquiryDelete, InquiryGet } = require("../controller/Inquiry
 
 router.post("/add", InquiryAdd);
 
-router.delete("/delete", InquiryDelete);
+router.post("/delete", InquiryDelete);
 
 router.get("/get", InquiryGet);
 
