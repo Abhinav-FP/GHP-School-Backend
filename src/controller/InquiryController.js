@@ -71,7 +71,7 @@ exports.InquiryDelete = catchAsync(async (req, res, next) => {
         if (!deletedEnquiry) {
             return res.status(404).json({
                 status: false,
-                message: `No data found with Enquiry: ${Inquiry}`,
+                message: `No data found with Enquiry`,
             });
         }
         return res.status(200).json({
