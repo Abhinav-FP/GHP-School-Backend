@@ -37,13 +37,14 @@ const razorpayInstance = new Razorpay({
     }
   };
 
-  
+
 exports.paymentAdd = catchAsync(async (req, res) => {
-    const { orderId, paymentId, signature, amount } = req.body;
+    console.log("req",req?.body)
+    const { order_id, payment_id, amount ,currency} = req.body;
     const payment = new Payment({
-        orderId,
-        paymentId,
-        signature,
+        order_id: order_id,
+        currency:currency,
+        payment_id:payment_id,
         amount,
         status: 'success', 
     });

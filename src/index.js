@@ -50,7 +50,6 @@ app.use("/academics", require("./routes/academicsRoutes"));
 app.use("/payment", require("./routes/Paymentroute"));
 
 
-
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
 const PORT = process.env.REACT_APP_SERVER_DOMIN;
