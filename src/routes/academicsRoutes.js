@@ -1,11 +1,9 @@
-const { directorGet } = require("../controller/DirectorController");
-const { facultyMove } = require("../controller/FacultyController");
-const { principalGet } = require("../controller/PrincipalController");
+const { syllabusAdd, syllabusGet } = require("../controller/SyllabusController");
 
 const router =  require("express").Router();
 
-router.post("/syllabus/add", facultyMove);
-router.get("/syllabus/get", principalGet);
-router.get("/director/get", directorGet);
+router.post("/syllabus/add", syllabusAdd);
+router.get("/syllabus/get", syllabusGet);
+// router.get("/director/get", directorGet);
 
 module.exports= router;
