@@ -37,16 +37,42 @@ const razorpayInstance = new Razorpay({
     }
   };
 
-  
+
 exports.paymentAdd = catchAsync(async (req, res) => {
-    const { orderId, paymentId, signature, amount } = req.body;
+    console.log("req",req?.body)
+    const { order_id, payment_id, amount ,currency} = req.body;
     const payment = new Payment({
-        orderId,
-        paymentId,
-        signature,
+        order_id: order_id,
+        currency:currency,
+        payment_id:payment_id,
         amount,
         status: 'success', 
     });
     await payment.save();
     res.status(200).json({ status: 'success', message: 'Payment verified and saved successfully' });
+});
+
+
+
+exports.PaymentGet = catchAsync(async (req, res, next) => {
+  try {
+    const Payment = await Payment.find().sort({ srNo: 1 });
+    if (!Payment || Payment.length === 0) {
+      return res.status(204).json({
+        status: false,
+        message: "No Payment found for this user.",
+        Payment: [],
+      });
+    }
+    res.status(200).json({
+      status: true,
+      message: "Payment retrieved successfully!",
+      Payment: Payment,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      status: false,
+      message: "An unknown error occurred. Please try again later.",
+    });
+  }
 });

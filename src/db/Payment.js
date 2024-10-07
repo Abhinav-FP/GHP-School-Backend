@@ -15,7 +15,7 @@ const paymentSchema = new mongoose.Schema({
   },
   currency: {
     type: String,
-    required: true,
+    default :"INR"
   },
   status: {
     type: String,
