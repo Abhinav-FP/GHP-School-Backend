@@ -2,6 +2,55 @@ const jwt = require('jsonwebtoken');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/AppError');
 const User = require('../db/User');
+const {promisify} = require('util');
+
+exports.verifyToken =  async (req, res, next) => {
+  let authHeader = req.headers.Authorization || req.headers.authorization;
+  if (authHeader && authHeader.startsWith("Bearer")) {
+    let token = authHeader.split(" ")[1];
+    if (!token) {
+      res.status(400).json({
+        status : false,
+        message:"User is not authorized or Token is missing",
+      }); 
+    } else {
+      try {
+        const decode = await promisify(jwt.verify)(token, process.env.JWT_SECRET_KEY);
+        if(decode){ 
+          let result = await User.findById(decode.id);
+          req.user = result;
+          next();
+        } else { 
+          res.status(401).json({
+            status : false,
+            message:'Uauthorized',
+          })
+        }
+      } catch (err) {
+        console.log("err",err)
+        res.status(401).json({
+          status : false,
+          message:'Invalid or expired token',
+          error : err
+        });
+      }
+    }
+  } else { 
+    res.status(400).json({
+      status : false,
+      message:"User is not authorized or Token is missing",
+    })
+  }
+};
+
+const signToken = async (id) => {
+  const token = jwt.sign(
+    {id}, 
+    process.env.JWT_SECRET_KEY, 
+    {expiresIn:'14400m'}
+  );
+  return token
+}
 
 exports.login = catchAsync(async (req, res, next) => {
   const { email, password } = req.body;
@@ -17,10 +66,8 @@ exports.login = catchAsync(async (req, res, next) => {
       status: false,
       message: "Invalid Email or password",
     });
-  }
-  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET_KEY, {
-    expiresIn: '12h',
-  });
+  } 
+  const token = await signToken(user._id)
   res.json({
     status: true,
     message: "Login Successfully!",
@@ -53,5 +100,19 @@ exports.signup = catchAsync(async (req, res) => {
       error: result,
       message: "Failed to create user.",
     });
+  }
+});
+
+exports.profile = catchAsync(async (req, res) => {
+    if(req.user){
+        res.json({
+          status: true,
+          user: req.user,
+      });
+  } else { 
+    res.json({
+      status: false,
+      message: "You untsdf",
+  });
   }
 });

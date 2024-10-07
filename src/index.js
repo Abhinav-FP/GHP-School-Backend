@@ -14,6 +14,7 @@ const { bannerAdd } = require("./controller/BannerController");
 const { resultAdd } = require("./controller/ResultController");
 const { galleryAdd } = require("./controller/GalleryController");
 const uploadgallery = require("./utils/uploadGallery");
+const { verifyToken } = require("./controller/AuthController");
 
 
 const corsOptions = {
@@ -35,12 +36,12 @@ app.use("/user", require("./routes/userRoutes"));
 app.use("/about", require("./routes/aboutRoutes"));
 app.use("/career", require("./routes/careerRoutes"));
 app.use("/home", require("./routes/homeRoutes"));
-app.post("/home/banner/add", bannerAdd);
-app.post("/result/add", resultAdd);
-app.post("/about/principal/add", principalAdd);
-app.post("/about/principal/edit", principalEdit);
-app.post("/about/director/add", directorAdd);
-app.post("/about/director/edit", directorEdit);
+app.post("/home/banner/add",verifyToken, bannerAdd);
+app.post("/result/add",verifyToken, resultAdd);
+app.post("/about/principal/add",verifyToken, principalAdd);
+app.post("/about/principal/edit",verifyToken, principalEdit);
+app.post("/about/director/add",verifyToken, directorAdd);
+app.post("/about/director/edit",verifyToken, directorEdit);
 app.use("/result", require("./routes/resultRoutes"));
 app.use("/fees", require("./routes/feesRoutes"));
 app.use("/facilities", require("./routes/facilitiesRoutes"));
