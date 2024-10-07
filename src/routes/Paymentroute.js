@@ -3,7 +3,7 @@ const { paymentAdd, createOrder, PaymentGet } = require("../controller/PaymentCo
 
 router.post("/verify-payment", paymentAdd);
 router.post("/create", createOrder);
-router.get("/create", PaymentGet);
+router.get("/paymentget", PaymentGet);
 
 
 
