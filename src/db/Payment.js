@@ -1,12 +1,32 @@
+const mongoose = require('mongoose');
 
-const mongoose =require("mongoose")
-const paymentSchema =  mongoose.Schema({
-    orderId: { type: String, required: true },
-    paymentId: { type: String, required: true },
-    signature: { type: String, required: true },
-    amount: { type: Number, required: true },
-    status: { type: String, required: true }, // e.g., 'success', 'failed'
-    createdAt: { type: Date, default: Date.now },
+const paymentSchema = new mongoose.Schema({
+  order_id: {
+    type: String,
+    required: true,
+  },
+  payment_id: {
+    type: String,
+    required: true,
+  },
+  amount: {
+    type: Number,
+    required: true,
+  },
+  currency: {
+    type: String,
+    required: true,
+  },
+  status: {
+    type: String,
+    default: 'pending',
+  },
+  payment_date: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
 const Payment = mongoose.model('Payment', paymentSchema);
+
+module.exports = Payment;
