@@ -30,19 +30,6 @@ const sendMail = async (mailOptions) => {
   }
 };
 
-const mailOptions = {
-  from: `"${process.env.MAIL_FROM_NAME}" <${process.env.MAIL_FROM_ADDRESS}>`, // sender address with name
-  to: "a.mathur@futureprofilez.com", // recipient address
-  subject: "New data has arrived on AITA", // Subject line
-  html: `
-  <html>
-    <body style="text-align: center; margin: 0; padding: 10px; background-color: #000000; color: #ffffff;" align="center">
-      Checking email
-    </body>
-  </html>
-  `,
-};
-
 exports.VacancyAdd = catchAsync(async (req, res, next) => {
   try {
     const { designation, description, experience, qualification } = req.body;
@@ -130,8 +117,26 @@ exports.VacancyGet = catchAsync(async (req, res, next) => {
 
 exports.CareerApply = catchAsync(async (req, res, next) => {
   try {
-    const { name, surname, email, contactNo, position, experience, resume, about } = req.body;
-    if (!name || !surname || !email || !contactNo || !position || !experience || !resume || !about) {
+    const {
+      name,
+      surname,
+      email,
+      contactNo,
+      position,
+      experience,
+      resume,
+      about,
+    } = req.body;
+    if (
+      !name ||
+      !surname ||
+      !email ||
+      !contactNo ||
+      !position ||
+      !experience ||
+      !resume ||
+      !about
+    ) {
       return res.status(400).json({
         status: false,
         message: "All fields are required!",
@@ -140,16 +145,79 @@ exports.CareerApply = catchAsync(async (req, res, next) => {
     const UUID = uuidv4();
     const newApplication = new Application({
       uuid: UUID,
-      name, 
-      surname, 
-      email, 
-      contactNo, 
-      position, 
-      experience, 
-      resume, 
-      about
+      name,
+      surname,
+      email,
+      contactNo,
+      position,
+      experience,
+      resume,
+      about,
     });
     await newApplication.save();
+    const mailOptions = {
+      from: `"${process.env.MAIL_FROM_NAME}" <${process.env.MAIL_FROM_ADDRESS}>`, // sender address with name
+      to: "a.mathur@futureprofilez.com", // recipient address
+      subject: `New application received for${position}`, // Subject line
+      html: `
+     <html>
+<head>
+    <title>Email template</title>
+</head>
+<body>
+    <table cellspacing="0" cellpadding="0" style="width: 100%;max-width: 400px;margin: 0 auto;font-family: Arial; ">
+        <tr>
+            <td style="text-align: center;background:#ECE1C5;padding: 10px 10px;">
+                <a href="#">
+                    <img style="max-width:100%;" 
+                    src="https://i.imgur.com/eGTKYS0.png" 
+                    alt="img">
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding: 2.2rem 1.2rem; ">
+                <p style="color: #4D4D4D;font-size: 14px;font-weight: 400; letter-spacing: -0.04em; text-align: left;line-height: 22px;margin: 0 0 1.3rem;">Dear Admin,</p>
+                <p style="color: #4D4D4D;font-size: 14px;font-weight: 400; letter-spacing: -0.04em; text-align: left;line-height: 22px;margin: 0 0 1.3rem;">We have received a new application for the post of ${position}. Please find the details attached below.</p>
+                <tr>
+                    <td colspan="2" style="border: solid 1px #ddd; padding:10px 20px;">
+                        <p style="font-size:14px;margin:0 0 6px 0;"><span style="font-weight:bold;display:inline-block;min-width:150px">Name</span><b style="font-weight:normal;margin:0">${name}</b></p>
+                        <p style="font-size:14px;margin:0 0 6px 0;"><span style="font-weight:bold;display:inline-block;min-width:146px">Surname</span>${surname}</p>
+                        <p style="font-size:14px;margin:0 0 6px 0;"><span style="font-weight:bold;display:inline-block;min-width:146px">Email</span> ${email}</p>
+                        <p style="font-size:14px;margin:0 0 6px 0;"><span style="font-weight:bold;display:inline-block;min-width:146px">Contact No</span> ${contactNo}</p>
+                        <p style="font-size:14px;margin:0 0 6px 0;"><span style="font-weight:bold;display:inline-block;min-width:146px">Position</span> ${position}</p>
+                        <p style="font-size:14px;margin:0 0 6px 0;"><span style="font-weight:bold;display:inline-block;min-width:146px">Experience</span>${experience}</p>
+                        <p style="font-size:14px;margin:0 0 6px 0;">
+  <span style="font-weight:bold;display:inline-block;min-width:146px">Resume</span><a href="${resume}">Download</a></p>
+                        <p style="font-size:14px;margin:0 0 6px 0;"><span style="font-weight:bold;display:inline-block;min-width:146px">About</span>${about}</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="height:35px;"></td>
+                </tr>
+            </td>
+        </tr>
+        <tr>
+            <td style="background: #ECE1C5;text-align: center;padding:1.2rem;">
+                <a href="#" style="text-decoration: none;margin: 0 7px">
+                    <img 
+                    src="https://i.imgur.com/APve8Bm.png" alt="img">
+                </a>
+                <a href="#" style="text-decoration: none;margin: 0 7px">
+                    <img 
+                    src="https://i.imgur.com/nfe0bz4.png" alt="img">
+                </a>
+                <a href="#" style="text-decoration: none;margin: 0 7px">
+                    <img src="https://i.imgur.com/RFMWfpp.png" alt="img">
+                </a>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
+      `,
+    };
+
     try {
       const sendMailResponse = await sendMail(mailOptions);
       if (!sendMailResponse) {
@@ -186,7 +254,7 @@ exports.CareerGet = catchAsync(async (req, res, next) => {
     }
     res.status(200).json({
       status: true,
-      message:"Applications retrieved successfully!",
+      message: "Applications retrieved successfully!",
       data: data,
     });
   } catch (err) {
