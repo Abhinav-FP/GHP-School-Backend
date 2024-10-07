@@ -10,21 +10,17 @@ const razorpayInstance = new Razorpay({
   });
   
   exports.createOrder = async (req, res) => {
-    const { amount, currency = 'INR', receipt } = req.body; // Set default currency to INR
-  
+    const { amount, currency = 'INR', receipt } = req.body; 
     try {
-      // Create options for the order
       const options = {
-        amount: amount * 100, // Convert amount to paise
+        amount: amount * 100, 
         currency,
-        receipt, // Optional: you can include a receipt if needed
-        payment_capture: 1, // Auto capture payment
+        receipt,
+        payment_capture: 1, 
       };
   
-      // Create the order
       const order = await razorpayInstance.orders.create(options);
   
-      // Return the order details to the client
       res.status(200).json({
         success: true,
         orderId: order.id,
@@ -32,7 +28,7 @@ const razorpayInstance = new Razorpay({
         amount: order.amount,
       });
     } catch (error) {
-      console.error('Order creation error:', error); // Log the error for debugging
+      console.error('Order creation error:', error); 
       res.status(500).json({ success: false, message: 'Order creation failed', error: error.message });
     }
   };
@@ -56,23 +52,20 @@ exports.paymentAdd = catchAsync(async (req, res) => {
 
 exports.PaymentGet = catchAsync(async (req, res, next) => {
   try {
-    const Payment = await Payment.find().sort({ srNo: 1 });
-    if (!Payment || Payment.length === 0) {
-      return res.status(204).json({
-        status: false,
-        message: "No Payment found for this user.",
-        Payment: [],
-      });
-    }
+    const payments = await Payment.find();
+    console.log("Payments retrieved:", payments);
     res.status(200).json({
       status: true,
-      message: "Payment retrieved successfully!",
-      Payment: Payment,
+      message: "Payments retrieved successfully!",
+      data: payments,
     });
   } catch (err) {
+    console.error("Error retrieving payments:", err.message); 
     return res.status(500).json({
       status: false,
       message: "An unknown error occurred. Please try again later.",
+      error: err.message, 
     });
   }
 });
+
