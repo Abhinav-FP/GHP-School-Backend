@@ -46,6 +46,8 @@ app.use("/fees", require("./routes/feesRoutes"));
 app.use("/facilities", require("./routes/facilitiesRoutes"));
 app.use("/donation", require("./routes/donationRoutes"));
 app.use("/inquiry", require("./routes/InquiryRoutes"));
+app.use("/payment", require("./routes/Paymentroute"));
+
 
 
 app.use('/images', express.static(path.join(__dirname, 'images')));
