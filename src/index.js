@@ -48,6 +48,8 @@ app.use("/facilities", require("./routes/facilitiesRoutes"));
 app.use("/donation", require("./routes/donationRoutes"));
 app.use("/inquiry", require("./routes/InquiryRoutes"));
 app.use("/academics", require("./routes/academicsRoutes"));
+app.use("/admissionform", require("./routes/admissionFormRoutes.js"));
+
 app.use("/payment", require("./routes/Paymentroute"));
 
 

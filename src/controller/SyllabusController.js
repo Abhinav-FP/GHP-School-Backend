@@ -67,7 +67,7 @@ exports.syllabusGet = catchAsync(async (req, res, next) => {
 exports.syllabusDelete = catchAsync(async (req, res, next) => {
   try {
     const { id } = req.body;
-    if (!srNo) {
+    if (!id) {
       return res.status(400).json({
         status: false,
         message: "Result id is required",
@@ -80,7 +80,7 @@ exports.syllabusDelete = catchAsync(async (req, res, next) => {
         message: `No result found with given id`,
       });
     }
-    const BannersToUpdate = await Banner.find({ srNo: { $gt: deletedBanner.srNo } });
+    const BannersToUpdate = await Syllabus.find({ srNo: { $gt: deletedBanner.srNo } });
     if (BannersToUpdate.length > 0) {
       await Syllabus.updateMany({ srNo: { $gt: srNo } }, { $inc: { srNo: -1 } });
     }
