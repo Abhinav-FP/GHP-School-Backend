@@ -73,3 +73,20 @@ exports.formAdd = catchAsync(async (req, res, next) => {
     });
   }
 });
+
+exports.formGet = catchAsync(async (req, res, next) => {
+    try {
+      const data = await AdmissionForm.find({});
+      res.status(200).json({
+        status: true,
+        message: "Data retrieved successfully!",
+        banners: data,
+      });
+    } catch (err) {
+      console.error(err);
+      return res.status(500).json({
+        status: false,
+        message: "An unknown error occurred. Please try again later.",
+      });
+    }
+  });

@@ -89,25 +89,7 @@ exports.resultDelete = catchAsync(async (req, res, next) => {
     if (!deletedResult) {
       return res.status(404).json({
         status: false,
-        message: `No banner found with srNo: ${srNo}`,
-      });
-    }
-    // Extract the imagehash and send delete request to Imgur
-    const imagehash = deletedResult.imagehash;
-    const imgurDeleteUrl = `https://api.imgur.com/3/image/${imagehash}`;
-
-    try {
-      await axios.delete(imgurDeleteUrl, {
-        headers: {
-          Authorization: `Client-ID fa9cff918a9554a`, 
-        }
-      });
-    } catch (imgurError) {
-      console.error("Error deleting image from Imgur:", imgurError.response?.data || imgurError.message);
-      return res.status(500).json({
-        status: false,
-        message: "Banner deleted but failed to delete image from Imgur",
-        error: imgurError.response?.data || imgurError.message,
+        message: `No result found`,
       });
     }
     return res.status(200).json({
