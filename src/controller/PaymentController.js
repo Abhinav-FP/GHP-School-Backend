@@ -56,8 +56,8 @@ exports.paymentAdd = catchAsync(async (req, res) => {
 
 exports.PaymentGet = catchAsync(async (req, res, next) => {
   try {
-    const Payment = await Payment.find().sort({ srNo: 1 });
-    if (!Payment || Payment.length === 0) {
+    const payment = await Payment.find({});
+    if (!payment || payment.length === 0) {
       return res.status(204).json({
         status: false,
         message: "No Payment found for this user.",
@@ -67,7 +67,7 @@ exports.PaymentGet = catchAsync(async (req, res, next) => {
     res.status(200).json({
       status: true,
       message: "Payment retrieved successfully!",
-      Payment: Payment,
+      Payment: payment,
     });
   } catch (err) {
     return res.status(500).json({
