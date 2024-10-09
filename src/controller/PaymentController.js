@@ -36,12 +36,13 @@ const razorpayInstance = new Razorpay({
 
 exports.paymentAdd = catchAsync(async (req, res) => {
     console.log("req",req?.body)
-    const { order_id, payment_id, amount ,currency} = req.body;
+    const { order_id, payment_id, amount ,currency, payment_status} = req.body;
     const payment = new Payment({
         order_id: order_id,
         currency:currency,
         payment_id:payment_id,
         amount,
+        payment_status,
         status: 'success', 
     });
     await payment.save();

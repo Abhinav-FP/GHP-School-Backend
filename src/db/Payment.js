@@ -21,6 +21,10 @@ const paymentSchema = new mongoose.Schema({
     type: String,
     default: 'pending',
   },
+  payment_status: {
+    type: String,
+    default: 'pending',
+  },
   payment_date: {
     type: Date,
     default: Date.now,
