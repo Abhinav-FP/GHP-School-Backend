@@ -1,5 +1,6 @@
 const catchAsync = require("../utils/catchAsync");
 const Donate = require("../db/Donate");
+const DonationUser = require("../db/DonationUser");
 
 exports.DonateAdd = catchAsync(async (req, res, next) => {
   try {
@@ -99,6 +100,43 @@ exports.DonateDelete = catchAsync(async (req, res, next) => {
     });
   } catch (error) {
     console.error("Error:", error); // Log the error to see details
+    return res.status(500).json({
+      status: false,
+      message: "An unknown error occurred. Please try again later.",
+    });
+  }
+});
+
+exports.DonateUserAdd = catchAsync(async (req, res, next) => {
+  try {
+    const { name, number, aadhar, pan, email, amount, payment_id } = req.body;
+    if (!name || !number || !aadhar || !pan || !email || !amount || !payment_id) {
+      return res.status(400).json({
+        status: false,
+        message: "All fields are required!",
+      });
+    }
+    const lastitem = await DonationUser.findOne().sort({ srNo: -1 });
+    const srNo = lastitem ? lastitem.srNo + 1 : 1;
+    const newItem = new DonationUser({
+      srNo,
+      name,
+      number, 
+      aadhar, 
+      pan, 
+      email,
+      amount,
+      payment_id
+    });
+    await newItem.save();
+    res.status(201).json({
+      status: "success",
+      message: "Data Added Successfully!",
+      data: {
+        donationUser: newItem,
+      },
+    });
+  } catch (error) {
     return res.status(500).json({
       status: false,
       message: "An unknown error occurred. Please try again later.",
