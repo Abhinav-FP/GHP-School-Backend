@@ -25,6 +25,9 @@ const paymentSchema = new mongoose.Schema({
     type: String,
     default: 'pending',
   },
+  product_name: {
+    type: String,
+  },
   payment_date: {
     type: Date,
     default: Date.now,
