@@ -54,9 +54,6 @@ exports.formAdd = catchAsync(async (req, res, next) => {
       sibling,
       belongs,
       facility,
-      payment_id, 
-      order_id, 
-      amount
     } = req.body;
     const newAdmission = new AdmissionForm({
       class: className,

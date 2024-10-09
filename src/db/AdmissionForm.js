@@ -80,6 +80,7 @@ const admissionformSchema = new mongoose.Schema({
   facility: {
     type: String,
   },
+
 }, { timestamps: true }); 
 
 // Create a model from the schema
