@@ -80,11 +80,6 @@ const admissionformSchema = new mongoose.Schema({
   facility: {
     type: String,
   },
-  payment_id :String,
-  order_id :String,
-  amount :Number,
-  currency :String,
-  payment_status :String
 }, { timestamps: true }); 
 
 // Create a model from the schema
