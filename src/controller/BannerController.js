@@ -78,24 +78,24 @@ exports.bannerDelete = catchAsync(async (req, res, next) => {
       });
     }
 
-    // Extract the imagehash and send delete request to Imgur
-    const imagehash = deletedBanner.imagehash;
-    const imgurDeleteUrl = `https://api.imgur.com/3/image/${imagehash}`;
+    // // Extract the imagehash and send delete request to Imgur
+    // const imagehash = deletedBanner.imagehash;
+    // const imgurDeleteUrl = `https://api.imgur.com/3/image/${imagehash}`;
 
-    try {
-      await axios.delete(imgurDeleteUrl, {
-        headers: {
-          Authorization: `Client-ID fa9cff918a9554a`, 
-        }
-      });
-    } catch (imgurError) {
-      console.error("Error deleting image from Imgur:", imgurError.response?.data || imgurError.message);
-      return res.status(500).json({
-        status: false,
-        message: "Banner deleted but failed to delete image from Imgur",
-        error: imgurError.response?.data || imgurError.message,
-      });
-    }
+    // try {
+    //   await axios.delete(imgurDeleteUrl, {
+    //     headers: {
+    //       Authorization: `Client-ID fa9cff918a9554a`, 
+    //     }
+    //   });
+    // } catch (imgurError) {
+    //   console.error("Error deleting image from Imgur:", imgurError.response?.data || imgurError.message);
+    //   return res.status(500).json({
+    //     status: false,
+    //     message: "Banner deleted but failed to delete image from Imgur",
+    //     error: imgurError.response?.data || imgurError.message,
+    //   });
+    // }
 
     // Adjust the `srNo` for the other banners
     const BannersToUpdate = await Banner.find({ srNo: { $gt: srNo } });

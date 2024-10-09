@@ -53,12 +53,18 @@ exports.paymentAdd = catchAsync(async (req, res) => {
 
 exports.PaymentGet = catchAsync(async (req, res, next) => {
   try {
-    const payments = await Payment.find();
-    console.log("Payments retrieved:", payments);
+    const payment = await Payment.find({});
+    if (!payment || payment.length === 0) {
+      return res.status(204).json({
+        status: false,
+        message: "No Payment found for this user.",
+        Payment: [],
+      });
+    }
     res.status(200).json({
       status: true,
-      message: "Payments retrieved successfully!",
-      data: payments,
+      message: "Payment retrieved successfully!",
+      Payment: payment,
     });
   } catch (err) {
     console.error("Error retrieving payments:", err.message); 
