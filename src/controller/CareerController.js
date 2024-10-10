@@ -158,7 +158,7 @@ exports.CareerApply = catchAsync(async (req, res, next) => {
     const mailOptions = {
       from: `"${process.env.MAIL_FROM_NAME}" <${process.env.MAIL_FROM_ADDRESS}>`, // sender address with name
       to: "a.mathur@futureprofilez.com", // recipient address
-      subject: `New application received for${position}`, // Subject line
+      subject: `New application received for ${position}`, // Subject line
       html: `
      <html>
 <head>
@@ -197,21 +197,40 @@ exports.CareerApply = catchAsync(async (req, res, next) => {
                 </tr>
             </td>
         </tr>
-        <tr>
-            <td style="background: #ECE1C5;text-align: center;padding:1.2rem;">
-                <a href="#" style="text-decoration: none;margin: 0 7px">
-                    <img 
-                    src="https://i.imgur.com/APve8Bm.png" alt="img">
-                </a>
-                <a href="#" style="text-decoration: none;margin: 0 7px">
-                    <img 
-                    src="https://i.imgur.com/nfe0bz4.png" alt="img">
-                </a>
-                <a href="#" style="text-decoration: none;margin: 0 7px">
-                    <img src="https://i.imgur.com/RFMWfpp.png" alt="img">
-                </a>
-            </td>
-        </tr>
+        		<tr>
+			<td style="text-align: left;padding:1.2rem; border-top:1px solid #ddd;background: #FCFBF4;">
+				 
+				<div style="margin: 0 0 10px">
+				 	<img style="margin-right: 3px; vertical-align: top;" src="https://i.imgur.com/r38PMig.png" alt="img"> 
+				 	<a href="tel:01412282790"  style="color:#1E1E1E; font-size:14px; text-decoration: none; opacity: 0.8;">01412282790</a><span style="opacity: 0.8;color:#1E1E1E;font-size:14px;">/</span>
+				 	<a href="tel:01412282298"  style="color:#1E1E1E; font-size:14px; text-decoration: none; opacity: 0.8;">01412282298</a><span style="opacity: 0.8;color:#1E1E1E;font-size:14px;">/</span>
+				 	<a href="tel:+919001869684"  style="color:#1E1E1E; font-size:14px; text-decoration: none; opacity: 0.8;">90018-69684</a>
+				</div>
+				<div style="margin: 0 0 10px">
+				<img style="margin-right: 3px; vertical-align: middle;" src="https://i.imgur.com/fkOiYJA.png" alt="img"> 
+				   <a href="mailto:bvbpschool74@gmail.com" style="color:#1E1E1E; font-size:14px; text-decoration: none; opacity: 0.8;">bvbpschool74@gmail.com</a><span style="opacity: 0.8;color:#1E1E1E;font-size:14px;">/</span>
+				  <a href="mailto:bvbschool74@gmail.com" style="color:#1E1E1E; font-size:14px; text-decoration: none; opacity: 0.8;">bvbschool74@gmail.com</a>
+				</div>
+				<div style="line-height: 24px;">
+				 <a href="https://www.google.com/maps/dir//D,+74,+Ghiya+Marg,+Sindhi+Colony,+Bani+Park,+Jaipur,+Rajasthan+302032+@26.931568,75.791982/@27.7436422,76.5794786,7z/data=!4m7!4m6!1m1!4e2!1m2!1m1!1s0x396db3efafa594ef:0x2da3b3ab79a793f4!3e0" target="blank" style="color:#1E1E1E; font-size:14px; text-decoration: none;"><img style="margin-right: 3px; vertical-align: middle;" src="https://i.imgur.com/3Edc9vy.png" alt="img"> <span style="opacity: 0.8">D-74, Ghiya Marg, Bani Park,Jaipur, Rajasthan 302016</span></a>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td style="text-align: left;padding:1.2rem; border-top:1px solid #ddd;background: #FCFBF4;">
+				 
+				<div style="margin: 0 0 10px">
+				 	<a href="https://www.facebook.com/profile.php?id=61557061876412" target="blank" style="color:#1E1E1E; font-size:14px; text-decoration: none;"><img style="margin-right: 3px; vertical-align: top;" src="https://i.imgur.com/V9oVERP.png" alt="img"> <span style="opacity: 0.8">Bal Vishwa Bharti</span></a>
+				</div>
+				<div style="margin: 0 0 10px">
+				 <a href="https://www.instagram.com/bvbschool?igsh=ZTR5ZWl3bmdjYThv" target="blank" style="color:#1E1E1E; font-size:14px; text-decoration: none;"><img style="margin-right: 3px; vertical-align: middle;" src="https://i.imgur.com/62XwWev.png" alt="img"> <span style="opacity: 0.8">@bvbschool</span></a>
+				</div>
+				<div>
+				 <a href="https://www.instagram.com/bvbschool?igsh=ZTR5ZWl3bmdjYThv" target="blank" style="color:#1E1E1E; font-size:14px; text-decoration: none;"><img style="margin-right: 3px; vertical-align: middle;" src="https://i.imgur.com/nNeewpA.png" alt="img"> <span style="opacity: 0.8">@bvbschool-t9z</span></a>
+				</div>
+				 
+			</td>
+		</tr>
     </table>
 </body>
 </html>
