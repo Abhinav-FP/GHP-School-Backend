@@ -37,7 +37,7 @@ exports.ComingSoonAdd = catchAsync(async (req, res, next) => {
 
 exports.ComingSoonGet = catchAsync(async (req, res, next) => {
   try {
-    const data = await ComingSoon.find({});
+    const data = await ComingSoon.findOne({});
     res.status(200).json({
       status: true,
       message: "Data retrieved successfully!",
