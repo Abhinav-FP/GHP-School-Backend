@@ -1,6 +1,7 @@
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/AppError");
 const Gallery = require("../db/Gallery");
+const Sport = require("../db/Sport");
 const fs = require("fs");
 const path = require("path"); // Make sure to import the path module
 const sharp = require("sharp")
@@ -159,6 +160,87 @@ exports.galleryDeleteById = catchAsync(async (req, res, next) => {
     });
   } catch (error) {
     console.error("Error:", error);
+    return res.status(500).json({
+      status: false,
+      message: "An unknown error occurred. Please try again later.",
+    });
+  }
+});
+
+exports.sportsAdd = catchAsync(async (req, res, next) => {
+  try {
+    const { image, imagehash }=req.body;
+    
+    if (!image || !imagehash) {
+      return res.status(400).json({
+        status: false,
+        message: "Image and its hash both are required!",
+      });
+    }
+    const newData = new Sport({
+      image,
+      imagehash,
+    });
+    await newData.save();
+    res.status(201).json({
+      status: "success",
+      message: "Image Added Successfully!",
+      data: {
+        Sport: newData,
+      },
+    });
+  } catch (error) {
+    return res.status(500).json({
+      status: false,
+      message: "An unknown error occurred. Please try again later.",
+    });
+  }
+});
+
+exports.sportsGet = catchAsync(async (req, res, next) => {
+  try {
+    const data = await Sport.find({});
+    res.status(200).json({
+      status: true,
+      message: "Data retrieved successfully!",
+      sport: data,
+    });
+  } catch (err) {
+    console.error(err); // Log the error for debugging
+    return res.status(500).json({
+      status: false,
+      message: "An unknown error occurred. Please try again later.",
+    });
+  }
+})
+
+exports.sportsDelete = catchAsync(async (req, res, next) => {
+  try {
+    const { id } = req.body;
+    // Validate the input
+    if (!id) {
+      return res.status(400).json({
+        status: false,
+        message: "Image id is required",
+      });
+    }
+    
+    // Find and delete the banner
+    const deletedBanner = await Sport.findOneAndDelete({ _id:id });
+    if (!deletedBanner) {
+      return res.status(404).json({
+        status: false,
+        message: `No image found with given id`,
+      });
+    }
+    // Respond with success
+    return res.status(200).json({
+      status: true,
+      message: `Image deleted successfully`,
+      deletedImage: deletedBanner,
+    });
+  } catch (error) {
+    console.error("Error:", error); // Log the error to see details
     return res.status(500).json({
       status: false,
       message: "An unknown error occurred. Please try again later.",
