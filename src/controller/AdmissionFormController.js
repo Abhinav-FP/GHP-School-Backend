@@ -105,7 +105,7 @@ exports.formAdd = catchAsync(async (req, res, next) => {
 	<table cellspacing="0" cellpadding="0" style="width: 100%;max-width: 400px;margin: 0 auto;font-family: Arial; ">
 		<tr>
 			<td style="text-align: center;background:#ECE1C5;padding: 10px 10px 0;">
-				<a href="#">
+				<a href="https://ghp-school.vercel.app/">
 					<img style="max-width:100%;" src="https://i.imgur.com/eGTKYS0.png" alt="img">
 				</a>
 			</td>
