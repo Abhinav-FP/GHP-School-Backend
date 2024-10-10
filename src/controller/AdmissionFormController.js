@@ -54,13 +54,10 @@ exports.formAdd = catchAsync(async (req, res, next) => {
       sibling,
       belongs,
       facility,
-<<<<<<< HEAD
       payment_id, 
       order_id, 
       amount,
       image
-=======
->>>>>>> 4775c401b21b8d04c673b221bcd09ce710e05292
     } = req.body;
     const newAdmission = new AdmissionForm({
       class: className,
