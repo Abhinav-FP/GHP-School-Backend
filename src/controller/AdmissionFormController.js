@@ -56,7 +56,8 @@ exports.formAdd = catchAsync(async (req, res, next) => {
       facility,
       payment_id, 
       order_id, 
-      amount
+      amount,
+      image
     } = req.body;
     const newAdmission = new AdmissionForm({
       class: className,
@@ -85,6 +86,10 @@ exports.formAdd = catchAsync(async (req, res, next) => {
       sibling,
       belongs,
       facility,
+      payment_id, 
+      order_id, 
+      amount,
+      image
     });
     await newAdmission.save();
     const mailOptions = {
