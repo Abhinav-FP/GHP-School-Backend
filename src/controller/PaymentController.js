@@ -13,7 +13,7 @@ const razorpayInstance = new Razorpay({
     const { amount, currency = 'INR', receipt } = req.body; 
     try {
       const options = {
-        amount: amount, 
+        amount: amount*100, 
         currency,
         receipt,
         payment_capture: 1, 
