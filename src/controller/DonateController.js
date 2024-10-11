@@ -120,7 +120,7 @@ exports.DonateDelete = catchAsync(async (req, res, next) => {
     // Respond with success
     return res.status(200).json({
       status: true,
-      message: `Banner and image deleted successfully`,
+      message: `Item deleted successfully`,
       deletedBanner: deletedBanner,
     });
   } catch (error) {
