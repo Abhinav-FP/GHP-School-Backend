@@ -4,6 +4,46 @@ const DonationUser = require("../db/DonationUser");
 
 // Email logic
 const nodemailer = require("nodemailer");
+const puppeteer = require("puppeteer");
+const generateRandomHTML = () => {
+  return `
+    <html>
+    <head>
+      <style>
+        body { font-family: Arial, sans-serif; }
+        .invoice-box { max-width: 800px; margin: auto; padding: 30px; border: 1px solid #eee; }
+        .invoice-box table { width: 100%; line-height: inherit; text-align: left; }
+        .invoice-box table td { padding: 5px; }
+        .invoice-box table tr.heading td { background: #eee; border-bottom: 1px solid #ddd; font-weight: bold; }
+        .invoice-box table tr.item td { border-bottom: 1px solid #eee; }
+      </style>
+    </head>
+    <body>
+      <div class="invoice-box">
+        <h1>Random Invoice</h1>
+        <table>
+          <tr class="heading">
+            <td>Item</td>
+            <td>Price</td>
+          </tr>
+          <tr class="item">
+            <td>Donation Service</td>
+            <td>$${Math.floor(Math.random() * 100) + 50}</td>
+          </tr>
+          <tr class="item">
+            <td>Additional Support</td>
+            <td>$${Math.floor(Math.random() * 50) + 20}</td>
+          </tr>
+          <tr class="total">
+            <td></td>
+            <td>Total: $${Math.floor(Math.random() * 150) + 70}</td>
+          </tr>
+        </table>
+      </div>
+    </body>
+    </html>
+  `;
+};
 const transporter = nodemailer.createTransport({
   host: process.env.MAIL_HOST, // Gmail SMTP server
   port: process.env.MAIL_PORT, // Port for SSL
@@ -25,6 +65,19 @@ const sendMail = async (mailOptions) => {
     console.log("Mail error:", error);
     return false;
   }
+};
+// Generate PDF from HTML content
+const generatePDF = async (htmlContent) => {
+  const browser = await puppeteer.launch();
+  const page = await browser.newPage();
+
+  // Set the HTML content
+  await page.setContent(htmlContent, { waitUntil: "networkidle0" });
+
+  // Generate PDF and return the buffer
+  const pdfBuffer = await page.pdf({ format: "A4" });
+  await browser.close();
+  return pdfBuffer;
 };
 
 exports.DonateAdd = catchAsync(async (req, res, next) => {
@@ -162,6 +215,11 @@ exports.DonateUserAdd = catchAsync(async (req, res, next) => {
       payment_id,
     });
     await newItem.save();
+     // Generate the random HTML content for the invoice
+     const randomHtml = generateRandomHTML();
+
+     // Convert the random HTML to a PDF buffer
+     const pdfBuffer = await generatePDF(randomHtml);
     const mailOptions = {
       from: `"${process.env.MAIL_FROM_NAME}" <${process.env.MAIL_FROM_ADDRESS}>`, // sender address with name
       to: `${email}`, // recipient address
@@ -235,6 +293,13 @@ exports.DonateUserAdd = catchAsync(async (req, res, next) => {
 </body>
 </html> 
       `,
+      attachments: [
+        {
+          filename: 'invoice.pdf',
+          content: pdfBuffer,
+          contentType: 'application/pdf',
+        },
+      ],
     };
 
     try {
