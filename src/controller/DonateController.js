@@ -254,7 +254,7 @@ exports.DonateUserAdd = catchAsync(async (req, res, next) => {
       },
     });
   } catch (error) {
-    console.log("error",error);
+    console.log("error", error);
     return res.status(500).json({
       status: false,
       message: "An unknown error occurred. Please try again later.",
