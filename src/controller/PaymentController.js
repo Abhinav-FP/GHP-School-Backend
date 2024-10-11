@@ -60,7 +60,7 @@ const razorpayInstance = new Razorpay({
 
 exports.PaymentGet = catchAsync(async (req, res, next) => {
   try {
-    const payment = await Payment.find({});
+    const payment = await Payment.find({}).sort({payment_date:-1});
     if (!payment || payment.length === 0) {
       return res.status(204).json({
         status: false,
