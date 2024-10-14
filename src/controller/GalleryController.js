@@ -33,10 +33,10 @@ exports.galleryAdd = catchAsync(async (req, res, next) => {
     try {
       console.log("req.body", req.body)
       const { caption, url, name, size, title, description  }= req.body;
-      if(!name || !title || !size || !description || !caption || !url){
+      if(!name || !caption || !url){
         return res.status(400).json({
           status: false,
-          message: "All fields are required!",
+          message: "Name, caption and url are required!",
         });
       }
       const newGallery = new Gallery({
