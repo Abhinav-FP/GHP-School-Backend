@@ -34,8 +34,6 @@ app.options("*", cors(corsOptions));
 app.use(express.json({ limit: '2000mb' }));
 app.use(express.urlencoded({ extended: true }));
 
-app.post("/facilities/gallery/add", galleryAdd);
-
 upload = multer();
 app.use(upload.none()); 
 
@@ -57,6 +55,8 @@ app.use("/inquiry", require("./routes/InquiryRoutes"));
 app.use("/academics", require("./routes/academicsRoutes"));
 app.use("/admissionform", require("./routes/admissionFormRoutes.js"));
 app.use("/payment", require("./routes/Paymentroute"));
+// Gallery Upload route
+app.post("/facilities/gallery/add", galleryAdd);
 
 app.use('/images', express.static(path.join(__dirname, 'images')));
 

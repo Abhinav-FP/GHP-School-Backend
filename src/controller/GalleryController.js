@@ -31,8 +31,14 @@ const sharp = require("sharp")
 
 exports.galleryAdd = catchAsync(async (req, res, next) => {
     try {
-      const { caption, url, name, size, title, description  }= req.body;
       console.log("req.body", req.body)
+      const { caption, url, name, size, title, description  }= req.body;
+      if(!name || !title || !size || !description || !caption || !url){
+        return res.status(400).json({
+          status: false,
+          message: "All fields are required!",
+        });
+      }
       const newGallery = new Gallery({
         caption: caption,
         title: title, 
