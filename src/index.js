@@ -27,7 +27,7 @@ app.use(cors(corsOptions));
 app.use(express.json({ limit: '2000mb' }));
 app.use(express.urlencoded({ extended: true }));
 
-app.post("/facilities/gallery/add", uploadgallery.array('photos'), galleryAdd);
+app.post("/facilities/gallery/add", galleryAdd);
 
 upload = multer();
 app.use(upload.none()); 

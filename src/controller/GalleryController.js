@@ -31,34 +31,78 @@ const sharp = require("sharp")
 
 exports.galleryAdd = catchAsync(async (req, res, next) => {
     try {
-      const { heading }=req.body;
-      const files = req.files;
-      console.log("files",files)
-      const uploadFile = async (g) => { 
-        const name = g.filename.replaceAll(" ", '-')
-        const newGallery = new Gallery({
-          caption: req.body.heading.replaceAll(" ", '-'),
-          fileSize: g.size, 
-          name: name,
-          url :  `${name}`,
-        });
-        await newGallery.save();
-      }
-      files.forEach((g, i)=>{
-        uploadFile(g)
+      const { caption, url, name, size, title, description  }= req.body;
+      console.log("req.body", req.body)
+      const newGallery = new Gallery({
+        caption: caption,
+        title: title, 
+        description: description,
+        fileSize: size,
+        name: name,  
+        url : url,
       });
-
+      await newGallery.save();
       res.status(201).json({
         status: true,
+        item: newGallery,
         message: "Gallery images added successfully!",
       });
     } catch (error) {
+      console.log("error",error)
       res.status(500).json({
         status: false,
+        error : error,
         message: "An unknown error occurred. Please try again later."
       });
     }
 });
+
+exports.admingallery = catchAsync(async (req, res, next) => {
+  try {
+    const data = await Gallery.find({});
+    const groupedData = data.reduce((acc, item) => {
+        // Check if the group for the current caption already exists
+        const group = acc.find(g => g.title.toLowerCase() === item.caption.toLowerCase());
+    
+        // If it exists, push the current item into the 'images' array
+        if (group) {
+            group.images.push({
+                _id: item._id,
+                name: item.name,
+                url: item.url,
+                fileSize: item.fileSize,
+                createdAt: item.createdAt
+            });
+        } else {
+            // If the group doesn't exist, create a new one
+            acc.push({
+                title: item.caption,
+                images: [{
+                    _id: item._id,
+                    name: item.name,
+                    url: item.url,
+                    fileSize: item.fileSize,
+                    createdAt: item.createdAt
+                }]
+            });
+        }
+    
+        return acc;
+    }, []);
+  
+    res.status(200).json({
+      status: true,
+      message: "Data retrieved successfully!",
+      data: groupedData,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      status: false,
+      message: "An unknown error occurred. Please try again later.",
+    });
+  } 
+}); 
+
 
 exports.galleryGet = catchAsync(async (req, res, next) => {
   try {

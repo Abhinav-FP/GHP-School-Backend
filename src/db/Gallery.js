@@ -4,6 +4,12 @@ const gallerychema = mongoose.Schema({
     caption: {
       type: String,
     },
+    title: {
+      type: String,
+    },
+    description: {
+      type: String,
+    },
     name: {
       type: String,
     },
@@ -12,7 +18,7 @@ const gallerychema = mongoose.Schema({
     },
     fileSize: {
       type: String, // Array of image file names
-    },
+    }, 
     createdAt: {
       type: Date,
       default : Date.now()
