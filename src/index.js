@@ -16,14 +16,13 @@ const { galleryAdd } = require("./controller/GalleryController");
 const uploadgallery = require("./utils/uploadGallery");
 const { verifyToken } = require("./controller/AuthController");
 
-// Specific CORS options
 const corsOptions = {
-  origin: ['https://ghp-school.vercel.app', 'http://localhost:3000'], // Array of allowed origins
+  origin: ['https://ghp-school.vercel.app', 'http://localhost:3000'], // Allowed origins
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  allowedHeaders: 'Content-Type,Authorization',
+  allowedHeaders: '*', // Allow all headers
   credentials: true,
   optionsSuccessStatus: 200, // for legacy browsers
-};
+}
 
 // Apply CORS middleware globally
 app.use(cors(corsOptions));
