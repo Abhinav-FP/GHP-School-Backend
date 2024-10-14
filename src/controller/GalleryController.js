@@ -128,20 +128,10 @@ exports.galleryGet = catchAsync(async (req, res, next) => {
       return acc;
     }, {}));
     console.log("filteredData",filteredData);
-    const updatedData = filteredData.map((item) => {
-      const Url = `${req.protocol}://${req.get("host")}/images/gallery/${
-        item.url
-      }`;
-      const plainObject = item.toObject(); // Convert to plain object
-      return {
-        ...plainObject,
-        url: Url,
-      };
-    });
     res.status(200).json({
       status: true,
       message: "Data retrieved successfully!",
-      data: updatedData,
+      data: filteredData,
     });
   } catch (err) {
     return res.status(500).json({
@@ -155,20 +145,10 @@ exports.galleryGetCategory = catchAsync(async (req, res, next) => {
   try {
     const { type } = req.params;
     const data = await Gallery.find({caption:type});
-    const updatedData = data.map((item) => {
-      const Url = `${req.protocol}://${req.get("host")}/images/gallery/${
-        item.url
-      }`;
-      const plainObject = item.toObject(); // Convert to plain object
-      return {
-        ...plainObject,
-        url: Url,
-      };
-    });
     res.status(200).json({
       status: true,
       message: "Data retrieved successfully!",
-      data: updatedData,
+      data: data,
     });
   } catch (err) {
     return res.status(500).json({
