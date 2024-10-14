@@ -59,7 +59,15 @@ exports.galleryAdd = catchAsync(async (req, res, next) => {
 
 exports.admingallery = catchAsync(async (req, res, next) => {
   try {
+    console.log("Hello");
     const data = await Gallery.find({});
+    if(data== null || !data){
+      res.status(200).json({
+        status: true,
+        message: "No data available",
+        data: [],
+      });
+    }
     const groupedData = data.reduce((acc, item) => {
         // Check if the group for the current caption already exists
         const group = acc.find(g => g.title.toLowerCase() === item.caption.toLowerCase());
