@@ -9,5 +9,4 @@ router.post("/gallery/delete/:id", verifyToken, galleryDeleteById);
 router.post("/sports/add", verifyToken, sportsAdd);
 router.get("/sports/get", sportsGet);
 router.post("/sports/delete", verifyToken, sportsDelete);
-
 module.exports= router;
