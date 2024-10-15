@@ -4,9 +4,9 @@ const SisterSchool = require("../db/SisterSchool");
 
 exports.schoolAdd = catchAsync(async (req, res, next) => {
     try {
-      const { image, imagehash }=req.body;
+      const { image, imagehash, link }=req.body;
       
-      if (!image || !imagehash) {
+      if (!image || !imagehash || !link){
         return res.status(400).json({
           status: false,
           message: "Image and its hash both are required!",
@@ -15,6 +15,7 @@ exports.schoolAdd = catchAsync(async (req, res, next) => {
       const newData = new SisterSchool({
         image,
         imagehash,
+        link,
       });
       await newData.save();
       res.status(201).json({

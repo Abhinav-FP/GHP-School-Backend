@@ -7,5 +7,8 @@ const schoolschema = mongoose.Schema({
   imagehash: {
     type: String,
   },
+  link: {
+    type: String,
+  },
 })
 module.exports = mongoose.model("SisterSchool",schoolschema)
