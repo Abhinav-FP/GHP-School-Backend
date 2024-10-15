@@ -229,7 +229,7 @@ exports.DonateUserAdd = catchAsync(async (req, res, next) => {
   const randomHtml = generateRandomHTML();
 
   // Convert the random HTML to a PDF buffer
-  const pdfBuffer = await generatePDF(randomHtml);
+  // const pdfBuffer = await generatePDF(randomHtml);
   
   const mailOptions = {
     from: `"${process.env.MAIL_FROM_NAME}" <${process.env.MAIL_FROM_ADDRESS}>`,
@@ -303,12 +303,12 @@ exports.DonateUserAdd = catchAsync(async (req, res, next) => {
       </body>
     </html>
     `,
-    attachments: [
-      {
-        filename: "invoice.pdf",
-        content: pdfBuffer,
-      },
-    ],
+    // attachments: [
+    //   {
+    //     filename: "invoice.pdf",
+    //     content: pdfBuffer,
+    //   },
+    // ],
   };
 
   // Send email with invoice PDF
