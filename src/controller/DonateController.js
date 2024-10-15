@@ -60,43 +60,44 @@ const sendMail = async (mailOptions) => {
     if (info.messageId) {
       return true;
     } else {
+      console.error("Mail not sent: no message ID returned");
       return false;
     }
   } catch (error) {
-    console.log("Mail error:", error);
+    console.error("Mail error:", error);
     return false;
   }
 };
-// Generate PDF from HTML content
+
 async function generatePDF(htmlContent) {
   let browser;
   try {
-    // Fetch the executable path inside the async function
     const executablePath = 
       process.env.NODE_ENV === 'production'
         ? await chromium.executablePath
-        : 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'; // Local Chrome path for Windows
+        : 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
 
-    // Launch browser
     browser = await puppeteer.launch({
       args: chromium.args,
       defaultViewport: chromium.defaultViewport,
-      executablePath, // executablePath as variable
+      executablePath,
       headless: true,
     });
 
     const page = await browser.newPage();
     await page.setContent(htmlContent);
-
-    // Generate the PDF
     const pdfBuffer = await page.pdf({ format: 'A4' });
     return pdfBuffer;
+  } catch (error) {
+    console.error("PDF generation error:", error);
+    throw new Error("Failed to generate PDF");
   } finally {
     if (browser) {
       await browser.close();
     }
   }
 }
+
 
 exports.DonateAdd = catchAsync(async (req, res, next) => {
   try {
