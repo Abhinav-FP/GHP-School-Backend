@@ -6,10 +6,10 @@ exports.schoolAdd = catchAsync(async (req, res, next) => {
     try {
       const { image, imagehash, link }=req.body;
       
-      if (!image || !imagehash || !link){
+      if (!image || !link){
         return res.status(400).json({
           status: false,
-          message: "Image and its hash both are required!",
+          message: "Image and link both are required!",
         });
       }
       const newData = new SisterSchool({

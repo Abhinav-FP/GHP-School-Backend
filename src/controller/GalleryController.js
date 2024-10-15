@@ -209,10 +209,10 @@ exports.sportsAdd = catchAsync(async (req, res, next) => {
   try {
     const { image, imagehash }=req.body;
     
-    if (!image || !imagehash) {
+    if (!image) {
       return res.status(400).json({
         status: false,
-        message: "Image and its hash both are required!",
+        message: "Image is required!",
       });
     }
     const newData = new Sport({

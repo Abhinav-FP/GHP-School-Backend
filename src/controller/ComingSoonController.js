@@ -6,7 +6,7 @@ exports.ComingSoonAdd = catchAsync(async (req, res, next) => {
   try {
     const { image, imagehash, text1, text2, show } = req.body;
 
-    if (!image || !imagehash || !text1 || !text2 || !show) {
+    if (!image || !text1 || !text2 || !show) {
       return res.status(400).json({
         status: false,
         message: "All fields are required!",
