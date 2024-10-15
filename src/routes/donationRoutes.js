@@ -6,7 +6,5 @@ router.post("/add", verifyToken, DonateAdd);
 router.get("/get/:srNo?", DonateGet);
 router.post("/delete", verifyToken, DonateDelete);
 router.post("/user/add", DonateUserAdd);
-router.post("/test", testingpdf);      
-
 
 module.exports= router;
