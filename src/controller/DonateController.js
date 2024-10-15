@@ -4,7 +4,8 @@ const DonationUser = require("../db/DonationUser");
 
 // Email logic
 const nodemailer = require("nodemailer");
-const puppeteer = require("puppeteer");
+const chromium = require('chrome-aws-lambda');
+const puppeteer = require('puppeteer-core');
 const generateRandomHTML = () => {
   return `
     <html>
@@ -67,18 +68,35 @@ const sendMail = async (mailOptions) => {
   }
 };
 // Generate PDF from HTML content
-const generatePDF = async (htmlContent) => {
-  const browser = await puppeteer.launch();
-  const page = await browser.newPage();
+async function generatePDF(htmlContent) {
+  let browser;
+  try {
+    // Fetch the executable path inside the async function
+    const executablePath = 
+      process.env.NODE_ENV === 'production'
+        ? await chromium.executablePath
+        : 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'; // Local Chrome path for Windows
 
-  // Set the HTML content
-  await page.setContent(htmlContent, { waitUntil: "networkidle0" });
+    // Launch browser
+    browser = await puppeteer.launch({
+      args: chromium.args,
+      defaultViewport: chromium.defaultViewport,
+      executablePath, // executablePath as variable
+      headless: true,
+    });
 
-  // Generate PDF and return the buffer
-  const pdfBuffer = await page.pdf({ format: "A4" });
-  await browser.close();
-  return pdfBuffer;
-};
+    const page = await browser.newPage();
+    await page.setContent(htmlContent);
+
+    // Generate the PDF
+    const pdfBuffer = await page.pdf({ format: 'A4' });
+    return pdfBuffer;
+  } finally {
+    if (browser) {
+      await browser.close();
+    }
+  }
+}
 
 exports.DonateAdd = catchAsync(async (req, res, next) => {
   try {
@@ -205,7 +223,6 @@ exports.DonateUserAdd = catchAsync(async (req, res, next) => {
     console.log("Hello")
     const lastitem = await DonationUser.findOne().sort({ srNo: -1 });
     const srNo = lastitem ? lastitem.srNo + 1 : 1;
-    console.log("Hello1")
     const newItem = new DonationUser({
       srNo,
       name,
@@ -217,8 +234,6 @@ exports.DonateUserAdd = catchAsync(async (req, res, next) => {
       payment_id,
     });
     await newItem.save();
-    console.log("Hello2")
-
      // Generate the random HTML content for the invoice
      const randomHtml = generateRandomHTML();
 
@@ -327,7 +342,7 @@ exports.DonateUserAdd = catchAsync(async (req, res, next) => {
     return res.status(500).json({
       status: false,
       message: "An unknown error occurred. Please try again later.",
-      error:error,
+      err:error,
     });
   }
 });
