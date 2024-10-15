@@ -69,14 +69,26 @@ const sendMail = async (mailOptions) => {
 // Generate PDF from HTML content
 const generatePDF = async (htmlContent) => {
   try {
-    const browser = await puppeteer.launch();
+    const browser = await puppeteer.launch({
+      headless: true,
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage',
+        '--disable-gpu',
+      ],
+    });
     const page = await browser.newPage();
-    await page.setContent(htmlContent, { waitUntil: "networkidle0" });
-    const pdfBuffer = await page.pdf({ format: "A4" });
+    
+    console.log("HTML Content for PDF:", htmlContent); // Debugging line
+    
+    await page.setContent(htmlContent, { waitUntil: "networkidle0", timeout: 60000 });
+    const pdfBuffer = await page.pdf({ format: "A4", timeout: 60000 });
+    
     await browser.close();
     return pdfBuffer;
   } catch (error) {
-    console.error("Error generating PDF:", error);
+    console.error("Error during PDF generation:", error.message);
     throw new Error("PDF generation failed");
   }
 };
