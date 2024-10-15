@@ -1,9 +1,9 @@
 const catchAsync = require("../utils/catchAsync");
 const Donate = require("../db/Donate");
 const DonationUser = require("../db/DonationUser");
-const generatePDF = require('../utils/generatePDF');
+const generatePDF = require("../utils/generatePDF");
 const nodemailer = require("nodemailer");
- 
+
 const generateRandomHTML = () => {
   return `
     <html>
@@ -42,7 +42,7 @@ const generateRandomHTML = () => {
     </body>
     </html>
   `;
-}; 
+};
 const transporter = nodemailer.createTransport({
   host: process.env.MAIL_HOST, // Gmail SMTP server
   port: process.env.MAIL_PORT, // Port for SSL
@@ -70,7 +70,7 @@ const sendMail = async (mailOptions) => {
 // async function generatePDF(htmlContent) {
 //   let browser;
 //   try {
-//     // const executablePath = 
+//     // const executablePath =
 //     //   process.env.NODE_ENV === 'production'
 //     //     ? await chromium.executablePath
 //     //     : 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
@@ -111,10 +111,8 @@ const sendMail = async (mailOptions) => {
 //   html2pdf()
 //     .from(element)
 //     .set(options)
-//     .save(); 
+//     .save();
 // }
-
-
 
 exports.DonateAdd = catchAsync(async (req, res, next) => {
   try {
@@ -238,7 +236,7 @@ exports.DonateUserAdd = catchAsync(async (req, res, next) => {
         message: "All fields are required!",
       });
     }
-    console.log("Hello")
+    console.log("Hello");
     const lastitem = await DonationUser.findOne().sort({ srNo: -1 });
     const srNo = lastitem ? lastitem.srNo + 1 : 1;
     const newItem = new DonationUser({
@@ -252,11 +250,11 @@ exports.DonateUserAdd = catchAsync(async (req, res, next) => {
       payment_id,
     });
     await newItem.save();
-     // Generate the random HTML content for the invoice
-     const randomHtml = generateRandomHTML();
+    // Generate the random HTML content for the invoice
+    const randomHtml = generateRandomHTML();
 
-     // Convert the random HTML to a PDF buffer
-     const pdfBuffer = await generatePDF(randomHtml);
+    // Convert the random HTML to a PDF buffer
+    const pdfBuffer = await generatePDF(randomHtml);
     const mailOptions = {
       from: `"${process.env.MAIL_FROM_NAME}" <${process.env.MAIL_FROM_ADDRESS}>`, // sender address with name
       to: `${email}`, // recipient address
@@ -332,9 +330,9 @@ exports.DonateUserAdd = catchAsync(async (req, res, next) => {
       `,
       attachments: [
         {
-          filename: 'invoice.pdf',
+          filename: "invoice.pdf",
           content: pdfBuffer,
-          contentType: 'application/pdf',
+          contentType: "application/pdf",
         },
       ],
     };
@@ -360,16 +358,18 @@ exports.DonateUserAdd = catchAsync(async (req, res, next) => {
     return res.status(500).json({
       status: false,
       message: "An unknown error occurred. Please try again later.",
-      err:error,
+      err: error,
     });
   }
 });
 
-
-exports.testingpdf = catchAsync(async (req, res, next) => { 
+exports.testingpdf = catchAsync(async (req, res, next) => {
   try {
     const { email } = req.body;
-    const randomHtmlContent = "This is the content of your PDF."; // Replace with your dynamic content
+    const randomHtmlContent = `
+    <h1>Your Document Title</h1>
+    <p>This is the dynamic content of your PDF. You can replace this with whatever content you like, including styles and formatting.</p>
+  `;
 
     // Generate the PDF buffer
     const pdfBuffer = await generatePDF(randomHtmlContent);
@@ -450,9 +450,9 @@ exports.testingpdf = catchAsync(async (req, res, next) => {
       `,
       attachments: [
         {
-          filename: 'invoice.pdf',
+          filename: "invoice.pdf",
           content: pdfBuffer,
-          contentType: 'application/pdf',
+          contentType: "application/pdf",
         },
       ],
     };
@@ -465,9 +465,9 @@ exports.testingpdf = catchAsync(async (req, res, next) => {
 
     res.status(201).json({
       status: "success",
-      message: "Data Added Successfully!"
+      message: "Data Added Successfully!",
     });
- } catch (error) {
+  } catch (error) {
     console.error("Error:", error);
     return res.status(500).json({
       status: false,
