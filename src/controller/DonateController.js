@@ -202,8 +202,10 @@ exports.DonateUserAdd = catchAsync(async (req, res, next) => {
         message: "All fields are required!",
       });
     }
+    console.log("Hello")
     const lastitem = await DonationUser.findOne().sort({ srNo: -1 });
     const srNo = lastitem ? lastitem.srNo + 1 : 1;
+    console.log("Hello1")
     const newItem = new DonationUser({
       srNo,
       name,
@@ -215,6 +217,8 @@ exports.DonateUserAdd = catchAsync(async (req, res, next) => {
       payment_id,
     });
     await newItem.save();
+    console.log("Hello2")
+
      // Generate the random HTML content for the invoice
      const randomHtml = generateRandomHTML();
 
