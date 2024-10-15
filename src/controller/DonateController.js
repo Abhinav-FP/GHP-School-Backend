@@ -366,10 +366,7 @@ exports.DonateUserAdd = catchAsync(async (req, res, next) => {
 exports.testingpdf = catchAsync(async (req, res, next) => {
   try {
     const { email } = req.body;
-    const randomHtmlContent = `
-    <h1>Your Document Title</h1>
-    <p>This is the dynamic content of your PDF. You can replace this with whatever content you like, including styles and formatting.</p>
-  `;
+    const randomHtmlContent = "This is the content of your PDF."; // Replace with your dynamic content
 
     // Generate the PDF buffer
     const pdfBuffer = await generatePDF(randomHtmlContent);
