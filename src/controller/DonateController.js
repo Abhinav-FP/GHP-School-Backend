@@ -7,6 +7,7 @@ const DonationUser = require("../db/DonationUser");
 // Email logic
 const nodemailer = require("nodemailer");
 const puppeteer = require("puppeteer");
+const uploadToMega = require('../utils/uploadToMega');
 const generateRandomHTML = (name, amount, payment_id) => {
   return `
     <html>
@@ -186,20 +187,6 @@ exports.DonateUserAdd = catchAsync(async (req, res, next) => {
 
   const lastitem = await DonationUser.findOne().sort({ srNo: -1 });
   const srNo = lastitem ? lastitem.srNo + 1 : 1;
-
-  const newItem = new DonationUser({
-    srNo,
-    name,
-    number,
-    aadhar,
-    pan,
-    email,
-    amount,
-    payment_id,
-  });
-
-  await newItem.save();
-
   // Generate the random HTML content for the invoice
   const randomHtml = generateRandomHTML(name, amount, payment_id);
 
@@ -216,7 +203,6 @@ exports.DonateUserAdd = catchAsync(async (req, res, next) => {
       message: "Failed to generate PDF",
     });
   }
-
   const mailOptions = {
     from: `"${process.env.MAIL_FROM_NAME}" <${process.env.MAIL_FROM_ADDRESS}>`,
     to: email,
@@ -305,9 +291,24 @@ exports.DonateUserAdd = catchAsync(async (req, res, next) => {
       message: "Failed to send email",
     });
   }
+  const megaLink = await uploadToMega(pdfBuffer);
+  console.log("megalink",megaLink);
+  const newItem = new DonationUser({
+    srNo,
+    name,
+    number,
+    aadhar,
+    pan,
+    email,
+    amount,
+    payment_id,
+    link:megaLink,
+  });
+  await newItem.save();
 
   res.status(200).json({
     status: true,
     message: "Donation user added and email sent successfully!",
+    link:megaLink
   });
 });

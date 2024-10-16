@@ -25,5 +25,8 @@ const donationUserschema = mongoose.Schema({
   payment_id: {
     type: String,
   },
+  link:{
+    type: String,
+  }
 });
 module.exports = mongoose.model("DonationUser", donationUserschema);
