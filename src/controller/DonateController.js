@@ -312,3 +312,28 @@ exports.DonateUserAdd = catchAsync(async (req, res, next) => {
     link:megaLink
   });
 });
+
+exports.DonateInvoiceGet = catchAsync(async (req, res, next) => {
+  try {
+    const { payment_id } = req.params;
+    let data = await DonationUser.findOne({ payment_id }).select('link');
+    if (!data) {
+      res.status(200).json({
+        status: false,
+        message: "No data found!",
+        data: [],
+      });
+    }
+    res.status(200).json({
+      status: true,
+      message: "Data retrieved successfully!",
+      data: data,
+    });
+  } catch (err) {
+    console.error(err); // Log the error for debugging
+    return res.status(500).json({
+      status: false,
+      message: "An unknown error occurred. Please try again later.",
+    });
+  }
+});
