@@ -1,3 +1,5 @@
+const fs = require('fs');
+const pdf = require('html-pdf-node');
 const catchAsync = require("../utils/catchAsync");
 const Donate = require("../db/Donate");
 const DonationUser = require("../db/DonationUser");
@@ -5,42 +7,15 @@ const DonationUser = require("../db/DonationUser");
 // Email logic
 const nodemailer = require("nodemailer");
 const puppeteer = require("puppeteer");
-const generateRandomHTML = () => {
+const generateRandomHTML = (name, amount, payment_id) => {
   return `
     <html>
-    <head>
-      <style>
-        body { font-family: Arial, sans-serif; }
-        .invoice-box { max-width: 800px; margin: auto; padding: 30px; border: 1px solid #eee; }
-        .invoice-box table { width: 100%; line-height: inherit; text-align: left; }
-        .invoice-box table td { padding: 5px; }
-        .invoice-box table tr.heading td { background: #eee; border-bottom: 1px solid #ddd; font-weight: bold; }
-        .invoice-box table tr.item td { border-bottom: 1px solid #eee; }
-      </style>
-    </head>
-    <body>
-      <div class="invoice-box">
-        <h1>Random Invoice</h1>
-        <table>
-          <tr class="heading">
-            <td>Item</td>
-            <td>Price</td>
-          </tr>
-          <tr class="item">
-            <td>Donation Service</td>
-            <td>$${Math.floor(Math.random() * 100) + 50}</td>
-          </tr>
-          <tr class="item">
-            <td>Additional Support</td>
-            <td>$${Math.floor(Math.random() * 50) + 20}</td>
-          </tr>
-          <tr class="total">
-            <td></td>
-            <td>Total: $${Math.floor(Math.random() * 150) + 70}</td>
-          </tr>
-        </table>
-      </div>
-    </body>
+      <body>
+        <h1>Donation Invoice</h1>
+        <p>Thank you for your donation, !</p>
+        <p>Amount: 1000</p>
+        <p>Payment ID: 123456</p>
+      </body>
     </html>
   `;
 };
@@ -226,11 +201,22 @@ exports.DonateUserAdd = catchAsync(async (req, res, next) => {
   await newItem.save();
 
   // Generate the random HTML content for the invoice
-  const randomHtml = generateRandomHTML();
+  const randomHtml = generateRandomHTML(name, amount, payment_id);
 
   // Convert the random HTML to a PDF buffer
-  // const pdfBuffer = await generatePDF(randomHtml);
-  
+  const options = { format: 'A4' };
+  const file = { content: randomHtml };
+
+  let pdfBuffer;
+  try {
+    pdfBuffer = await pdf.generatePdf(file, options);
+  } catch (error) {
+    return res.status(500).json({
+      status: false,
+      message: "Failed to generate PDF",
+    });
+  }
+
   const mailOptions = {
     from: `"${process.env.MAIL_FROM_NAME}" <${process.env.MAIL_FROM_ADDRESS}>`,
     to: email,
@@ -303,12 +289,12 @@ exports.DonateUserAdd = catchAsync(async (req, res, next) => {
       </body>
     </html>
     `,
-    // attachments: [
-    //   {
-    //     filename: "invoice.pdf",
-    //     content: pdfBuffer,
-    //   },
-    // ],
+    attachments: [
+      {
+        filename: "invoice.pdf",
+        content: pdfBuffer,
+      },
+    ],
   };
 
   // Send email with invoice PDF

@@ -171,7 +171,7 @@ exports.CareerApply = catchAsync(async (req, res, next) => {
                 <a href="https://ghp-school.vercel.app/">
                     <img style="max-width:100%;" 
                     src="https://i.imgur.com/eGTKYS0.png" 
-                    alt="img">
+                    alt="BVBS School">
                 </a>
             </td>
         </tr>
