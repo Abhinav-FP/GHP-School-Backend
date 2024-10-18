@@ -255,17 +255,17 @@ exports.DonateUserAdd = catchAsync(async (req, res, next) => {
             <td style="text-align: left;padding:1.2rem; border-top:1px solid #ddd;background: #FCFBF4;">
               <div style="margin: 0 0 10px">
                 <a href="https://www.facebook.com/profile.php?id=61557061876412" target="blank" style="color:#1E1E1E;">
-                  <img style="margin-right: 3px; vertical-align: middle;" src="https://i.imgur.com/CmBhD4u.png" alt="img"> 
+                  <img style="margin-right: 3px; vertical-align: middle;" src="https://i.imgur.com/V9oVERP.png" alt="img"> 
                   Facebook
                 </a>
                 <span style="color: #9B9B9B;">|</span>
                 <a href="https://www.instagram.com/balvishwa_bharti_school/" target="blank" style="color:#1E1E1E;">
-                  <img style="margin-right: 3px; vertical-align: middle;" src="https://i.imgur.com/7tsVfR2.png" alt="img"> 
+                  <img style="margin-right: 3px; vertical-align: middle;" src="https://i.imgur.com/62XwWev.png" alt="img"> 
                   Instagram
                 </a>
                 <span style="color: #9B9B9B;">|</span>
-                <a href="https://twitter.com/BalVishwaBharti" target="blank" style="color:#1E1E1E;">
-                  <img style="margin-right: 3px; vertical-align: middle;" src="https://i.imgur.com/TF97e2n.png" alt="img"> 
+                <a href="https://www.youtube.com/@bvbschool-t9z" target="blank" style="color:#1E1E1E;">
+                  <img style="margin-right: 3px; vertical-align: middle;" src="https://i.imgur.com/nNeewpA.png" alt="img"> 
                   Twitter
                 </a>
               </div>
