@@ -13,43 +13,43 @@ const transporter = nodemailer.createTransport({
   },
 });
 const sendMail = async (mailOptions) => {
-    try {
-      const info = await transporter.sendMail(mailOptions);
-      if (info.messageId) {
-        return true;
-      } else {
-        return false;
-      }
-    } catch (error) {
-      console.log("Mail error:", error);
+  try {
+    const info = await transporter.sendMail(mailOptions);
+    if (info.messageId) {
+      return true;
+    } else {
       return false;
     }
-  };
+  } catch (error) {
+    console.log("Mail error:", error);
+    return false;
+  }
+};
 
 exports.InquiryAdd = catchAsync(async (req, res, next) => {
-    try {
-        const { name, email, contact, message } = req.body;
-        if (!email || !name || !contact || !message) {
-            return res.status(400).json({
-                status: false,
-                message: "All fields are required!",
-            });
-        }
-        const lastEnquiry = await Inquiry.findOne().sort({ srNo: -1 });
-        const srNo = lastEnquiry ? lastEnquiry.srNo + 1 : 1;
-        const newenquiry = new Inquiry({
-            srNo,
-            email,
-            name,
-            contact,
-            message,
-        });
-        await newenquiry.save();
-        const mailOptions = {
-            from: `"${process.env.MAIL_FROM_NAME}" <${process.env.MAIL_FROM_ADDRESS}>`, // sender address with name
-            to: "bvbpschool74@gmail.com", // recipient address
-            subject: `New inquiry received`, // Subject line
-            html: `
+  try {
+    const { name, email, contact, message } = req.body;
+    if (!email || !name || !contact || !message) {
+      return res.status(400).json({
+        status: false,
+        message: "All fields are required!",
+      });
+    }
+    const lastEnquiry = await Inquiry.findOne().sort({ srNo: -1 });
+    const srNo = lastEnquiry ? lastEnquiry.srNo + 1 : 1;
+    const newenquiry = new Inquiry({
+      srNo,
+      email,
+      name,
+      contact,
+      message,
+    });
+    await newenquiry.save();
+    const mailOptions = {
+      from: `"${process.env.MAIL_FROM_NAME}" <${process.env.MAIL_FROM_ADDRESS}>`, // sender address with name
+      to: "bvbpschool74@gmail.com", // recipient address
+      subject: `New inquiry received`, // Subject line
+      html: `
            <html>
       <head>
           <title>Email template</title>
@@ -102,98 +102,97 @@ exports.InquiryAdd = catchAsync(async (req, res, next) => {
                   </td>
               </tr>
               <tr>
-                  <td style="text-align: left;padding:1.2rem; border-top:1px solid #ddd;background: #FCFBF4;">
-                       
-                      <div style="margin: 0 0 10px">
-                           <a href="https://www.facebook.com/profile.php?id=61557061876412" target="blank" style="color:#1E1E1E; font-size:14px; text-decoration: none;"><img style="margin-right: 3px; vertical-align: top;" src="https://i.imgur.com/V9oVERP.png" alt="img"> <span style="opacity: 0.8">Bal Vishwa Bharti</span></a>
-                      </div>
-                      <div style="margin: 0 0 10px">
-                       <a href="https://www.instagram.com/bvbschool?igsh=ZTR5ZWl3bmdjYThv" target="blank" style="color:#1E1E1E; font-size:14px; text-decoration: none;"><img style="margin-right: 3px; vertical-align: middle;" src="https://i.imgur.com/62XwWev.png" alt="img"> <span style="opacity: 0.8">@bvbschool</span></a>
-                      </div>
-                      <div>
-                       <a href="https://www.youtube.com/@bvbschool-t9z" target="blank" style="color:#1E1E1E; font-size:14px; text-decoration: none;"><img style="margin-right: 3px; vertical-align: middle;" src="https://i.imgur.com/nNeewpA.png" alt="img"> <span style="opacity: 0.8">@bvbschool-t9z</span></a>
-                      </div>
-                       
-                  </td>
-              </tr>
+			<td style="text-align: left;padding:1.2rem; border-top:1px solid #ddd;background: #FCFBF4;">
+				 
+				<div style="margin: 0 0 10px">
+				 	<a href="https://www.facebook.com/profile.php?id=61557061876412" target="blank" style="color:#1E1E1E; font-size:14px; text-decoration: none;"><img style="margin-right: 3px; vertical-align: top;" src="https://i.imgur.com/V9oVERP.png" alt="img"> <span style="opacity: 0.8">Bal Vishwa Bharti</span></a>
+				</div>
+				<div style="margin: 0 0 10px">
+				 <a href="https://www.instagram.com/bvbschool?igsh=ZTR5ZWl3bmdjYThv" target="blank" style="color:#1E1E1E; font-size:14px; text-decoration: none;"><img style="margin-right: 3px; vertical-align: middle;" src="https://i.imgur.com/62XwWev.png" alt="img"> <span style="opacity: 0.8">@bvbschool</span></a>
+				</div>
+				<div>
+				 <a href="https://www.youtube.com/@bvbschool-t9z" target="blank" style="color:#1E1E1E; font-size:14px; text-decoration: none;"><img style="margin-right: 3px; vertical-align: middle;" src="https://i.imgur.com/nNeewpA.png" alt="img"> <span style="opacity: 0.8">@bvbschool-t9z</span></a>
+				</div>
+				 
+			</td>
+		</tr>
           </table>
       </body>
       </html>
             `,
-          };
-      
-          try {
-            const sendMailResponse = await sendMail(mailOptions);
-            if (!sendMailResponse) {
-              throw new Error("Failed to send email");
-            }
-            console.log("Email sent successfully");
-          } catch (error) {
-            console.log("Error in sending email:", error);
-          }
-        res.status(201).json({
-            status: "success",
-            message: "Enquiry Added Successfully!",
-        });
+    };
+
+    try {
+      const sendMailResponse = await sendMail(mailOptions);
+      if (!sendMailResponse) {
+        throw new Error("Failed to send email");
+      }
+      console.log("Email sent successfully");
     } catch (error) {
-        return res.status(500).json({
-            status: false,
-            message: "An unknown error occurred. Please try again later.",
-        });
+      console.log("Error in sending email:", error);
     }
+    res.status(201).json({
+      status: "success",
+      message: "Enquiry Added Successfully!",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      status: false,
+      message: "An unknown error occurred. Please try again later.",
+    });
+  }
 });
 
-
 exports.InquiryGet = catchAsync(async (req, res, next) => {
-    try {
-        const enquiries = await Inquiry.find();
-        if (!enquiries.length) {
-            return res.status(404).json({
-                status: false,
-                message: "No enquiries found.",
-            });
-        }
-
-        res.status(200).json({
-            status: true,
-            message: "Enquiries retrieved successfully!",
-            enquiries: enquiries,
-        });
-    } catch (err) {
-        console.error("Error fetching enquiries:", err); 
-        return res.status(500).json({
-            status: false,
-            message: "An unknown error occurred. Please try again later.",
-        });
+  try {
+    const enquiries = await Inquiry.find();
+    if (!enquiries.length) {
+      return res.status(404).json({
+        status: false,
+        message: "No enquiries found.",
+      });
     }
+
+    res.status(200).json({
+      status: true,
+      message: "Enquiries retrieved successfully!",
+      enquiries: enquiries,
+    });
+  } catch (err) {
+    console.error("Error fetching enquiries:", err);
+    return res.status(500).json({
+      status: false,
+      message: "An unknown error occurred. Please try again later.",
+    });
+  }
 });
 
 exports.InquiryDelete = catchAsync(async (req, res, next) => {
-    try {
-        console.log("req.body", req.body);
-        const { id } = req.body;
-        if (!id) {
-            return res.status(400).json({
-                status: false,
-                message: "Enquiry is required",
-            });
-        }
-        const deletedEnquiry = await Inquiry.findOneAndDelete({ _id :id });
-        if (!deletedEnquiry) {
-            return res.status(404).json({
-                status: false,
-                message: `No data found with Enquiry`,
-            });
-        }
-        return res.status(200).json({
-            status: true,
-            message: `Enquiry deleted successfully`,
-            deletedEnquiry: deletedEnquiry,
-        });
-    } catch (error) {
-        return res.status(500).json({
-            status: false,
-            message: "An unknown error occurred. Please try again later.",
-        });
+  try {
+    console.log("req.body", req.body);
+    const { id } = req.body;
+    if (!id) {
+      return res.status(400).json({
+        status: false,
+        message: "Enquiry is required",
+      });
     }
+    const deletedEnquiry = await Inquiry.findOneAndDelete({ _id: id });
+    if (!deletedEnquiry) {
+      return res.status(404).json({
+        status: false,
+        message: `No data found with Enquiry`,
+      });
+    }
+    return res.status(200).json({
+      status: true,
+      message: `Enquiry deleted successfully`,
+      deletedEnquiry: deletedEnquiry,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      status: false,
+      message: "An unknown error occurred. Please try again later.",
+    });
+  }
 });

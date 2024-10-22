@@ -1,5 +1,5 @@
-const fs = require('fs');
-const pdf = require('html-pdf-node');
+const fs = require("fs");
+const pdf = require("html-pdf-node");
 const catchAsync = require("../utils/catchAsync");
 const Donate = require("../db/Donate");
 const DonationUser = require("../db/DonationUser");
@@ -7,7 +7,7 @@ const DonationUser = require("../db/DonationUser");
 // Email logic
 const nodemailer = require("nodemailer");
 const puppeteer = require("puppeteer");
-const uploadToMega = require('../utils/uploadToMega');
+const uploadToMega = require("../utils/uploadToMega");
 const generateRandomHTML = (name, amount, payment_id) => {
   return `
     <html>
@@ -55,12 +55,12 @@ const sendMail = async (mailOptions) => {
 //       ],
 //     });
 //     const page = await browser.newPage();
-    
+
 //     console.log("HTML Content for PDF:", htmlContent); // Debugging line
-    
+
 //     await page.setContent(htmlContent, { waitUntil: "networkidle0", timeout: 60000 });
 //     const pdfBuffer = await page.pdf({ format: "A4", timeout: 60000 });
-    
+
 //     await browser.close();
 //     return pdfBuffer;
 //   } catch (error) {
@@ -191,7 +191,7 @@ exports.DonateUserAdd = catchAsync(async (req, res, next) => {
   const randomHtml = generateRandomHTML(name, amount, payment_id);
 
   // Convert the random HTML to a PDF buffer
-  const options = { format: 'A4' };
+  const options = { format: "A4" };
   const file = { content: randomHtml };
 
   let pdfBuffer;
@@ -252,25 +252,20 @@ exports.DonateUserAdd = catchAsync(async (req, res, next) => {
             </td>
           </tr>
           <tr>
-            <td style="text-align: left;padding:1.2rem; border-top:1px solid #ddd;background: #FCFBF4;">
-              <div style="margin: 0 0 10px">
-                <a href="https://www.facebook.com/profile.php?id=61557061876412" target="blank" style="color:#1E1E1E;">
-                  <img style="margin-right: 3px; vertical-align: middle;" src="https://i.imgur.com/V9oVERP.png" alt="img"> 
-                  Facebook
-                </a>
-                <span style="color: #9B9B9B;">|</span>
-                <a href="https://www.instagram.com/balvishwa_bharti_school/" target="blank" style="color:#1E1E1E;">
-                  <img style="margin-right: 3px; vertical-align: middle;" src="https://i.imgur.com/62XwWev.png" alt="img"> 
-                  Instagram
-                </a>
-                <span style="color: #9B9B9B;">|</span>
-                <a href="https://www.youtube.com/@bvbschool-t9z" target="blank" style="color:#1E1E1E;">
-                  <img style="margin-right: 3px; vertical-align: middle;" src="https://i.imgur.com/nNeewpA.png" alt="img"> 
-                  Twitter
-                </a>
-              </div>
-            </td>
-          </tr>
+			<td style="text-align: left;padding:1.2rem; border-top:1px solid #ddd;background: #FCFBF4;">
+				 
+				<div style="margin: 0 0 10px">
+				 	<a href="https://www.facebook.com/profile.php?id=61557061876412" target="blank" style="color:#1E1E1E; font-size:14px; text-decoration: none;"><img style="margin-right: 3px; vertical-align: top;" src="https://i.imgur.com/V9oVERP.png" alt="img"> <span style="opacity: 0.8">Bal Vishwa Bharti</span></a>
+				</div>
+				<div style="margin: 0 0 10px">
+				 <a href="https://www.instagram.com/bvbschool?igsh=ZTR5ZWl3bmdjYThv" target="blank" style="color:#1E1E1E; font-size:14px; text-decoration: none;"><img style="margin-right: 3px; vertical-align: middle;" src="https://i.imgur.com/62XwWev.png" alt="img"> <span style="opacity: 0.8">@bvbschool</span></a>
+				</div>
+				<div>
+				 <a href="https://www.youtube.com/@bvbschool-t9z" target="blank" style="color:#1E1E1E; font-size:14px; text-decoration: none;"><img style="margin-right: 3px; vertical-align: middle;" src="https://i.imgur.com/nNeewpA.png" alt="img"> <span style="opacity: 0.8">@bvbschool-t9z</span></a>
+				</div>
+				 
+			</td>
+		</tr>
         </table>
       </body>
     </html>
@@ -292,7 +287,7 @@ exports.DonateUserAdd = catchAsync(async (req, res, next) => {
     });
   }
   const megaLink = await uploadToMega(pdfBuffer);
-  console.log("megalink",megaLink);
+  console.log("megalink", megaLink);
   const newItem = new DonationUser({
     srNo,
     name,
@@ -302,21 +297,21 @@ exports.DonateUserAdd = catchAsync(async (req, res, next) => {
     email,
     amount,
     payment_id,
-    link:megaLink,
+    link: megaLink,
   });
   await newItem.save();
 
   res.status(200).json({
     status: true,
     message: "Donation user added and email sent successfully!",
-    link:megaLink
+    link: megaLink,
   });
 });
 
 exports.DonateInvoiceGet = catchAsync(async (req, res, next) => {
   try {
     const { payment_id } = req.params;
-    let data = await DonationUser.findOne({ payment_id }).select('link');
+    let data = await DonationUser.findOne({ payment_id }).select("link");
     if (!data) {
       res.status(200).json({
         status: false,
