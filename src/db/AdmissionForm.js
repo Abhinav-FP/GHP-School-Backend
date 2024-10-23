@@ -92,6 +92,12 @@ const admissionformSchema = new mongoose.Schema({
   image: {
     type: String,
   }, 
+  birth: {
+    type: String,
+  },
+  additional: {
+    type: String,
+  },
 }, { timestamps: true }); 
 
 // Create a model from the schema

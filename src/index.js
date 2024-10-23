@@ -69,4 +69,5 @@ app.get("/", (req, res) => {
   });
 });
 
-app.listen(PORT, () => console.log("Server is running at port : " + PORT));
+const server = app.listen(PORT, () => console.log("Server is running at port : " + PORT));
+server.timeout = 360000; // 6 minutes
