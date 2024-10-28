@@ -65,23 +65,22 @@ exports.InquiryAdd = catchAsync(async (req, res, next) => {
                       </a>
                   </td>
               </tr>
-              <tr>
-                  <td style="padding: 2.2rem 1.2rem; ">
-                      <p style="color: #4D4D4D;font-size: 14px;font-weight: 400; letter-spacing: -0.04em; text-align: left;line-height: 22px;margin: 0 0 1.3rem;">Dear Admin,</p>
+             <tr>
+                  <td style="padding: 2.2rem 1.2rem 0; ">
+                      <p style="color: #4D4D4D;font-size: 14px;font-weight: 400; letter-spacing: -0.04em; text-align: left;line-height: 22px;margin: 0 0 0.5rem;">Dear Admin,</p>
                       <p style="color: #4D4D4D;font-size: 14px;font-weight: 400; letter-spacing: -0.04em; text-align: left;line-height: 22px;margin: 0 0 1.3rem;">We have received a new inquiry.Please find the details attached below.</p>
-                      <tr>
-                          <td colspan="2" style="border: solid 1px #ddd; padding:10px 20px;">
-                              <p style="font-size:14px;margin:0 0 6px 0;"><span style="font-weight:bold;display:inline-block;min-width:150px">Name</span><b style="font-weight:normal;margin:0">${name}</b></p>
-                              <p style="font-size:14px;margin:0 0 6px 0;"><span style="font-weight:bold;display:inline-block;min-width:146px">Email</span> ${email}</p>
-                              <p style="font-size:14px;margin:0 0 6px 0;"><span style="font-weight:bold;display:inline-block;min-width:146px">Contact No</span> ${contact}</p>
-                              <p style="font-size:14px;margin:0 0 6px 0;"><span style="font-weight:bold;display:inline-block;min-width:146px">Message </span> <br/>${message}</p>
-                          </td>
-                      </tr>
-                      <tr>
-                          <td style="height:35px;"></td>
-                      </tr>
+                      
                   </td>
               </tr>
+              <tr>
+                          <td colspan="2" style="border: solid 1px #ddd; padding:10px 20px;color: #4D4D4D;">
+                              <p style="font-size:14px;margin:0 0 9px 0;"><span style="font-weight:bold;display:inline-block;">Name </span> - <b style="font-weight:normal;margin:0">${name}</b></p>
+                              <p style="font-size:14px;margin:0 0 9px 0;"><span style="font-weight:bold;display:inline-block;">Email </span> - ${email}</p>
+                              <p style="font-size:14px;margin:0 0 9px 0;"><span style="font-weight:bold;display:inline-block;">Contact No. </span> - ${contact}</p>
+                              <p style="font-size:14px;margin:0 0 9px 0;"><span style="font-weight:bold;display:inline-block;">Message </span> -  </p>
+                              <p style="font-size:14px;margin:0 0 9px 0;">${message}</p>
+                          </td>
+                      </tr>
               <tr>
       <tr>
       <td style="text-align: left;padding:1.2rem; background: #ECE1C5;text-align: center;">
