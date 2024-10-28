@@ -4,12 +4,6 @@ const bannerschema = mongoose.Schema({
     srNo: {
         type: Number,
       },
-    heading: {
-    type: String,
-  },
-  text: {
-    type: String,
-  },
   photo: {
     type: String,
   },

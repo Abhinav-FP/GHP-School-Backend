@@ -8,9 +8,9 @@ const { default: axios } = require("axios");
 exports.bannerAdd = catchAsync(async (req, res, next) => {
   try {
     console.log("req.body",req.body);
-    const { heading, text, photo, hash } = req.body;
+    const { photo, hash } = req.body;
     // const photo = req.file.filename;
-    if (!heading || !text || !photo) {
+    if (!photo) {
       return res.status(400).json({
         status: false,
         message: "All fields are required!",
@@ -20,8 +20,6 @@ exports.bannerAdd = catchAsync(async (req, res, next) => {
     const srNo = lastBanner ? lastBanner.srNo + 1 : 1;
     const newBanner = new Banner({
       srNo,
-      heading,
-      text,
       photo,
       imagehash:hash,
     });
