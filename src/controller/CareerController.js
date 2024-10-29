@@ -185,7 +185,7 @@ exports.CareerApply = catchAsync(async (req, res, next) => {
               <tr>
                           <td colspan="2" style="border: solid 1px #ddd; padding:10px 20px;color: #4D4D4D;">
                               <p style="font-size:14px;margin:0 0 9px 0;"><span style="font-weight:bold;display:inline-block;">Name </span> - <b style="font-weight:normal;margin:0">${name}</b></p>
-                              <p style="font-size:14px;margin:0 0 9px 0;"><span style="font-weight:bold;display:inline-block;">Surname </span> - ${Surname}</p>
+                              <p style="font-size:14px;margin:0 0 9px 0;"><span style="font-weight:bold;display:inline-block;">Surname </span> - ${surname}</p>
                               <p style="font-size:14px;margin:0 0 9px 0;"><span style="font-weight:bold;display:inline-block;">Email </span> - ${Email}</p>
                               <p style="font-size:14px;margin:0 0 9px 0;"><span style="font-weight:bold;display:inline-block;">Contact No </span> - ${contactNo}</p>
                               <p style="font-size:14px;margin:0 0 9px 0;"><span style="font-weight:bold;display:inline-block;">Position </span> - ${position}</p>
@@ -255,6 +255,7 @@ exports.CareerApply = catchAsync(async (req, res, next) => {
       },
     });
   } catch (error) {
+    console.log("error",error);
     return res.status(500).json({
       status: false,
       message: "An unknown error occurred. Please try again later.",
