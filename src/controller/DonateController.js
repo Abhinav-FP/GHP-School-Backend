@@ -175,10 +175,10 @@ exports.DonateDelete = catchAsync(async (req, res, next) => {
 });
 
 exports.DonateUserAdd = catchAsync(async (req, res, next) => {
-  const { name, number, aadhar, pan, email, amount, payment_id } = req.body;
+  const { name, number, aadhar, pan, email, amount, payment_id, panNumber } = req.body;
 
   // Validate input fields
-  if (!name || !number || !aadhar || !pan || !email || !amount || !payment_id) {
+  if (!name || !number || !aadhar || !pan || !email || !amount || !payment_id || !panNumber) {
     return res.status(400).json({
       status: false,
       message: "All fields are required!",
@@ -206,7 +206,7 @@ exports.DonateUserAdd = catchAsync(async (req, res, next) => {
   const mailOptions = {
     from: `"${process.env.MAIL_FROM_NAME}" <${process.env.MAIL_FROM_ADDRESS}>`,
     to: email,
-    subject: `Thank You for Your Generosity!`,
+    subject: `Thank You for Your Donation!`,
     html: `
     <html>
       <head><title>Email template</title></head>
@@ -226,7 +226,6 @@ exports.DonateUserAdd = catchAsync(async (req, res, next) => {
           </tr>
           <tr>
             <td style="padding: 2.2rem 1.2rem;">
-              <p style="color: #4D4D4D;font-size: 14px;font-weight: 400; text-align: left;">Thank You for Your Generosity!</p>
               <p style="color: #4D4D4D;font-size: 14px;font-weight: 400; text-align: left;">Dear ${name},</p>
               <p style="color: #4D4D4D;font-size: 14px;font-weight: 400; text-align: left;">We are pleased to inform you that your donation has been successfully received. We are deeply grateful for your generous support. Your contribution will make a significant impact and help us continue our mission to inspire and educate future generations.</p>
               <p style="color: #4D4D4D;font-size: 14px;font-weight: 400; text-align: left;">Your invoice is attached to this email. To avail yourself of tax benefits under Section 80G, kindly download and print a copy of the invoice for your records.</p>
@@ -300,6 +299,7 @@ exports.DonateUserAdd = catchAsync(async (req, res, next) => {
     amount,
     payment_id,
     link: megaLink,
+    panNumber,
   });
   await newItem.save();
 

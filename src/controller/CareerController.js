@@ -189,7 +189,7 @@ exports.CareerApply = catchAsync(async (req, res, next) => {
                               <p style="font-size:14px;margin:0 0 9px 0;"><span style="font-weight:bold;display:inline-block;">Email </span> - ${email}</p>
                               <p style="font-size:14px;margin:0 0 9px 0;"><span style="font-weight:bold;display:inline-block;">Contact No </span> - ${contactNo}</p>
                               <p style="font-size:14px;margin:0 0 9px 0;"><span style="font-weight:bold;display:inline-block;">Position </span> - ${position}</p>
-                              <p style="font-size:14px;margin:0 0 9px 0;"><span style="font-weight:bold;display:inline-block;">Experience </span> - ${experience}</p>
+                              <p style="font-size:14px;margin:0 0 9px 0;"><span style="font-weight:bold;display:inline-block;">Experience (in years) </span> - ${experience}</p>
                               <p style="font-size:14px;margin:0 0 9px 0;"><span style="font-weight:bold;display:inline-block;">Resume </span> - <a href="${resume}">Download</a></p>
                               <p style="font-size:14px;margin:0 0 9px 0;"><span style="font-weight:bold;display:inline-block;">About </span> -  </p>
                               <p style="font-size:14px;margin:0 0 9px 0;">${about}</p>

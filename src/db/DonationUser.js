@@ -27,6 +27,9 @@ const donationUserschema = mongoose.Schema({
   },
   link:{
     type: String,
+  },
+  panNumber:{
+    type: String,
   }
 });
 module.exports = mongoose.model("DonationUser", donationUserschema);
