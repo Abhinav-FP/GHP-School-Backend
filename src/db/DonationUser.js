@@ -30,6 +30,9 @@ const donationUserschema = mongoose.Schema({
   },
   panNumber:{
     type: String,
-  }
+  },
+  CSRlink:{
+    type: String,
+  },
 });
 module.exports = mongoose.model("DonationUser", donationUserschema);
