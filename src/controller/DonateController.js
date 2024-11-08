@@ -7,189 +7,189 @@ const DonationUser = require("../db/DonationUser");
 // Email logic
 const nodemailer = require("nodemailer");
 const uploadToMega = require("../utils/uploadToMega");
-const invoice = (name,formattedDate, amount, amount_in_words) => {
+const invoice = (InvoiceNo, name,formattedDate, amount, amount_in_words, tuition, book, uniform, all, other, pan) => {
   return `
    <!DOCTYPE html>
-<html>
-  <head>
-    <title>Gram Vishwa Bharti Samiti</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inria+Serif:ital,wght@0,400;0,700;1,400&family=Inter:opsz,wght@14..32,100..900&display=swap" rel="stylesheet">
-  </head>
-  <body style="background: #e3e3e3;">
-    <table cellpadding="0" cellspacing="0" width="100%;" style="max-width: 800px;margin: auto;background: #fff;">
-      <tr>
-        <td style="text-align: center;padding: 10px 14px 8px;">
-          <img src="https://i.imgur.com/MkTFiNS.png" style="height:58px; width:103px" alt="logo" />
-        </td>
-      </tr>
-      <tr>
-        <td style="color: #EE834E; font-weight: 700;font-size: 40px;text-align: center;padding: 0 14px 3px;font-family: 'Inria Serif', serif;line-height: 40px;"> Gram Vishwa Bharti Samiti </td>
-      </tr>
-      <tr>
-        <td style="color: #1B1B1B;padding: 0 14px 7px;font-size: 12px;font-weight: 400;text-align: center;font-family: 'Inria Serif', serif;"> आदेश एस.एन. आ. आ. प्रथम/80-जी/111/12/2011-12/2016 dt 2/2/2012 valid from 30/6/2011 </td>
-      </tr>
-      <tr>
-        <td style="color: #1B1B1B;padding: 0 14px 0px;font-size: 16px;font-weight: 700;text-align: center;font-family: 'Inria Serif', serif;">(Bal Vishwa Bharti Public Sr. Sec. School) </td>
-      </tr>
-      <tr>
-        <td style="color: #1B1B1B;padding: 0 14px 25px;font-size: 16px;font-weight: 700;text-align: center;font-family: 'Inria Serif', serif;">Nursery To Senior Secondary </td>
-      </tr>
-      <tr>
-        <td style="color: #1B1B1B;padding: 0 14px 20px;font-size: 16px;font-weight: 500;text-align: left;font-family: 'Inter', serif;">Receipt No. - OD-01 </td>
-      </tr>
-      <tr>
-        <td style="padding: 0 12px;">
-          <table cellpadding="0" cellspacing="0" width="100%;">
-            <tr>
-              <td style="color: #1B1B1B;padding: 0 2px 20px;font-size: 16px;font-weight: 500;text-align: left;font-family: 'Inter', serif;width: 70%;">
-                <table cellpadding="0" cellspacing="0" width="100%;">
-                  <tr>
-                    <td style="width: 10%;">Name</td>
-                    <td style="width: 90%; border-bottom: 1px dotted #1B1B1B; position: relative;">
-                      <span style="position: absolute; top: -1px; left: 0; background-color: white; padding: 0 0px;"> ${name} </span>
-                    </td>
-                  </tr>
-                </table>
-              </td>
-              <td style="color: #1B1B1B;padding: 0 2px 20px;font-size: 16px;font-weight: 500;text-align: left;font-family: 'Inter', serif;width: 30%;">
-                <table cellpadding="0" cellspacing="0" width="100%;">
-                  <tr>
-                    <td style="width: 20%">Date</td>
-                    <td style="width:80%;border-bottom: 1px dotted #1B1B1B; position: relative;">
-                      <span style="position: absolute; top: -1px; left: 0; background-color: white; padding: 0 0px;"> ${formattedDate} </span>
-                    </td>
-                  </tr>
-                </table>
-              </td>
-            </tr>
-            <tr>
-              <td style="color: #1B1B1B;padding: 0 2px 20px;font-size: 16px;font-weight: 500;text-align: left;font-family: 'Inter', serif;width: 70%;">
-                <table cellpadding="0" cellspacing="0" width="100%;">
-                  <tr>
-                    <td style="width: 22%">Father’s Name </td>
-                    <td style="width:78%;border-bottom: 1px dotted #1B1B1B;"></td>
-                  </tr>
-                </table>
-              </td>
-              <td style="color: #1B1B1B;padding: 0 2px 20px;font-size: 16px;font-weight: 500;text-align: left;font-family: 'Inter', serif;width: 30%;">
-                <table cellpadding="0" cellspacing="0" width="100%;">
-                  <tr>
-                    <td style="width: 20%">Class</td>
-                    <td style="width:80%;border-bottom: 1px dotted #1B1B1B;"></td>
-                  </tr>
-                </table>
-              </td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-      <tr>
-        <td style="padding: 0 14px;">
-          <table cellpadding="0" cellspacing="0" width="100%;">
-            <thead>
-              <tr>
-                <td valign="center" style="color: #1B1B1B;padding: 9px 2px 10px;font-size: 16px;font-weight: 500;text-align: center;font-family: 'Inter', serif;width: 65%;border-top: 1px solid #1B1B1B;border-bottom: 1px solid #1B1B1B;border-right: 1px solid #1B1B1B;  "> Details </td>
-                <td valign="bottom" style="color: #1B1B1B;padding:  9px 2px 10px;font-size: 16px;font-weight: 500;text-align: center;font-family: 'Inter', serif;width: 35%;border-top: 1px solid #1B1B1B;border-bottom: 1px solid #1B1B1B; "> Amount <span style="font-size: 10px">(In Rs.)</span>
-                </td>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td valign="center" style="color: #1B1B1B;padding: 10px 2px 5px;font-size: 16px;font-weight: 500;text-align: left;font-family: 'Inter', serif;border-right: 1px solid #1B1B1B;  "> 1. Tuition Fees/Child </td>
-                <td valign="bottom" style="color: #1B1B1B;padding: 10px 2px 5px;font-size: 16px;font-weight: 500;text-align: center;font-family: 'Inter', serif; "> 6000 </td>
-              </tr>
-              <tr>
-                <td valign="center" style="color: #1B1B1B;padding: 5px 2px 5px;font-size: 16px;font-weight: 500;text-align: left;font-family: 'Inter', serif;border-right: 1px solid #1B1B1B;  "> 2. Book Set/Child </td>
-                <td valign="bottom" style="color: #1B1B1B;padding: 5px 2px 5px;font-size: 16px;font-weight: 500;text-align: center;font-family: 'Inter', serif; "></td>
-              </tr>
-              <tr>
-                <td valign="center" style="color: #1B1B1B;padding: 5px 2px 5px;font-size: 16px;font-weight: 500;text-align: left;font-family: 'Inter', serif;border-right: 1px solid #1B1B1B;  "> 3. Uniform Set/Child </td>
-                <td valign="bottom" style="color: #1B1B1B;padding: 5px 2px 5px;font-size: 16px;font-weight: 500;text-align: center;font-family: 'Inter', serif; "></td>
-              </tr>
-              <tr>
-                <td valign="center" style="color: #1B1B1B;padding: 5px 2px 5px;font-size: 16px;font-weight: 500;text-align: left;font-family: 'Inter', serif;border-right: 1px solid #1B1B1B;  "> 4. Tuition Fees with Book & Uniform Set </td>
-                <td valign="bottom" style="color: #1B1B1B;padding: 5px 2px 5px;font-size: 16px;font-weight: 500;text-align: center;font-family: 'Inter', serif; "></td>
-              </tr>
-              <tr>
-                <td valign="center" style="color: #1B1B1B;padding: 5px 2px 5px;font-size: 16px;font-weight: 500;text-align: left;font-family: 'Inter', serif;border-right: 1px solid #1B1B1B;  "> 5. Others </td>
-                <td valign="bottom" style="color: #1B1B1B;padding: 5px 2px 5px;font-size: 16px;font-weight: 500;text-align: center;font-family: 'Inter', serif; "></td>
-              </tr>
-              <tr>
-                <td valign="center" style="color: #1B1B1B;padding: 5px 2px 5px;font-size: 16px;font-weight: 500;text-align: left;font-family: 'Inter', serif;border-right: 1px solid #1B1B1B;  "> 6. Pan Number </td>
-                <td valign="bottom" style="color: #1B1B1B;padding: 5px 2px 5px;font-size: 16px;font-weight: 500;text-align: center;font-family: 'Inter', serif; "></td>
-              </tr>
-              <tr>
-                <td valign="center" style="color: #1B1B1B;padding: 5px 2px 5px;font-size: 16px;font-weight: 500;text-align: left;font-family: 'Inter', serif;border-right: 1px solid #1B1B1B;  "> 7................................. </td>
-                <td valign="bottom" style="color: #1B1B1B;padding: 5px 2px 5px;font-size: 16px;font-weight: 500;text-align: center;font-family: 'Inter', serif; "></td>
-              </tr>
-              <tr>
-                <td valign="center" style="color: #1B1B1B;padding: 5px 2px 5px;font-size: 16px;font-weight: 500;text-align: left;font-family: 'Inter', serif;border-right: 1px solid #1B1B1B;  "> 8.................................. </td>
-                <td valign="bottom" style="color: #1B1B1B;padding: 5px 2px 5px;font-size: 16px;font-weight: 500;text-align: center;font-family: 'Inter', serif; "></td>
-              </tr>
-              <tr>
-                <td valign="center" style="color: #1B1B1B;padding: 5px 2px 5px;font-size: 16px;font-weight: 500;text-align: left;font-family: 'Inter', serif;border-right: 1px solid #1B1B1B;  "> 9.................................. </td>
-                <td valign="bottom" style="color: #1B1B1B;padding: 5px 2px 5px;font-size: 16px;font-weight: 500;text-align: center;font-family: 'Inter', serif; "></td>
-              </tr>
-              <tr>
-                <td valign="center" style="color: #1B1B1B;padding: 5px 2px 5px;font-size: 16px;font-weight: 500;text-align: left;font-family: 'Inter', serif;border-right: 1px solid #1B1B1B;  "></td>
-                <td valign="bottom" style="color: #1B1B1B;padding: 5px 2px 5px;font-size: 16px;font-weight: 500;text-align: center;font-family: 'Inter', serif; "></td>
-              </tr>
-              <tr>
-                <td valign="center" style="color: #1B1B1B;padding: 5px 2px 5px;font-size: 16px;font-weight: 500;text-align: left;font-family: 'Inter', serif;border-right: 1px solid #1B1B1B;  "></td>
-                <td valign="bottom" style="color: #1B1B1B;padding: 5px 2px 5px;font-size: 16px;font-weight: 500;text-align: center;font-family: 'Inter', serif; "></td>
-              </tr>
-            </tbody>
-            <tfoot>
-              <tr>
-                <td valign="center" style="color: #1B1B1B;padding: 7px 14px 7px;font-size: 16px;font-weight: 500;text-align: right;font-family: 'Inter', serif; border-bottom: 1px solid #1B1B1B;border-right: 1px solid #1B1B1B;  "> Total </td>
-                <td valign="bottom" style="color: #1B1B1B;padding: 7px 2px  7px;font-size: 16px;font-weight: 500;text-align: center;font-family: 'Inter', serif; border-top: 1px solid #1B1B1B;border-bottom: 1px solid #1B1B1B; ">${amount}</td>
-              </tr>
-            </tfoot>
-          </table>
-        </td>
-      </tr>
-      <tr>
-        <td style="color: #1B1B1B; padding: 15px 14px 20px; font-size: 16px; font-weight: 500; text-align: left; font-family: 'Inter', serif; word-break: break-all; line-height: 1.5;"> Cheque of Rupees <span style="display: inline-block; width: 80%; border-bottom: 1px dotted #000; text-align: left;"> ${amount_in_words} </span>
-        </td>
-      </tr>
-      <tr>
-        <td style="color: #1B1B1B; padding: 35px 30px 18px; font-size: 16px; font-weight: 500; text-align: right; font-family: 'Inter', serif; word-break: break-all;">
-          <table style="width:100%">
-            <tr>
-              <td>
-                <img src="https://ghp-school.vercel.app/Signature.png" alt="Signatory Image" style="height:40.5px; width:193.25px; margin: 0; padding: 0; text-align: right;">
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <p>Authorized signatory</p>
-              </td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-      <tr>
-        <td style="color: #fff;padding: 8px 25px 8px;font-size: 12px;font-weight: 500;text-align: left;font-family: 'Inter', serif; word-break: break-all;background: #EE834E">
-          <table cellpadding="0" cellspacing="0" width="100%;">
-            <tr>
-              <td width="60%" style="text-align: left;">
-                <img style="margin-right: 5px;vertical-align: middle;" src="https://i.imgur.com/xoIdFmr.png" alt="img" /> D-74, Ghiya Marg, Bani Park, Jaipur, Rajasthan 302016
-              </td>
-              <td width="5%" style="text-align: center;padding: 0 5px;">|</td>
-              <td width="35%" style="text-align: right;">
-                <img style="margin-right: 5px;vertical-align: middle;" src="https://i.imgur.com/XcqviKw.png" alt="img" /> 01412282790/ 01412282298
-              </td>
-            </tr>
-          </table>
-      </tr>
-    </table>
-  </body>
-</html>
+ <html>
+   <head>
+     <title>Gram Vishwa Bharti Samiti</title>
+     <link href="https://fonts.googleapis.com/css2?family=Inria+Serif:ital,wght@0,400;0,700;1,400&family=Inter:opsz,wght@14..32,100..900&display=swap" rel="stylesheet">
+   </head>
+   <body style="background: #e3e3e3;">
+     <table cellpadding="0" cellspacing="0" width="100%;" style="max-width: 800px;margin: auto;background: #fff;">
+       <tr>
+         <td style="text-align: center;padding: 10px 14px 8px;">
+           <img src="https://i.imgur.com/MkTFiNS.png" style="height:58px; width:103px" alt="logo" />
+         </td>
+       </tr>
+       <tr>
+         <td style="color: #EE834E; font-weight: 700;font-size: 40px;text-align: center;padding: 0 14px 3px;font-family: 'Inria Serif', serif;line-height: 40px;"> Gram Vishwa Bharti Samiti </td>
+       </tr>
+       <tr>
+         <td style="color: #1B1B1B;padding: 0 14px 7px;font-size: 12px;font-weight: 400;text-align: center;font-family: 'Inria Serif', serif;"> आदेश एस.एन. आ. आ. प्रथम/80-जी/111/12/2011-12/2016 dt 2/2/2012 valid from 30/6/2011 </td>
+       </tr>
+       <tr>
+         <td style="color: #1B1B1B;padding: 0 14px 0px;font-size: 16px;font-weight: 700;text-align: center;font-family: 'Inria Serif', serif;">(Bal Vishwa Bharti Public Sr. Sec. School) </td>
+       </tr>
+       <tr>
+         <td style="color: #1B1B1B;padding: 0 14px 25px;font-size: 16px;font-weight: 700;text-align: center;font-family: 'Inria Serif', serif;">Nursery To Senior Secondary </td>
+       </tr>
+       <tr>
+         <td style="color: #1B1B1B;padding: 0 14px 20px;font-size: 16px;font-weight: 500;text-align: left;font-family: 'Inter', serif;">Receipt No. - OD-${InvoiceNo} </td>
+       </tr>
+       <tr>
+         <td style="padding: 0 12px;">
+           <table cellpadding="0" cellspacing="0" width="100%;">
+             <tr>
+               <td style="color: #1B1B1B;padding: 0 2px 20px;font-size: 16px;font-weight: 500;text-align: left;font-family: 'Inter', serif;width: 70%;">
+                 <table cellpadding="0" cellspacing="0" width="100%;">
+                   <tr>
+                     <td style="width: 10%;">Name</td>
+                     <td style="width: 90%; border-bottom: 1px dotted #1B1B1B; position: relative;">
+                       <span style="position: absolute; top: -1px; left: 0; background-color: white; padding: 0 0px;"> ${name} </span>
+                     </td>
+                   </tr>
+                 </table>
+               </td>
+               <td style="color: #1B1B1B;padding: 0 2px 20px;font-size: 16px;font-weight: 500;text-align: left;font-family: 'Inter', serif;width: 30%;">
+                 <table cellpadding="0" cellspacing="0" width="100%;">
+                   <tr>
+                     <td style="width: 20%">Date</td>
+                     <td style="width:80%;border-bottom: 1px dotted #1B1B1B; position: relative;">
+                       <span style="position: absolute; top: -1px; left: 0; background-color: white; padding: 0 0px;"> ${formattedDate} </span>
+                     </td>
+                   </tr>
+                 </table>
+               </td>
+             </tr>
+             <tr>
+               <td style="color: #1B1B1B;padding: 0 2px 20px;font-size: 16px;font-weight: 500;text-align: left;font-family: 'Inter', serif;width: 70%;">
+                 <table cellpadding="0" cellspacing="0" width="100%;">
+                   <tr>
+                     <td style="width: 22%">Father’s Name </td>
+                     <td style="width:78%;border-bottom: 1px dotted #1B1B1B;"></td>
+                   </tr>
+                 </table>
+               </td>
+               <td style="color: #1B1B1B;padding: 0 2px 20px;font-size: 16px;font-weight: 500;text-align: left;font-family: 'Inter', serif;width: 30%;">
+                 <table cellpadding="0" cellspacing="0" width="100%;">
+                   <tr>
+                     <td style="width: 20%">Class</td>
+                     <td style="width:80%;border-bottom: 1px dotted #1B1B1B;"></td>
+                   </tr>
+                 </table>
+               </td>
+             </tr>
+           </table>
+         </td>
+       </tr>
+       <tr>
+         <td style="padding: 0 14px;">
+           <table cellpadding="0" cellspacing="0" width="100%;">
+             <thead>
+               <tr>
+                 <td valign="center" style="color: #1B1B1B;padding: 9px 2px 10px;font-size: 16px;font-weight: 500;text-align: center;font-family: 'Inter', serif;width: 65%;border-top: 1px solid #1B1B1B;border-bottom: 1px solid #1B1B1B;border-right: 1px solid #1B1B1B;  "> Details </td>
+                 <td valign="bottom" style="color: #1B1B1B;padding:  9px 2px 10px;font-size: 16px;font-weight: 500;text-align: center;font-family: 'Inter', serif;width: 35%;border-top: 1px solid #1B1B1B;border-bottom: 1px solid #1B1B1B; "> Amount <span style="font-size: 10px">(In Rs.)</span>
+                 </td>
+               </tr>
+             </thead>
+             <tbody>
+               <tr>
+                 <td valign="center" style="color: #1B1B1B;padding: 10px 2px 5px;font-size: 16px;font-weight: 500;text-align: left;font-family: 'Inter', serif;border-right: 1px solid #1B1B1B;  "> 1. Tuition Fees/Child </td>
+                 <td valign="bottom" style="color: #1B1B1B;padding: 10px 2px 5px;font-size: 16px;font-weight: 500;text-align: center;font-family: 'Inter', serif; "> ${tuition} </td>
+               </tr>
+               <tr>
+                 <td valign="center" style="color: #1B1B1B;padding: 5px 2px 5px;font-size: 16px;font-weight: 500;text-align: left;font-family: 'Inter', serif;border-right: 1px solid #1B1B1B;  "> 2. Book Set/Child </td>
+                 <td valign="bottom" style="color: #1B1B1B;padding: 5px 2px 5px;font-size: 16px;font-weight: 500;text-align: center;font-family: 'Inter', serif; ">${book}</td>
+               </tr>
+               <tr>
+                 <td valign="center" style="color: #1B1B1B;padding: 5px 2px 5px;font-size: 16px;font-weight: 500;text-align: left;font-family: 'Inter', serif;border-right: 1px solid #1B1B1B;  "> 3. Uniform Set/Child </td>
+                 <td valign="bottom" style="color: #1B1B1B;padding: 5px 2px 5px;font-size: 16px;font-weight: 500;text-align: center;font-family: 'Inter', serif; ">${uniform}</td>
+               </tr>
+               <tr>
+                 <td valign="center" style="color: #1B1B1B;padding: 5px 2px 5px;font-size: 16px;font-weight: 500;text-align: left;font-family: 'Inter', serif;border-right: 1px solid #1B1B1B;  "> 4. Tuition Fees with Book & Uniform Set </td>
+                 <td valign="bottom" style="color: #1B1B1B;padding: 5px 2px 5px;font-size: 16px;font-weight: 500;text-align: center;font-family: 'Inter', serif; ">${all}</td>
+               </tr>
+               <tr>
+                 <td valign="center" style="color: #1B1B1B;padding: 5px 2px 5px;font-size: 16px;font-weight: 500;text-align: left;font-family: 'Inter', serif;border-right: 1px solid #1B1B1B;  "> 5. Others </td>
+                 <td valign="bottom" style="color: #1B1B1B;padding: 5px 2px 5px;font-size: 16px;font-weight: 500;text-align: center;font-family: 'Inter', serif; ">${other}</td>
+               </tr>
+               <tr>
+                 <td valign="center" style="color: #1B1B1B;padding: 5px 2px 5px;font-size: 16px;font-weight: 500;text-align: left;font-family: 'Inter', serif;border-right: 1px solid #1B1B1B;  "> 6. Pan Number </td>
+                 <td valign="bottom" style="color: #1B1B1B;padding: 5px 2px 5px;font-size: 16px;font-weight: 500;text-align: center;font-family: 'Inter', serif; ">${pan}</td>
+               </tr>
+               <tr>
+                 <td valign="center" style="color: #1B1B1B;padding: 5px 2px 5px;font-size: 16px;font-weight: 500;text-align: left;font-family: 'Inter', serif;border-right: 1px solid #1B1B1B;  "> 7................................. </td>
+                 <td valign="bottom" style="color: #1B1B1B;padding: 5px 2px 5px;font-size: 16px;font-weight: 500;text-align: center;font-family: 'Inter', serif; "></td>
+               </tr>
+               <tr>
+                 <td valign="center" style="color: #1B1B1B;padding: 5px 2px 5px;font-size: 16px;font-weight: 500;text-align: left;font-family: 'Inter', serif;border-right: 1px solid #1B1B1B;  "> 8.................................. </td>
+                 <td valign="bottom" style="color: #1B1B1B;padding: 5px 2px 5px;font-size: 16px;font-weight: 500;text-align: center;font-family: 'Inter', serif; "></td>
+               </tr>
+               <tr>
+                 <td valign="center" style="color: #1B1B1B;padding: 5px 2px 5px;font-size: 16px;font-weight: 500;text-align: left;font-family: 'Inter', serif;border-right: 1px solid #1B1B1B;  "> 9.................................. </td>
+                 <td valign="bottom" style="color: #1B1B1B;padding: 5px 2px 5px;font-size: 16px;font-weight: 500;text-align: center;font-family: 'Inter', serif; "></td>
+               </tr>
+               <tr>
+                 <td valign="center" style="color: #1B1B1B;padding: 5px 2px 5px;font-size: 16px;font-weight: 500;text-align: left;font-family: 'Inter', serif;border-right: 1px solid #1B1B1B;  "></td>
+                 <td valign="bottom" style="color: #1B1B1B;padding: 5px 2px 5px;font-size: 16px;font-weight: 500;text-align: center;font-family: 'Inter', serif; "></td>
+               </tr>
+               <tr>
+                 <td valign="center" style="color: #1B1B1B;padding: 5px 2px 5px;font-size: 16px;font-weight: 500;text-align: left;font-family: 'Inter', serif;border-right: 1px solid #1B1B1B;  "></td>
+                 <td valign="bottom" style="color: #1B1B1B;padding: 5px 2px 5px;font-size: 16px;font-weight: 500;text-align: center;font-family: 'Inter', serif; "></td>
+               </tr>
+             </tbody>
+             <tfoot>
+               <tr>
+                 <td valign="center" style="color: #1B1B1B;padding: 7px 14px 7px;font-size: 16px;font-weight: 500;text-align: right;font-family: 'Inter', serif; border-bottom: 1px solid #1B1B1B;border-right: 1px solid #1B1B1B;  "> Total </td>
+                 <td valign="bottom" style="color: #1B1B1B;padding: 7px 2px  7px;font-size: 16px;font-weight: 500;text-align: center;font-family: 'Inter', serif; border-top: 1px solid #1B1B1B;border-bottom: 1px solid #1B1B1B; ">${amount}</td>
+               </tr>
+             </tfoot>
+           </table>
+         </td>
+       </tr>
+       <tr>
+         <td style="color: #1B1B1B; padding: 15px 14px 20px; font-size: 16px; font-weight: 500; text-align: left; font-family: 'Inter', serif; word-break: break-all; line-height: 1.5;"> Cheque of Rupees <span style="display: inline-block; width: 80%; border-bottom: 1px dotted #000; text-align: left;"> ${amount_in_words} </span>
+         </td>
+       </tr>
+       <tr>
+         <td style="color: #1B1B1B; padding: 35px 30px 18px; font-size: 16px; font-weight: 500; text-align: right; font-family: 'Inter', serif; word-break: break-all;">
+           <table style="width:100%">
+             <tr>
+               <td>
+                 <img src="https://ghp-school.vercel.app/Signature.png" alt="Signatory Image" style="height:40.5px; width:193.25px; margin: 0; padding: 0; text-align: right;">
+               </td>
+             </tr>
+             <tr>
+               <td>
+                 <p>Authorized signatory</p>
+               </td>
+             </tr>
+           </table>
+         </td>
+       </tr>
+       <tr>
+         <td style="color: #fff;padding: 8px 25px 8px;font-size: 12px;font-weight: 500;text-align: left;font-family: 'Inter', serif; word-break: break-all;background: #EE834E">
+           <table cellpadding="0" cellspacing="0" width="100%;">
+             <tr>
+               <td width="60%" style="text-align: left;">
+                 <img style="margin-right: 5px;vertical-align: middle;" src="https://i.imgur.com/xoIdFmr.png" alt="img" /> D-74, Ghiya Marg, Bani Park, Jaipur, Rajasthan 302016
+               </td>
+               <td width="5%" style="text-align: center;padding: 0 5px;">|</td>
+               <td width="35%" style="text-align: right;">
+                 <img style="margin-right: 5px;vertical-align: middle;" src="https://i.imgur.com/XcqviKw.png" alt="img" /> 01412282790/ 01412282298
+               </td>
+             </tr>
+           </table>
+       </tr>
+     </table>
+   </body>
+ </html>
   `;
 };
 const CSR = (date, pan) => {
   return `
-   <!DOCTYPE html>
+  <!DOCTYPE html>
 <html>
   <head>
     <title>GOVERNMENT OF INDIA</title>
@@ -198,7 +198,7 @@ const CSR = (date, pan) => {
   <body style="background: #e3e3e3;">
     <table cellpadding="0" cellspacing="0" width="100%;" style="max-width: 595px;margin: auto;background: #fff;">
       <tr>
-        <td style="text-align: center;padding:35px 24px 6px;">
+        <td style="text-align: center;padding:25px 24px 6px;">
           <img src="https://i.imgur.com/I8II5cO.png" alt="logo" />
         </td>
       </tr>
@@ -209,35 +209,35 @@ const CSR = (date, pan) => {
         <td style="color: #1B1B1B;padding: 0 24px 6px;font-size: 14px;font-weight: 500;text-align: center;font-family: 'Inter', serif;line-height: 16px;text-transform: uppercase;">MINISTRY OF CORPORATE AFFAIRS </td>
       </tr>
       <tr>
-        <td style="color: #1B1B1B;padding: 0 24px 20px;font-size: 14px;font-weight: 500;text-align: center;font-family: 'Inter', serif;line-height: 16px;">OFFICE OF THE REGISTRAR OF COMPANIES </td>
+        <td style="color: #1B1B1B;padding: 0 24px 18px;font-size: 14px;font-weight: 500;text-align: center;font-family: 'Inter', serif;line-height: 16px;">OFFICE OF THE REGISTRAR OF COMPANIES </td>
       </tr>
       <tr>
-        <td style="color: #232323;padding: 20px 24px 20px;font-size: 12px;font-weight: 500;text-align: left;font-family: 'Inter', serif;">Dated : ${date} </td>
+        <td style="color: #232323;padding: 20px 24px 18px;font-size: 12px;font-weight: 500;text-align: left;font-family: 'Inter', serif;">Dated : ${date} </td>
       </tr>
       <tr>
-        <td style="color: #1B1B1B;padding: 5px 24px 20px;font-size: 12px;font-weight: 500;text-align: left;font-family: 'Inter', serif;">
+        <td style="color: #1B1B1B;padding: 5px 24px 18px;font-size: 12px;font-weight: 500;text-align: left;font-family: 'Inter', serif;">
           <strong>NOTE</strong> - THIS LETTER IS ONLY AN APPROVAL FOR REGISTRATION OF THE ENTITIES FOR UNDERTAKING CSR ACTIVITIES.
         </td>
       </tr>
       <tr>
-        <td style="color: #232323;padding: 20px 24px 5px;font-size: 12px;font-weight: 500;text-align: left;font-family: 'Inter', serif;">To, <br> GRAM VISHWA BHARTI SMITI , D-74, GHIYA MARG BANI PARK , JAIPUR, RJ, 302016 </td>
+        <td style="color: #232323;padding: 18px 24px 5px;font-size: 12px;font-weight: 500;text-align: left;font-family: 'Inter', serif;">To, <br> GRAM VISHWA BHARTI SMITI , D-74, GHIYA MARG BANI PARK , JAIPUR, RJ, 302016 </td>
       </tr>
       <tr>
-        <td style="color: #000;padding: 10px 24px 20px;font-size: 12px;font-weight: 700;text-align: left;font-family: 'Inter', serif;">
+        <td style="color: #000;padding: 10px 24px 18px;font-size: 12px;font-weight: 700;text-align: left;font-family: 'Inter', serif;">
           <strong>PAN : ${pan}</strong>
         </td>
       </tr>
       <tr>
-        <td style="color: #000;padding: 15px 24px 20px;font-size: 12px;font-weight: 400;text-align: left;font-family: 'Inter', serif;">
+        <td style="color: #000;padding: 15px 24px 18px;font-size: 12px;font-weight: 400;text-align: left;font-family: 'Inter', serif;">
           <strong>Subject :</strong> In Reference to Registraton of Entities for undertaking CSR activities <br>
-          <strong>Reference :</strong> Your application dated 16-09-2024
+          <strong>Reference :</strong> Your application dated ${date}
         </td>
       </tr>
       <tr>
-        <td style="color: #000;padding: 10px 24px 10px;font-size: 12px;font-weight: 400;text-align: left;font-family: 'Inter', serif;">Sir/Madam, </td>
+        <td style="color: #000;padding: 10px 24px 9px;font-size: 12px;font-weight: 400;text-align: left;font-family: 'Inter', serif;">Sir/Madam, </td>
       </tr>
       <tr>
-        <td style="color: #000;padding: 10px 24px 10px;font-size: 12px;font-weight: 400;text-align: left;font-family: 'Inter', serif;">With reference to the above , it is informed that the entity has been registered for undertaking CSR activities and the Registration number is <strong>CSR0078754</strong>, Please refer the registration number for any further communication. </td>
+        <td style="color: #000;padding: 10px 24px 9px;font-size: 12px;font-weight: 400;text-align: left;font-family: 'Inter', serif;">With reference to the above , it is informed that the entity has been registered for undertaking CSR activities and the Registration number is <strong>CSR0078754</strong>, Please refer the registration number for any further communication. </td>
       </tr>
       <tr>
         <td height="100" style="color: #000;padding: 10px 24px 10px;font-size: 12px;font-weight: 400;text-align: left;font-family: 'Inter', serif;"></td>
@@ -433,25 +433,54 @@ exports.DonateDelete = catchAsync(async (req, res, next) => {
 });
 
 exports.DonateUserAdd = catchAsync(async (req, res, next) => {
-  const { name, number, aadhar, pan, email, amount, payment_id, pannumber } =
+  const { name, number, aadhar, pan, email, amount, payment_id, pannumber, items } =
     req.body;
 
   // Validate input fields
-  if (
-    !name ||
-    !number ||
-    !aadhar ||
-    !pan ||
-    !email ||
-    !amount ||
-    !payment_id ||
-    !pannumber
-  ) {
-    return res.status(400).json({
-      status: false,
-      message: "All fields are required!",
-    });
+  // if (
+  //   !name ||
+  //   !number ||
+  //   !aadhar ||
+  //   !pan ||
+  //   !email ||
+  //   !amount ||
+  //   !payment_id ||
+  //   !pannumber ||
+  //   !items
+  // ) {
+  //   return res.status(400).json({
+  //     status: false,
+  //     message: "All fields are required!",
+  //   });
+  // }
+  
+  console.log("items",items);
+  // Get all items with their indivisual price
+  let itemsjson=JSON.parse(items);
+  console.log("itemsjson",itemsjson);
+  let tuition = "", book = "", uniform = "", all = "", other = "";
+itemsjson.forEach(item => {
+  if (item?.name == "Book Set/Child") {
+    book = item.totalPrice;
+  } else if (item?.name == "Tuition Fees/Child") {
+    tuition = item.totalPrice;
+  } else if (item?.name == "Uniform Set/Child") {
+    uniform = item.totalPrice;
+  } else if (item?.name == "Tuition Fees with Book & Uniform Set") {
+    all = item.totalPrice;
+  } else {
+    if(other==""){
+      other = item.totalPrice;
+    }
+    else{other+=item?.totalPrice}
   }
+});
+console.log("data",{ tuition, book, uniform, all, other });
+// return res.status(200).json({
+//       status: false,
+//       message: "Code working fine till here",
+//     });
+
 
   const lastitem = await DonationUser.findOne().sort({ srNo: -1 });
   const srNo = lastitem ? lastitem.srNo + 1 : 1;
@@ -463,9 +492,12 @@ const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are zero-
 const year = today.getFullYear();
 const formattedDate = `${day}-${month}-${year}`;
 const amount_in_words=numberToWords(amount);
+let InvoiceNo;
+if(srNo<10){srNo.toString().padStart(2, "0");}
+else{InvoiceNo=srNo;}
 
 // HTML generator
-  const invoiceHTML = invoice(name,formattedDate, amount, amount_in_words);
+  const invoiceHTML = invoice(InvoiceNo,name,formattedDate, amount, amount_in_words, tuition, book, uniform, all, other, pannumber);
   const CSRHTML = CSR(formattedDate, pannumber);
 
   // Convert the random HTML to a PDF buffer
@@ -491,10 +523,10 @@ const amount_in_words=numberToWords(amount);
   console.log("One pdf done");
   // CSR certificate
   const options2 = { 
-    width: "595px", // Custom width
-    height: "841px", // Custom height
-    preferCSSPageSize: true, // Uses CSS page size if defined in styles
-    printBackground: true, // Ensures background colors and images are printed
+    width: "595px", 
+    height: "891px", 
+    preferCSSPageSize: true, 
+    printBackground: true, 
    };
   let CSRpdf;
   try {

@@ -23,7 +23,7 @@ async function uploadToMega(pdfBuffer) {
       const uploadStream = storage.upload(fileName, pdfBuffer);
 
       uploadStream.on('progress', (progress) => {
-        console.log(`Upload progress: ${progress}%`);
+        // console.log(`Upload progress: ${progress}%`);
       });
 
       uploadStream.on('complete', (file) => {
@@ -32,7 +32,7 @@ async function uploadToMega(pdfBuffer) {
             console.error("Error getting file link:", error);
             return reject(error);
           }
-          console.log("Uploaded file link:", link);
+          // console.log("Uploaded file link:", link);
           resolve(link); // Resolve with the link
         });
       });
