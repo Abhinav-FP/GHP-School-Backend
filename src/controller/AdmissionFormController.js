@@ -121,7 +121,7 @@ exports.formAdd = catchAsync(async (req, res, next) => {
     </tr>
     <tr>
        <td style="padding: 2.2rem 1.2rem; ">
-         <p style="color: #4D4D4D;font-size: 14px;font-weight: 400; letter-spacing: -0.04em; text-align: left;line-height: 22px;margin: 0 0 1.3rem;">Dear ${fatherName},</p>
+         <p style="color: #4D4D4D;font-size: 14px;font-weight: 400; letter-spacing: -0.04em; text-align: left;line-height: 22px;margin: 0 0 1.3rem;">Dear Parents,</p>
          <p style="color: #4D4D4D;font-size: 14px;font-weight: 400; letter-spacing: -0.04em; text-align: left;line-height: 22px;margin: 0 0 1.3rem;">We are pleased to inform you that we have received your application form for admission of ${name} at Bal Vishwa Bharti School. We appreciate your interest in our school and thank you for choosing us for your child's education.</p>
          <p style="color: #4D4D4D;font-size: 14px;font-weight: 400; letter-spacing: -0.04em; text-align: left;line-height: 22px;margin: 0 0 1.3rem;">As per our process, ${name} will be required to appear for an admission test. You will receive further details regarding the test schedule shortly.</p>
          <p style="color: #4D4D4D;font-size: 14px;font-weight: 400; letter-spacing: -0.04em; text-align: left;line-height: 22px;margin: 0 0 1.3rem;">We look forward to welcoming ${name} to our school community. If you have any questions, please feel free to contact us at <a href="tel:90018-69684"  style="color: #4D4D4D;font-size: 14px;text-decoration: none;">90018-69684</a>.</p>
