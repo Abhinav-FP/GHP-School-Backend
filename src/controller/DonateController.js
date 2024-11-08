@@ -14,8 +14,9 @@ const invoice = (InvoiceNo, name,formattedDate, amount, amount_in_words, tuition
    <head>
      <title>Gram Vishwa Bharti Samiti</title>
      <link href="https://fonts.googleapis.com/css2?family=Inria+Serif:ital,wght@0,400;0,700;1,400&family=Inter:opsz,wght@14..32,100..900&display=swap" rel="stylesheet">
+     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari&display=swap" rel="stylesheet">
    </head>
-   <body style="background: #e3e3e3;">
+   <body style="background: #e3e3e3; font-family: 'Noto Serif Devanagari', 'Inria Serif', serif;">
      <table cellpadding="0" cellspacing="0" width="100%;" style="max-width: 800px;margin: auto;background: #fff;">
        <tr>
          <td style="text-align: center;padding: 10px 14px 8px;">
