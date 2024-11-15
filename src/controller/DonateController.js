@@ -552,13 +552,13 @@ else{InvoiceNo=srNo;}
           <tr>
             <td style="text-align: center;background:#ECE1C5;padding: 10px 10px;">
               <a href="https://ghp-school.vercel.app/">
-                <img style="max-width:100%;" src="https://i.imgur.com/eGTKYS0.png" alt="img">
+                <img style="max-width:107px; height:58px" src="https://ghp-school.vercel.app/Header/Logo.png" alt="img">
               </a>
             </td>
           </tr>
           <tr>
             <td style="text-align: center;background:#ECE1C5;">
-              <img style="max-width:100%;" src="https://i.imgur.com/Uscg2C5.png" alt="img">
+              <img style="width:227px; height:191px" src="https://i.imgur.com/Jw1ILnw.png" alt="img"> 
             </td>
           </tr>
           <tr>
