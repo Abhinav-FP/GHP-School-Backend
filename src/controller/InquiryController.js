@@ -47,7 +47,7 @@ exports.InquiryAdd = catchAsync(async (req, res, next) => {
     await newenquiry.save();
     const mailOptions = {
       from: `"${process.env.MAIL_FROM_NAME}" <${process.env.MAIL_FROM_ADDRESS}>`, // sender address with name
-      to: "a.mathur@futureprofilez.com", // recipient address
+      to: "a.mathur@futureprofilez.com, bvbpschool74@gmail.com, bvbpschool@yahoo.com", // recipient addresses
       subject: `New inquiry received`, // Subject line
       html: `
            <html>

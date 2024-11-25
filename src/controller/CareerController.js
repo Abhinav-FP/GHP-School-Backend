@@ -157,7 +157,7 @@ exports.CareerApply = catchAsync(async (req, res, next) => {
     await newApplication.save();
     const mailOptions = {
       from: `"${process.env.MAIL_FROM_NAME}" <${process.env.MAIL_FROM_ADDRESS}>`, // sender address with name
-      to: "a.mathur@futureprofilez.com", // recipient address
+      to: "a.mathur@futureprofilez.com, bvbpschool74@gmail.com, bvbpschool@yahoo.com", // recipient address
       subject: `New application received for ${position}`, // Subject line
       html: `
      <html>
