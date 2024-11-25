@@ -438,22 +438,22 @@ exports.DonateUserAdd = catchAsync(async (req, res, next) => {
     req.body;
 
   // Validate input fields
-  // if (
-  //   !name ||
-  //   !number ||
-  //   !aadhar ||
-  //   !pan ||
-  //   !email ||
-  //   !amount ||
-  //   !payment_id ||
-  //   !pannumber ||
-  //   !items
-  // ) {
-  //   return res.status(400).json({
-  //     status: false,
-  //     message: "All fields are required!",
-  //   });
-  // }
+  if (
+    !name ||
+    !number ||
+    !aadhar ||
+    !pan ||
+    !email ||
+    !amount ||
+    !payment_id ||
+    !pannumber ||
+    !items
+  ) {
+    return res.status(400).json({
+      status: false,
+      message: "All fields are required!",
+    });
+  }
   
   console.log("items",items);
   // Get all items with their indivisual price
@@ -477,11 +477,6 @@ itemsjson.forEach(item => {
   }
 });
 console.log("data",{ tuition, book, uniform, all, other });
-// return res.status(200).json({
-//       status: false,
-//       message: "Code working fine till here",
-//     });
-
 
   const lastitem = await DonationUser.findOne().sort({ srNo: -1 });
   const srNo = lastitem ? lastitem.srNo + 1 : 1;
