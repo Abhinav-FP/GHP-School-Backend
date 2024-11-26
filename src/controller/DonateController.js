@@ -27,7 +27,7 @@ const invoice = (InvoiceNo, name,formattedDate, amount, amount_in_words, tuition
          <td style="color: #EE834E; font-weight: 700;font-size: 40px;text-align: center;padding: 0 14px 3px;font-family: 'Inria Serif', serif;line-height: 40px;"> Gram Vishwa Bharti Samiti </td>
        </tr>
        <tr>
-         <td style="color: #1B1B1B;padding: 0 14px 7px;font-size: 12px;font-weight: 400;text-align: center;font-family: 'Inria Serif', serif;"> आदेश एस.एन. आ. आ. प्रथम/80-जी/111/12/2011-12/2016 dt 2/2/2012 valid from 30/6/2011 </td>
+         <td style="color: #1B1B1B;padding: 0 14px 7px;font-size: 12px;font-weight: 400;text-align: center;font-family: 'Inria Serif', serif;"> Order S.N. A.A. Pratham/80-G/111/12/2011-12/2016 dated 2/2/2012, valid from 30/6/2011 </td>
        </tr>
        <tr>
          <td style="color: #1B1B1B;padding: 0 14px 0px;font-size: 16px;font-weight: 700;text-align: center;font-family: 'Inria Serif', serif;">(Bal Vishwa Bharti Public Sr. Sec. School) </td>
@@ -294,7 +294,6 @@ const sendMail = async (mailOptions) => {
   }
 };
 
-// Number to words
 const numberToWords = (num) => {
   const belowTwenty = [
     'Zero', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 
@@ -455,10 +454,10 @@ exports.DonateUserAdd = catchAsync(async (req, res, next) => {
     });
   }
   
-  console.log("items",items);
+  // console.log("items",items);
   // Get all items with their indivisual price
   let itemsjson=JSON.parse(items);
-  console.log("itemsjson",itemsjson);
+  // console.log("itemsjson",itemsjson);
   let tuition = "", book = "", uniform = "", all = "", other = "";
 itemsjson.forEach(item => {
   if (item?.name == "Book Set/Child") {
@@ -476,12 +475,11 @@ itemsjson.forEach(item => {
     else{other+=item?.totalPrice}
   }
 });
-console.log("data",{ tuition, book, uniform, all, other });
+// console.log("data",{ tuition, book, uniform, all, other });
 
   const lastitem = await DonationUser.findOne().sort({ srNo: -1 });
   const srNo = lastitem ? lastitem.srNo + 1 : 1;
 
-  // Generate the random HTML content for the invoice
   const today = new Date();
 const day = String(today.getDate()).padStart(2, '0');
 const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are zero-based
@@ -489,14 +487,15 @@ const year = today.getFullYear();
 const formattedDate = `${day}-${month}-${year}`;
 const amount_in_words=numberToWords(amount);
 let InvoiceNo;
-if(srNo<10){srNo.toString().padStart(2, "0");}
-else{InvoiceNo=srNo;}
+if (srNo < 10) {
+    InvoiceNo = srNo.toString().padStart(2, "0");
+} else {
+    InvoiceNo = srNo; 
+}
 
-// HTML generator
   const invoiceHTML = invoice(InvoiceNo,name,formattedDate, amount, amount_in_words, tuition, book, uniform, all, other, pannumber);
   const CSRHTML = CSR(formattedDate, pannumber);
 
-  // Convert the random HTML to a PDF buffer
   const options1 = {
     width: "800px", // Custom width
     height: "968.219px", // Custom height
@@ -516,7 +515,7 @@ else{InvoiceNo=srNo;}
       message: "Failed to generate PDF",
     });
   }
-  console.log("One pdf done");
+  // console.log("One pdf done");
   // CSR certificate
   const options2 = { 
     width: "595px", 
@@ -533,7 +532,7 @@ else{InvoiceNo=srNo;}
       message: "Failed to generate PDF",
     });
   }
-  console.log("Second pdf done");
+  // console.log("Second pdf done");
 
   const mailOptions = {
     from: `"${process.env.MAIL_FROM_NAME}" <${process.env.MAIL_FROM_ADDRESS}>`,
@@ -623,11 +622,10 @@ else{InvoiceNo=srNo;}
       message: "Failed to send email",
     });
   }
-  console.log("Email sent successfully!");
+  // console.log("Email sent successfully!");
 
   const megaLink = await uploadToMega(invoicepdf);
   const csrlink = await uploadToMega(CSRpdf);
-  console.log("Uploaded to mega successfully");
   const newItem = new DonationUser({
     srNo,
     name,
@@ -641,7 +639,6 @@ else{InvoiceNo=srNo;}
     pannumber,
     CSRlink: csrlink,
   });
-  console.log("Item created successfully");
   await newItem.save();
 
   res.status(200).json({
