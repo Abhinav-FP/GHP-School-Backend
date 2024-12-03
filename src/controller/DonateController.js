@@ -552,7 +552,7 @@ if (srNo < 10) {
             </td>
           </tr>
           <tr>
-            <td style="padding: 2.2rem 1.2rem;">
+            <td style="padding: 35.2px 19.2px;">
               <p style="color: #4D4D4D;font-size: 14px;font-weight: 400; text-align: left;">Dear ${name},</p>
               <p style="color: #4D4D4D;font-size: 14px;font-weight: 400; text-align: left;">We are pleased to inform you that your donation has been successfully received. We are deeply grateful for your generous support. Your contribution will make a significant impact and help us continue our mission to inspire and educate future generations.</p>
               <p style="color: #4D4D4D;font-size: 14px;font-weight: 400; text-align: left;">Your invoice is attached to this email. To avail yourself of tax benefits under Section 80G, kindly download and print a copy of the invoice for your records.</p>
@@ -562,7 +562,7 @@ if (srNo < 10) {
           </tr>
           <tr>
       <tr>
-      <td style="text-align: left;padding:1.2rem; background: #ECE1C5;text-align: center;">
+      <td style="text-align: left;padding:19.2px; background: #ECE1C5;text-align: center;">
          
         <div style="margin: 0 0 10px">
           <a href="https://www.facebook.com/profile.php?id=61557061876412" target="blank" style="color:#4D4D4D; font-size:14px; text-decoration: none;"><img style="margin-right: 5px; vertical-align: top;" src="https://i.imgur.com/BncNmdi.png" alt="img"><span style="opacity: 0.8">Bal Vishwa Bharti</span></a>
@@ -576,7 +576,7 @@ if (srNo < 10) {
          
       </td>
     </tr>
-      <td style="text-align: left;padding:1.2rem 1.2rem 1rem; border-top:1px solid rgba(0,0,0,.1);background: #ECE1C5; text-align: center;">
+      <td style="text-align: left;padding:19.2px 19.2px 16px; border-top:1px solid rgba(0,0,0,.1);background: #ECE1C5; text-align: center;">
          
         <div style="margin: 0 0 10px">
           <img style="margin-right: 3px; vertical-align: top;" src="https://i.imgur.com/3OuZKWO.png" alt="img"> 

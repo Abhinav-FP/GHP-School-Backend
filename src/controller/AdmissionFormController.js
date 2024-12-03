@@ -120,18 +120,18 @@ exports.formAdd = catchAsync(async (req, res, next) => {
       </td>
     </tr>
     <tr>
-       <td style="padding: 2.2rem 1.2rem; ">
-         <p style="color: #4D4D4D;font-size: 14px;font-weight: 400; letter-spacing: -0.04em; text-align: left;line-height: 22px;margin: 0 0 1.3rem;">Dear Parents,</p>
-         <p style="color: #4D4D4D;font-size: 14px;font-weight: 400; letter-spacing: -0.04em; text-align: left;line-height: 22px;margin: 0 0 1.3rem;">We are pleased to inform you that we have received your application form for admission of ${name} at Bal Vishwa Bharti School. We appreciate your interest in our school and thank you for choosing us for your child's education.</p>
-         <p style="color: #4D4D4D;font-size: 14px;font-weight: 400; letter-spacing: -0.04em; text-align: left;line-height: 22px;margin: 0 0 1.3rem;">As per our process, ${name} will be required to appear for an admission test. You will receive further details regarding the test schedule shortly.</p>
-         <p style="color: #4D4D4D;font-size: 14px;font-weight: 400; letter-spacing: -0.04em; text-align: left;line-height: 22px;margin: 0 0 1.3rem;">We look forward to welcoming ${name} to our school community. If you have any questions, please feel free to contact us at <a href="tel:90018-69684"  style="color: #4D4D4D;font-size: 14px;text-decoration: none;">90018-69684</a>.</p>
+       <td style="padding: 35.2px 19.2px; ">
+         <p style="color: #4D4D4D;font-size: 14px;font-weight: 400; letter-spacing: -0.04em; text-align: left;line-height: 22px;margin: 0 0 20.8px;">Dear Parents,</p>
+         <p style="color: #4D4D4D;font-size: 14px;font-weight: 400; letter-spacing: -0.04em; text-align: left;line-height: 22px;margin: 0 0 20.8px;">We are pleased to inform you that we have received your application form for admission of ${name} at Bal Vishwa Bharti School. We appreciate your interest in our school and thank you for choosing us for your child's education.</p>
+         <p style="color: #4D4D4D;font-size: 14px;font-weight: 400; letter-spacing: -0.04em; text-align: left;line-height: 22px;margin: 0 0 20.8px;">As per our process, ${name} will be required to appear for an admission test. You will receive further details regarding the test schedule shortly.</p>
+         <p style="color: #4D4D4D;font-size: 14px;font-weight: 400; letter-spacing: -0.04em; text-align: left;line-height: 22px;margin: 0 0 20.8px;">We look forward to welcoming ${name} to our school community. If you have any questions, please feel free to contact us at <a href="tel:90018-69684"  style="color: #4D4D4D;font-size: 14px;text-decoration: none;">90018-69684</a>.</p>
           <p style="color: #4D4D4D;font-size: 14px;font-weight: 400; letter-spacing: -0.04em; text-align: left;line-height: 22px;margin: 0"> Warm Regards, <br>
                   Bal Vishwa Bharti Senior Secondary School</p>    
        </td>
     </tr>
     <tr>
       <tr>
-      <td style="text-align: left;padding:1.2rem; background: #ECE1C5;text-align: center;">
+      <td style="text-align: left;padding:19.2px; background: #ECE1C5;text-align: center;">
          
         <div style="margin: 0 0 10px">
           <a href="https://www.facebook.com/profile.php?id=61557061876412" target="blank" style="color:#4D4D4D; font-size:14px; text-decoration: none;"><img style="margin-right: 5px; vertical-align: top;" src="https://i.imgur.com/BncNmdi.png" alt="img"><span style="opacity: 0.8">Bal Vishwa Bharti</span></a>
@@ -145,7 +145,7 @@ exports.formAdd = catchAsync(async (req, res, next) => {
          
       </td>
     </tr>
-      <td style="text-align: left;padding:1.2rem 1.2rem 1rem; border-top:1px solid rgba(0,0,0,.1);background: #ECE1C5; text-align: center;">
+      <td style="text-align: left;padding:19.2px 19.2px 16px; border-top:1px solid rgba(0,0,0,.1);background: #ECE1C5; text-align: center;">
          
         <div style="margin: 0 0 10px">
           <img style="margin-right: 3px; vertical-align: top;" src="https://i.imgur.com/3OuZKWO.png" alt="img"> 

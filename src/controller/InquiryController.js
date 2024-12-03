@@ -64,9 +64,9 @@ exports.InquiryAdd = catchAsync(async (req, res, next) => {
                   </td>
               </tr>
              <tr>
-                  <td style="padding: 2.2rem 1.2rem 0; ">
-                      <p style="color: #4D4D4D;font-size: 14px;font-weight: 400; letter-spacing: -0.04em; text-align: left;line-height: 22px;margin: 0 0 0.5rem;">Dear Admin,</p>
-                      <p style="color: #4D4D4D;font-size: 14px;font-weight: 400; letter-spacing: -0.04em; text-align: left;line-height: 22px;margin: 0 0 1.3rem;">We have received a new inquiry.Please find the details attached below.</p>
+                  <td style="padding: 35.2px 19.2px 0; ">
+                      <p style="color: #4D4D4D;font-size: 14px;font-weight: 400; letter-spacing: -0.04em; text-align: left;line-height: 22px;margin: 0 0 8px;">Dear Admin,</p>
+                      <p style="color: #4D4D4D;font-size: 14px;font-weight: 400; letter-spacing: -0.04em; text-align: left;line-height: 22px;margin: 0 0 20.8px;">We have received a new inquiry.Please find the details attached below.</p>
                       
                   </td>
               </tr>
@@ -81,7 +81,7 @@ exports.InquiryAdd = catchAsync(async (req, res, next) => {
                       </tr>
               <tr>
       <tr>
-      <td style="text-align: left;padding:1.2rem; background: #ECE1C5;text-align: center;">
+      <td style="text-align: left;padding:19.2px; background: #ECE1C5;text-align: center;">
          
         <div style="margin: 0 0 10px">
           <a href="https://www.facebook.com/profile.php?id=61557061876412" target="blank" style="color:#4D4D4D; font-size:14px; text-decoration: none;"><img style="margin-right: 5px; vertical-align: top;" src="https://i.imgur.com/BncNmdi.png" alt="img"><span style="opacity: 0.8">Bal Vishwa Bharti</span></a>
@@ -95,7 +95,7 @@ exports.InquiryAdd = catchAsync(async (req, res, next) => {
          
       </td>
     </tr>
-      <td style="text-align: left;padding:1.2rem 1.2rem 1rem; border-top:1px solid rgba(0,0,0,.1);background: #ECE1C5; text-align: center;">
+      <td style="text-align: left;padding:19.2px 19.2px 1rem; border-top:1px solid rgba(0,0,0,.1);background: #ECE1C5; text-align: center;">
          
         <div style="margin: 0 0 10px">
           <img style="margin-right: 3px; vertical-align: top;" src="https://i.imgur.com/3OuZKWO.png" alt="img"> 
