@@ -174,7 +174,7 @@ const invoice = (InvoiceNo, name,formattedDate, amount, amount_in_words, tuition
            <table cellpadding="0" cellspacing="0" width="100%;">
              <tr>
                 <td width="100%" style="text-align: center;">
-                      <img style="margin-right: 5px;height:14px;vertical-align: middle;" src="https://i.imgur.com/RoYHjNR.png" alt="img" /> D-74, Ghiya Marg, Bani Park, Jaipur, Rajasthan 302016 <span style="padding:0 5px;">|</span>  <img style="margin-right: 5px;height:14px;vertical-align: middle;" src="https://i.imgur.com/tcMHLNZ.png" alt="img" />  bvbpschool74@gmail.com  <span style="padding:0 5px;">|</span> <img style="margin-right: 5px;height:14px;vertical-align: middle;" src="https://i.imgur.com/znyNuDO.png" alt="img" /> 01412282790/ 01412282298
+                      Add: D-74, Ghiya Marg, Bani Park, Jaipur, Rajasthan 302016 <span style="padding:0 5px;">|</span>Email: bvbpschool74@gmail.com<span style="padding:0 5px;">|</span>Tele: 01412282790/ 01412282298
                 </td>
              </tr>
            </table>
