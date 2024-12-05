@@ -15,6 +15,8 @@ const { resultAdd } = require("./controller/ResultController");
 const { galleryAdd } = require("./controller/GalleryController");
 const uploadgallery = require("./utils/uploadGallery");
 const { verifyToken } = require("./controller/AuthController");
+const cron = require("node-cron");
+const axios = require("axios");
 
 const corsOptions = {
   origin: ['https://ghp-school.vercel.app', 'http://localhost:3000'], // Allowed origins
@@ -61,6 +63,17 @@ app.post("/facilities/gallery/add", galleryAdd);
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
 const PORT = process.env.REACT_APP_SERVER_DOMIN || 5000; // Add default port
+
+// Schedule a cron job to hit the URL every 15 minutes
+cron.schedule("*/15 * * * *", async () => {
+  try {
+    console.log("Cron job running: hitting the URL");
+    const response = await axios.get("https://ghp-school-backend.onrender.com");
+    console.log("Response status:", response.status);
+  } catch (error) {
+    console.error("Error hitting the URL:", error.message);
+  }
+})
 
 app.get("/", (req, res) => {
   res.json({
