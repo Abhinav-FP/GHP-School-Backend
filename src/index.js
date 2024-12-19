@@ -17,7 +17,7 @@ const uploadgallery = require("./utils/uploadGallery");
 const { verifyToken } = require("./controller/AuthController");
 
 const corsOptions = {
-  origin: ['https://ghp-school.vercel.app', 'http://localhost:3000'], // Allowed origins
+  origin: ['https://ghp-school.vercel.app', 'http://localhost:3000', 'https://bvbs.vercel.app/'], // Allowed origins
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   allowedHeaders: '*', // Allow all headers
   credentials: true,
@@ -60,7 +60,7 @@ app.post("/facilities/gallery/add", galleryAdd);
 
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
-const PORT = process.env.REACT_APP_SERVER_DOMIN || 5000; // Add default port
+const PORT = process.env.REACT_APP_SERVER_DOMIN || 3001; // Add default port
 
 app.get("/", (req, res) => {
   res.json({
