@@ -17,7 +17,7 @@ const uploadgallery = require("./utils/uploadGallery");
 const { verifyToken } = require("./controller/AuthController");
 
 const corsOptions = {
-  origin: ['https://ghp-school.vercel.app', 'http://localhost:3000', 'https://bvbs.vercel.app/'], // Allowed origins
+  origin: ['https://ghp-school.vercel.app', 'http://localhost:3000', 'https://bvbs.vercel.app/', 'https://balvishwabharti.com/'], // Allowed origins
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   allowedHeaders: '*', // Allow all headers
   credentials: true,
