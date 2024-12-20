@@ -158,7 +158,7 @@ const invoice = (InvoiceNo, name,formattedDate, amount, amount_in_words, tuition
            <table style="width:100%">
              <tr>
                <td>
-                 <img src="https://ghp-school.vercel.app/Signature.png" alt="Signatory Image" style="height:40.5px; width:193.25px; margin: 0; padding: 0; text-align: right;">
+                 <img src="https://www.balvishwabharti.com/Signature.png" alt="Signatory Image" style="height:40.5px; width:193.25px; margin: 0; padding: 0; text-align: right;">
                </td>
              </tr>
              <tr>
@@ -541,8 +541,8 @@ if (srNo < 10) {
         <table cellspacing="0" cellpadding="0" style="width: 100%;max-width: 400px;margin: 0 auto;font-family: Arial;">
           <tr>
             <td style="text-align: center;background:#ECE1C5;padding: 10px 10px;">
-              <a href="https://ghp-school.vercel.app/">
-                <img style="max-width:107px; height:58px" src="https://ghp-school.vercel.app/Header/Logo.png" alt="img">
+              <a href="https://www.balvishwabharti.com/">
+                <img style="max-width:107px; height:58px" src="https://www.balvishwabharti.com/Header/Logo.png" alt="img">
               </a>
             </td>
           </tr>

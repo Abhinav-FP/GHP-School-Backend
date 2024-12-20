@@ -168,8 +168,8 @@ exports.CareerApply = catchAsync(async (req, res, next) => {
          <table cellspacing="0" cellpadding="0" style="width: 100%;max-width: 400px;margin: 0 auto;font-family: Arial;">
             <tr>
                 <td style="text-align: center;background:#ECE1C5;padding:10px 10px;">
-                    <a href="https://ghp-school.vercel.app/">
-                        <img style="max-width:107px; height:58px" src="https://ghp-school.vercel.app/Header/Logo.png" alt="img">
+                    <a href="https://www.balvishwabharti.com/">
+                        <img style="max-width:107px; height:58px" src="https://www.balvishwabharti.com/Header/Logo.png" alt="img">
                     </a>
                 </td>
             </tr>
