@@ -71,7 +71,7 @@ const PORT = process.env.REACT_APP_SERVER_DOMIN || 3001; // Add default port
 
 app.get("/", (req, res) => {
   res.json({
-    msg: 'Okay',
+    msg: 'Hello World',
     status: 200,
   });
 });

@@ -3,8 +3,8 @@ const mega = require('megajs');
 async function uploadToMega(pdfBuffer) {
   return new Promise((resolve, reject) => {
     // Log in to MEGA with your credentials
-    const email = `a.mathur@futureprofilez.com`; // Your MEGA account email
-    const password = `59EQH_7tBnnZeDb`; // Your MEGA account password
+    const email = `bvbpschool@yahoo.com`; // Your MEGA account email
+    const password = `bvbs@123456`; // Your MEGA account password
 
     const storage = new mega.Storage({
       email: email,

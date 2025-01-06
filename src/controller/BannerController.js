@@ -4,7 +4,7 @@ const Banner = require("../db/Banner");
 const fs = require("fs");
 const path = require("path"); // Make sure to import the path module
 const { default: axios } = require("axios");
-
+const logger = require("../utils/Logger");
 exports.bannerAdd = catchAsync(async (req, res, next) => {
   try {
     console.log("req.body",req.body);

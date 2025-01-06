@@ -1,12 +1,103 @@
-const fs = require("fs");
 const pdf = require("html-pdf-node");
 const catchAsync = require("../utils/catchAsync");
 const Donate = require("../db/Donate");
 const DonationUser = require("../db/DonationUser");
+const puppeteer = require('puppeteer');
+// var Promise = require('bluebird');
+// const hb = require('handlebars')
+// const inlineCss = require('inline-css')
+const fs = require('fs');
+const PDFDocument = require('pdfkit');
+const { convert } = require('html-to-text');
+const { Writable } = require('stream');
 
-// Email logic
+async function generatePdf(file, options, callback) {
+    let browser;
+    try {
+      // Launch Puppeteer
+      browser = await puppeteer.launch({
+        executablePath: '/usr/bin/chromium-browser',
+        args: ['--no-sandbox', '--disable-setuid-sandbox'],
+      });
+      const page = await browser.newPage();
+  
+      if (file.content) {
+        data = await inlineCss(file.content, { url: "/" });
+        console.log("Compiling the template with handlebars");
+        const template = hb.compile(data, { strict: true });
+        const result = template(data);
+        const html = result;
+  
+        await page.setContent(html, {
+          waitUntil: 'networkidle0',
+        });
+      } else {
+        await page.goto(file.url, {
+          waitUntil: ['load', 'networkidle0'],
+        });
+      }
+  
+      const pdfBuffer = await page.pdf(options);
+      await browser.close();
+      return Buffer.from(pdfBuffer);
+    } catch (error) {
+      console.error("Error generating PDF:", error.message);
+      if (browser) await browser.close();
+      throw new Error("PDF generation failed");
+    }
+  }
+
+// Function to generate a PDF from HTML
+
+async function generatePDF(htmlContent) {
+  return new Promise((resolve, reject) => {
+      // Convert HTML to plain text
+      const textContent = convert(htmlContent, {
+          wordwrap: 130,
+          uppercaseHeadings: false,
+      });
+
+      // Create a new PDF document
+      const doc = new PDFDocument();
+
+      // Create a buffer to store PDF data
+      const buffers = [];
+      const writableStream = new Writable({
+          write(chunk, encoding, callback) {
+              buffers.push(chunk);
+              callback();
+          },
+      });
+
+      // Pipe the PDF document to the writable stream
+      doc.pipe(writableStream);
+
+      // Add text content to the PDF
+      doc.fontSize(12).text(textContent, {
+          width: 410,
+          align: 'left',
+          paragraphGap: 10,
+      });
+
+      // Finalize the PDF document
+      doc.end();
+
+      // Resolve the promise once the writable stream is finished
+      writableStream.on('finish', () => {
+          const pdfBuffer = Buffer.concat(buffers);
+          resolve(pdfBuffer);
+      });
+
+      writableStream.on('error', (err) => {
+          reject(err);
+      });
+  });
+}
+  
+
 const nodemailer = require("nodemailer");
 const uploadToMega = require("../utils/uploadToMega");
+const logger = require("../utils/Logger");
 const invoice = (InvoiceNo, name,formattedDate, amount, amount_in_words, tuition, book, uniform, all, other, pan) => {
   return `
    <!DOCTYPE html>
@@ -184,52 +275,6 @@ const invoice = (InvoiceNo, name,formattedDate, amount, amount_in_words, tuition
  </html>
   `;
 };
-
-const puppeteer = require('puppeteer');
-var Promise = require('bluebird');
-const hb = require('handlebars');
-const logger = require("../utils/Logger");
-
-async function generatePdf(file, options, callback) {
-  // we are using headless mode
-  let args = [
-    '--no-sandbox',
-    '--disable-setuid-sandbox',
-  ];
-  if(options.args) {
-    args = options.args;
-    delete options.args;
-  }
-
-  const browser = await puppeteer.launch({
-    executablePath: '/usr/bin/google-chrome-stable', // Path to the installed Chromium
-    args: ['--no-sandbox', '--disable-setuid-sandbox'], // Avoid sandboxing issues in Docker
-  });
-  const page = await browser.newPage();
-
-  if(file.content) {
-    console.log("Compiling the template with handlebars")
-    // we have compile our code with handlebars
-    const template = hb.compile(file.content, { strict: true });
-    const result = template(file.content);
-    const html = result;
-
-    // We set the page content as the generated html by handlebars
-    await page.setContent(html);
-  } else {
-    await page.goto(file.url, {
-      waitUntil: 'networkidle0', // wait for page to load completely
-    });
-  }
-
-  return Promise.props(page.pdf(options))
-    .then(async function(data) {
-       await browser.close();
-
-       return Buffer.from(Object.values(data));
-    }).asCallback(callback);
-}
-
 const CSR = (date, pan) => {
   return `
   <!DOCTYPE html>
@@ -369,112 +414,7 @@ const numberToWords = (num) => {
   }
 }
 
-exports.DonateAdd = catchAsync(async (req, res, next) => {
-  try {
-    const { name, description, price, photo, hash } = req.body;
-    if (!name || !description || !price || !photo) {
-      return res.status(400).json({
-        status: false,
-        message: "All fields are required!",
-      });
-    }
-    const lastitem = await Donate.findOne().sort({ srNo: -1 });
-    const srNo = lastitem ? lastitem.srNo + 1 : 1;
-    const newItem = new Donate({
-      srNo,
-      name,
-      description,
-      price,
-      photo,
-      imagehash: hash,
-    });
-    await newItem.save();
-    res.status(201).json({
-      status: "success",
-      message: "Item Added Successfully!",
-      data: {
-        donate: newItem,
-      },
-    });
-  } catch (error) {
-    return res.status(500).json({
-      status: false,
-      message: "An unknown error occurred. Please try again later.",
-    });
-  }
-});
-
-exports.DonateGet = catchAsync(async (req, res, next) => {
-  try {
-    const { srNo } = req.params;
-    let data;
-    if (srNo) {
-      data = await Donate.findOne({ srNo });
-    } else {
-      data = await Donate.find().sort({ srNo: 1 });
-    }
-    if (!data) {
-      res.status(200).json({
-        status: false,
-        message: "No data found!",
-        data: [],
-      });
-    }
-    res.status(200).json({
-      status: true,
-      message: "Data retrieved successfully!",
-      data: data,
-    });
-  } catch (err) {
-    console.error(err); // Log the error for debugging
-    return res.status(500).json({
-      status: false,
-      message: "An unknown error occurred. Please try again later.",
-    });
-  }
-});
-
-exports.DonateDelete = catchAsync(async (req, res, next) => {
-  try {
-    const { srNo } = req.body;
-    // Validate the input
-    if (!srNo) {
-      return res.status(400).json({
-        status: false,
-        message: "(srNo) is required",
-      });
-    }
-
-    // Find and delete the banner
-    const deletedBanner = await Donate.findOneAndDelete({ srNo });
-    if (!deletedBanner) {
-      return res.status(404).json({
-        status: false,
-        message: `No data found with srNo: ${srNo}`,
-      });
-    }
-    // Adjust the `srNo` for the other banners
-    const BannersToUpdate = await Donate.find({ srNo: { $gt: srNo } });
-    if (BannersToUpdate.length > 0) {
-      await Banner.updateMany({ srNo: { $gt: srNo } }, { $inc: { srNo: -1 } });
-    }
-
-    // Respond with success
-    return res.status(200).json({
-      status: true,
-      message: `Item deleted successfully`,
-      deletedBanner: deletedBanner,
-    });
-  } catch (error) {
-    console.error("Error:", error); // Log the error to see details
-    return res.status(500).json({
-      status: false,
-      message: "An unknown error occurred. Please try again later.",
-    });
-  }
-});
-
-exports.DonateUserAdd = catchAsync(async (req, res, next) => {
+exports.DonateUserAddTest = catchAsync(async (req, res, next) => {
   const { name, number, aadhar, pan, email, amount, payment_id, pannumber, items } =
     req.body;
 
@@ -494,8 +434,7 @@ exports.DonateUserAdd = catchAsync(async (req, res, next) => {
       status: false,
       message: "All fields are required!",
     });
-  }
-  
+  }  
   // console.log("items",items);
   // Get all items with their indivisual price
   let itemsjson=JSON.parse(items);
@@ -524,7 +463,7 @@ itemsjson.forEach(item => {
 
   const today = new Date();
 const day = String(today.getDate()).padStart(2, '0');
-const month = String(today.getMonth() + 1).padStart(2, '0'); 
+const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are zero-based
 const year = today.getFullYear();
 const formattedDate = `${day}-${month}-${year}`;
 const amount_in_words=numberToWords(amount);
@@ -537,6 +476,7 @@ if (srNo < 10) {
 
   const invoiceHTML = invoice(InvoiceNo,name,formattedDate, amount, amount_in_words, tuition, book, uniform, all, other, pannumber);
   const CSRHTML = CSR(formattedDate, pannumber);
+  logger.info('PDFs made dynamic');
 
   const options1 = {
     width: "800px", // Custom width
@@ -546,17 +486,18 @@ if (srNo < 10) {
   };
   const invoicefile = { content: invoiceHTML };
   const CSRfile = { content: CSRHTML };
+  logger.info('Size defined for pdf');
 
   // Invoice
   let invoicepdf;
   try {
     invoicepdf = await generatePdf(invoicefile, options1);
   } catch (error) {
-    console.log("error",error);
-    logger.error("error",error);
+    logger.error('Error generating invoice PDF:', error);
+    console.log('Error generating invoice PDF:', error);
     return res.status(500).json({
       status: false,
-      message: "Failed to generate PDF",
+      message: `Failed to generate invoice PDF: ${error.message}`,
     });
   }
   // console.log("One pdf done");
@@ -571,13 +512,14 @@ if (srNo < 10) {
   try {
     CSRpdf = await generatePdf(CSRfile, options2);
   } catch (error) {
-    console.log("error",error);
-    logger.error("error",error);
+    logger.error('Error generating CSR PDF:', error);
+    console.log('Error generating invoice PDF:', error);
     return res.status(500).json({
       status: false,
-      message: "Failed to generate PDF",
+      message: `Failed to generate CSR PDF: ${error.message}`,
     });
   }
+  logger.info('Second pdf done');
   // console.log("Second pdf done");
 
   const mailOptions = {
@@ -669,6 +611,7 @@ if (srNo < 10) {
     });
   }
   // console.log("Email sent successfully!");
+  logger.info('Email sent successfully!');
 
   const megaLink = await uploadToMega(invoicepdf);
   const csrlink = await uploadToMega(CSRpdf);
@@ -692,6 +635,38 @@ if (srNo < 10) {
     message: "Donation user added and email sent successfully!",
     link: megaLink,
   });
+});
+
+
+exports.PdfKit = catchAsync(async (req, res, next) => {
+  const html = `
+  <h1>My PDF Report</h1>
+  <p>This is an example PDF generated from HTML content.</p>
+  <ul>
+      <li>Item 1</li>
+      <li>Item 2</li>
+      <li>Item 3</li>
+  </ul>
+  `;
+
+  try {
+      // Generate the PDF buffer
+      const pdfBuffer = await generatePDF(html);
+      
+      // Log the PDF buffer
+      console.log("PDF Buffer:", pdfBuffer);
+
+      // Optional: Send the PDF to the client as a file
+      res.setHeader('Content-Type', 'application/pdf');
+      res.setHeader('Content-Disposition', 'inline; filename="output.pdf"');
+      res.send(pdfBuffer);
+  } catch (error) {
+    console.log("error",error);
+      return res.status(500).json({
+          status: false,
+          message: "An unknown error occurred. Please try again later.",
+      });
+  }
 });
 
 exports.DonateInvoiceGet = catchAsync(async (req, res, next) => {
