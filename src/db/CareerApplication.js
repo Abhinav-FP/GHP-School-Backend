@@ -25,5 +25,9 @@ const applicationschema = mongoose.Schema({
   uuid: {
     type: String,
   },
+  other_position :{
+    type: String,
+    default: null
+  }
 });
 module.exports = mongoose.model("Application", applicationschema);

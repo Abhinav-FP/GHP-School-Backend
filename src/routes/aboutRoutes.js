@@ -3,7 +3,7 @@ const router =  require("express").Router();
 const { verifyToken } = require("../controller/AuthController");
 const { ComingSoonAdd, ComingSoonGet, ComingSoonEdit, ComingSoonShow } = require("../controller/ComingSoonController");
 const { directorAdd, directorGet, directorEdit } = require("../controller/DirectorController");
-const {facultyAdd, facultyGet, facultyDelete, facultyMove} = require("../controller/FacultyController");
+const {facultyAdd, facultyGet, facultyDelete, facultyMove, facltyEdit} = require("../controller/FacultyController");
 const { principalGet, principalAdd, principalEdit } = require("../controller/PrincipalController");
 const { schoolDelete, schoolGet, schoolAdd } = require("../controller/SisterSchoolController");
 
@@ -11,6 +11,8 @@ const { schoolDelete, schoolGet, schoolAdd } = require("../controller/SisterScho
 router.post("/faculty/add", verifyToken, facultyAdd);
 router.get("/faculty/get", facultyGet);
 router.post("/faculty/delete", verifyToken ,facultyDelete);
+router.post("/faculty/Edit", verifyToken ,facltyEdit);
+
 router.post("/faculty/move", verifyToken, facultyMove);
 router.get("/principal/get", principalGet);
 router.get("/director/get", directorGet);

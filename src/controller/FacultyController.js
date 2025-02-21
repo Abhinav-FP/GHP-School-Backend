@@ -138,3 +138,36 @@ exports.facultyMove = catchAsync(async (req, res, next) => {
   }
 });
 
+
+exports.facltyEdit =  catchAsync(async (req, res, next) => {
+
+  try {
+    const { _id, name, subjects, grades , srNo } = req.body;
+    if (!_id ||!name ||!subjects ||!grades ||!srNo) {
+      return res.status(400).json({
+        status: false,
+        message: "All fields are required!",
+      });
+    }
+    const updatedFaculty = await Faculty.findByIdAndUpdate(_id, { name, subjects, grades, srNo }, { new: true });
+    if (!updatedFaculty) {
+      return res.status(404).json({
+        status: false,
+        message: `No faculty found with id: ${id}`,
+      });
+    }
+    return res.status(200).json({
+      status: true,
+      message: "Faculty updated successfully!",
+      data: {
+        faculty: updatedFaculty,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      status: false,
+      message: "An unknown error occurred. Please try again later.",
+    });
+  }
+})

@@ -105,3 +105,40 @@ exports.resultDelete = catchAsync(async (req, res, next) => {
     });
   }
 });
+
+
+exports.ResultEdit =  catchAsync(async (req, res, next) => {
+  try {
+    const { _id, name, rollNo, grade , srNo , stream , photo, imagehash, percentage} = req.body;
+    if (!rollNo || !name || !photo || !grade || !percentage) {
+      return res.status(400).json({
+        status: false,
+        message: "All fields are required!",
+      });
+    }
+    if (grade == "XII" && !stream) {
+      return res.status(400).json({
+        status: false,
+        message: "Stream is required for XII grade!",
+      });
+    }
+    const updatedResult = await Result.findByIdAndUpdate(_id, { name, rollNo, grade , srNo , stream , photo, imagehash, percentage }, { new: true });
+    if (!updatedResult) {
+      return res.status(404).json({
+        status: false,
+        message: `No Result found with id: ${id}`,
+      });
+    }
+    return res.status(200).json({
+      status: true,
+      message: "Result updated successfully!",
+        Result: updatedResult,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      status: false,
+      message: "An unknown error occurred. Please try again later.",
+    });
+  }
+})

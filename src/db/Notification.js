@@ -12,6 +12,9 @@ const syllabusschema = mongoose.Schema({
       },
       viewLink :{
         type: String,
+      },
+      content :{
+        type: String,
       }
 })
-module.exports = mongoose.model("Syllabus",syllabusschema)
+module.exports = mongoose.model("Notification",syllabusschema)

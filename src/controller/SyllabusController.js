@@ -30,6 +30,7 @@ exports.syllabusAdd = catchAsync(async (req, res, next) => {
       srNo,
       text,
       link: url,
+      viewLink : link
     });
     await newData.save();
     res.status(201).json({
@@ -96,4 +97,41 @@ exports.syllabusDelete = catchAsync(async (req, res, next) => {
       message: "An unknown error occurred. Please try again later.",
     });
   }
+});
+
+exports.syllabusUpdate = catchAsync(async (req, res, next) => {
+try {
+  const { _id, text, link } = req.body;
+  if (!_id ||!text ||!link) {
+    return res.status(400).json({
+      status: false,
+      message: "All fields are required!",
+    });
+  }
+  const url = convertToDownloadLink(link);
+  const updatedData = await Syllabus.findByIdAndUpdate(
+    _id,
+    { text, link :url , viewLink : link },
+    { new: true, runValidators: true }
+  );
+  if (!updatedData) {
+    return res.status(404).json({
+      status: false,
+      message: "Syllabus entry not found!",
+    });
+  }
+  res.status(200).json({
+    status: true,
+    message: "Syllabus updated successfully!",
+    data: updatedData,
+  });
+} catch (error) {
+  console.error("Error:", error); // Log the error to see details
+  return res.status(500).json({
+    status: false,
+    message: "An unknown error occurred. Please try again later.",
+  });
+  
+}
+
 });

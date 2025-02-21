@@ -11,7 +11,7 @@ const { principalAdd, principalEdit } = require("./controller/PrincipalControlle
 let upload = require("./utils/uploadConfig");
 const { directorAdd, directorEdit } = require("./controller/DirectorController");
 const { bannerAdd } = require("./controller/BannerController");
-const { resultAdd } = require("./controller/ResultController");
+const { resultAdd, ResultEdit } = require("./controller/ResultController");
 const { galleryAdd } = require("./controller/GalleryController");
 const uploadgallery = require("./utils/uploadGallery");
 const { verifyToken } = require("./controller/AuthController");
@@ -50,6 +50,8 @@ app.use("/career", require("./routes/careerRoutes"));
 app.use("/home", require("./routes/homeRoutes"));
 app.post("/home/banner/add", verifyToken, bannerAdd);
 app.post("/result/add", verifyToken, resultAdd);
+app.post("/result/Edit", verifyToken, ResultEdit);
+
 app.post("/about/principal/add", verifyToken, principalAdd);
 app.post("/about/principal/edit", verifyToken, principalEdit);
 app.post("/about/director/add", verifyToken, directorAdd);
