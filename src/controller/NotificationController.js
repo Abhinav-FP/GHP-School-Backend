@@ -139,7 +139,7 @@ exports.NotificationUpdate = catchAsync(async (req, res, next) => {
 });
 
 
-exports.AcademyAdd = catchAsync(async (req, res, next) => {
+exports.CalendarAdd = catchAsync(async (req, res, next) => {
     try {
         const { text, link, content } = req.body;
         if (!link ) {
@@ -157,7 +157,7 @@ exports.AcademyAdd = catchAsync(async (req, res, next) => {
         await newData.save();
         res.status(201).json({
             status: "success",
-            message: "academics Added Successfully!",
+            message: "Calendar Added Successfully!",
         });
     } catch (error) {
         return res.status(500).json({
@@ -167,26 +167,9 @@ exports.AcademyAdd = catchAsync(async (req, res, next) => {
     }
 });
 
-exports.AcademyGet = catchAsync(async (req, res, next) => {
+exports.CalendarGet = catchAsync(async (req, res, next) => {
     try {
-        const data = await Academy.find().sort({ srNo: 1 });
-        res.status(200).json({
-            status: true,
-            message: "Data retrieved successfully!",
-            academics: data,
-        });
-    } catch (err) {
-        console.error(err);
-        return res.status(500).json({
-            status: false,
-            message: "An unknown error occurred. Please try again later.",
-        });
-    }
-});
-
-exports.AcademyGetFind = catchAsync(async (req, res, next) => {
-    try {
-        const data = await Academy.findOne().sort({ srNo: 1 });
+        const data = await Academy.findOne();
         res.status(200).json({
             status: true,
             message: "Data retrieved successfully!",
@@ -202,7 +185,7 @@ exports.AcademyGetFind = catchAsync(async (req, res, next) => {
 });
 
 
-exports.AcademyUpdate = catchAsync(async (req, res, next) => {
+exports.CalendarUpdate = catchAsync(async (req, res, next) => {
     try {
         const { _id, link } = req.body;
         if (!_id || !link) {
@@ -220,12 +203,12 @@ exports.AcademyUpdate = catchAsync(async (req, res, next) => {
         if (!updatedData) {
             return res.status(404).json({
                 status: false,
-                message: "academics entry not found!",
+                message: "Calendar entry not found!",
             });
         }
         res.status(200).json({
             status: true,
-            message: "academics updated successfully!",
+            message: "Calendar updated successfully!",
             data: updatedData,
         });
     } catch (error) {

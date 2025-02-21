@@ -1,5 +1,5 @@
 const { verifyToken } = require("../controller/AuthController");
-const { NotificationAdd, NotificationGet, NotificationUpdate, NotificationDelete, AcademyGet, AcademyAdd, AcademyUpdate, AcademyGetFind } = require("../controller/NotificationController");
+const { NotificationAdd, NotificationGet, NotificationUpdate, NotificationDelete, CalendarGet, CalendarAdd, CalendarUpdate } = require("../controller/NotificationController");
 const { syllabusAdd, syllabusGet, syllabusDelete, syllabusUpdate } = require("../controller/SyllabusController");
 
 const router =  require("express").Router();
@@ -20,9 +20,8 @@ router.post("/notification/edit", NotificationUpdate);
 // AcademicsRoutes
 
 
-router.get("/academicies/get", verifyToken, AcademyGet);
-router.post("/academicies/add", verifyToken, AcademyAdd);
-router.post("/academicies/edit", verifyToken, AcademyUpdate);
-router.post("/academicies/find", verifyToken, AcademyGetFind);
+router.get("/calendar/get", CalendarGet);
+router.post("/calendar/add", verifyToken, CalendarAdd);
+router.post("/calendar/edit", verifyToken, CalendarUpdate);
 
 module.exports= router;

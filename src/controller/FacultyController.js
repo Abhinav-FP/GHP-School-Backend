@@ -94,6 +94,7 @@ exports.facultyDelete = catchAsync(async (req, res, next) => {
 exports.facultyMove = catchAsync(async (req, res, next) => {
   try {
     const {id, oldPosition, newPosition } = req.body;
+    console.log("oldPosition", oldPosition, newPosition);
     if (!oldPosition || !newPosition) {
       return res.status(400).json({
         status: false,
@@ -101,7 +102,8 @@ exports.facultyMove = catchAsync(async (req, res, next) => {
       });
     }
 
-    if (newPosition > oldPosition) { // Moved downwards
+    if (newPosition > oldPosition) { // Moved upwards
+      console.log("Hello");
       // Decrement srNo of all items between oldPosition+1 and newPosition
       await Faculty.updateMany(
         { srNo: { $gt: oldPosition, $lte: newPosition } },
@@ -113,7 +115,8 @@ exports.facultyMove = catchAsync(async (req, res, next) => {
         { $set: { srNo: newPosition } }
       );
     }
-    else if(newPosition < oldPosition){ // Moved upwards
+    else if(newPosition < oldPosition){ // Moved downwards
+      console.log("Hi");
       // Increment srNo of all items between oldPosition-1 and newPosition
       await Faculty.updateMany(
         { srNo: { $gte: newPosition, $lt: oldPosition } },
