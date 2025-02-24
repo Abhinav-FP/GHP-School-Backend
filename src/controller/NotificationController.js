@@ -52,7 +52,7 @@ exports.NotificationAdd = catchAsync(async (req, res, next) => {
 
 exports.NotificationGet = catchAsync(async (req, res, next) => {
     try {
-        const data = await Notification.find().sort({ srNo: 1 });
+        const data = await Notification.find().sort({ srNo: 1 }); 
         res.status(200).json({
             status: true,
             message: "Data retrieved successfully!",
