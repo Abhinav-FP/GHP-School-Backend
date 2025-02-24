@@ -89,7 +89,7 @@ exports.NotificationDelete = catchAsync(async (req, res, next) => {
         }
         return res.status(200).json({
             status: true,
-            message: `Result deleted successfully`,
+            message: `Notification deleted successfully`,
             deletedData: deletedBanner,
         });
     } catch (error) {
