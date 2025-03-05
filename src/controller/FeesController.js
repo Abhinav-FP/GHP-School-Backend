@@ -104,10 +104,10 @@ exports.feesDelete = catchAsync(async (req, res, next) => {
 
 exports.feesEdit = catchAsync(async (req, res, next) => {
   try {
-    const { grade, first, second, third, fourth, total } = req.body;
+    const { id, grade, first, second, third, fourth, total } = req.body;
 
     // Check if all required fields are provided
-    if (
+    if (!id ||
       !grade ||
       first === undefined ||
       second === undefined ||
@@ -120,12 +120,13 @@ exports.feesEdit = catchAsync(async (req, res, next) => {
         message: "All fields are required!",
       });
     }
-    const result = await Fees.findOneAndUpdate(
-      { grade }, // Filter: match by grade
+    const result = await Fees.findByIdAndUpdate(
+      id, // Find by ID
       {
-        $set: { first, second, third, fourth, total }, // Fields to update
-      }
-    );
+          $set: { grade, first, second, third, fourth, total }, // Fields to update
+      },
+      { new: true } // Return the updated document
+  );
     if (result.nModified === 0) {
       return res.status(404).json({
         status: false,
